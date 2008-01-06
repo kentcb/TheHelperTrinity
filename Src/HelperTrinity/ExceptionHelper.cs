@@ -1,5 +1,3 @@
-//the original source for this code is an online article available at http://www.codeproject.com/csharp/thehelpertrinity.asp
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,12 +60,12 @@ namespace Kent.Boogaart.HelperTrinity
 		/// <summary>
 		/// Caches exception information for each participating assembly.
 		/// </summary>
-		private static IDictionary<Assembly, XmlDocument> _exceptionInfos = new Dictionary<Assembly, XmlDocument>();
+		private static readonly IDictionary<Assembly, XmlDocument> _exceptionInfos = new Dictionary<Assembly, XmlDocument>();
 
 		/// <summary>
 		/// Synchronizes access to <see cref="_exceptionInfos"/>.
 		/// </summary>
-		private static object _exceptionInfosLock = new object();
+		private static readonly object _exceptionInfosLock = new object();
 
 		/// <summary>
 		/// The name of the attribute that holds the exception type.
@@ -131,7 +129,7 @@ namespace Kent.Boogaart.HelperTrinity
 		[DebuggerHidden]
 		public static void ThrowIf(bool condition, string exceptionKey, object[] constructorArgs, Exception innerException)
 		{
-			ThrowIf(condition, exceptionKey, constructorArgs, innerException, (object[]) null);
+			ThrowIf(condition, exceptionKey, constructorArgs, innerException, null);
 		}
 
 		/// <summary>
@@ -278,7 +276,7 @@ namespace Kent.Boogaart.HelperTrinity
 			ArgumentHelper.AssertNotNull(exceptionKey, "exceptionKey");
 
 			//first we need to find the type from which we were invoked - this is used as a grouping mechanism in the XML config file
-			Type invokingType = null;
+			Type invokingType;
 			int skipFrames = 1;
 
 			while (true)
@@ -349,11 +347,11 @@ namespace Kent.Boogaart.HelperTrinity
 
 			object[] constructorArgsArr = constructorArgsList.ToArray();
 			BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance;
-			object state;
 			ConstructorInfo constructor = null;
 
 			try
 			{
+				object state;
 				constructor = (ConstructorInfo) Type.DefaultBinder.BindToMethod(bindingFlags, type.GetConstructors(bindingFlags), ref constructorArgsArr, null, null, null, out state);
 			}
 			catch (MissingMethodException)
@@ -384,7 +382,7 @@ namespace Kent.Boogaart.HelperTrinity
 		[DebuggerHidden]
 		private static XmlDocument GetExceptionInfo(Assembly assembly)
 		{
-			XmlDocument retVal = null;
+			XmlDocument retVal;
 
 			lock (_exceptionInfosLock)
 			{
@@ -395,23 +393,20 @@ namespace Kent.Boogaart.HelperTrinity
 				else
 				{
 					//if the exception info isn't cached we have to load it from an embedded resource in the calling assembly
-					if (retVal == null)
+					retVal = new XmlDocument();
+					string resourceName = string.Concat(assembly.GetName().Name, ".Properties.ExceptionHelper.xml");
+
+					using (Stream stream = assembly.GetManifestResourceStream(resourceName))
 					{
-						retVal = new XmlDocument();
-						string resourceName = string.Concat(assembly.GetName().Name, ".Properties.ExceptionHelper.xml");
-
-						using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+						if (stream == null)
 						{
-							if (stream == null)
-							{
-								throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "XML resource file '{0}' could not be found in assembly '{1}'.", resourceName, assembly.FullName));
-							}
-
-							retVal.Load(stream);
+							throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "XML resource file '{0}' could not be found in assembly '{1}'.", resourceName, assembly.FullName));
 						}
 
-						_exceptionInfos[assembly] = retVal;
+						retVal.Load(stream);
 					}
+
+					_exceptionInfos[assembly] = retVal;
 				}
 			}
 

@@ -1,9 +1,7 @@
-//the original source for this code is an online article available at http://www.codeproject.com/csharp/thehelpertrinity.asp
-
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Text;
 
 namespace Kent.Boogaart.HelperTrinity
@@ -425,11 +423,11 @@ namespace Kent.Boogaart.HelperTrinity
 
 		/// <summary>
 		/// A handler used to create an event arguments instance for the
-		/// <see cref="Raise&lt;T&gt;(EventHandler&lt;T&gt;, object, CreateEventArguments&lt;T&gt;)"/> method.
+		/// <see cref="Raise{T}(EventHandler{T}, object, CreateEventArguments{T})"/> method.
 		/// </summary>
 		/// <remarks>
 		/// This delegate is invoked by the
-		/// <see cref="Raise&lt;T&gt;(EventHandler&lt;T&gt;, object, CreateEventArguments&lt;T&gt;)"/> method to create the
+		/// <see cref="Raise{T}(EventHandler{T}, object, CreateEventArguments{T})"/> method to create the
 		/// event arguments instance. The handler should create the instance and return it.
 		/// </remarks>
 		/// <typeparam name="T">

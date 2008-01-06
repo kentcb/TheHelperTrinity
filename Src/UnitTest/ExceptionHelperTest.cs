@@ -1,8 +1,4 @@
-//the original source for this code is an online article available at http://www.codeproject.com/csharp/thehelpertrinity.asp
-
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Kent.Boogaart.HelperTrinity;
 
@@ -180,9 +176,9 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 
 		public sealed class TestException : Exception
 		{
-			private int _num1;
-			private int _num2;
-			private string _info;
+			private readonly int _num1;
+			private readonly int _num2;
+			private readonly string _info;
 
 			public int Num1
 			{

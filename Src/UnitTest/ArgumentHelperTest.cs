@@ -1,8 +1,5 @@
-//the original source for this code is an online article available at http://www.codeproject.com/csharp/thehelpertrinity.asp
-
 using System;
 using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Kent.Boogaart.HelperTrinity;
 
@@ -337,9 +334,6 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 		private enum FlagsEnumNoNone
 		{
 			One = 1,
-			Two = 2,
-			Three = 4,
-			Four = 8
 		}
 
 		private enum ByteEnum : byte

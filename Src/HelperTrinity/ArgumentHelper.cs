@@ -1,10 +1,7 @@
-//the original source for this code is an online article available at http://www.codeproject.com/csharp/thehelpertrinity.asp
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Text;
 
 namespace Kent.Boogaart.HelperTrinity
 {
@@ -17,7 +14,7 @@ namespace Kent.Boogaart.HelperTrinity
 	/// laborious <c>if</c>, <c>throw</c> sequences in your code.
 	/// </para>
 	/// <para>
-	/// The <see cref="AssertNotNull"/> method can be used to ensure that arguments are not <see langword="null"/>. The
+	/// The <see cref="AssertNotNull"/> methods can be used to ensure that arguments are not <see langword="null"/>. The
 	/// <see cref="AssertNotNullOrEmpty"/> overloads can be used to ensure that strings are not <see langword="null"/> or empty.
 	/// The <see cref="AssertEnumMember"/> overloads can be used to assert the validity of enumeration arguments.
 	/// </para>
@@ -322,7 +319,7 @@ namespace Kent.Boogaart.HelperTrinity
 			{
 				//flag enumeration - we can only get here if TEnum is a valid enumeration type, since the FlagsAttribute can
 				//only be applied to enumerations
-				bool throwEx = false;
+				bool throwEx;
 				long longValue = enumValue.ToInt64(CultureInfo.InvariantCulture);
 
 				if (longValue == 0)
@@ -411,7 +408,7 @@ namespace Kent.Boogaart.HelperTrinity
 			if (Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute), false))
 			{
 				//flag enumeration
-				bool throwEx = false;
+				bool throwEx;
 				long longValue = enumValue.ToInt64(CultureInfo.InvariantCulture);
 
 				if (longValue == 0)
