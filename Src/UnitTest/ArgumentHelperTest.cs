@@ -76,9 +76,17 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 		}
 
 		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void AssertGenericArgumentNotNull_ShouldThrowIfInterfaceTypeNull()
+		{
+			ArgumentHelper.AssertGenericArgumentNotNull<IComparable>(null, "test");
+		}
+
+		[Test]
 		public void AssertGenericArgumentNotNull_ShouldNotThrowIfReferenceTypeIsNotNull()
 		{
 			ArgumentHelper.AssertGenericArgumentNotNull("test", "test");
+			ArgumentHelper.AssertGenericArgumentNotNull((IComparable)"test", "test");
 		}
 
 		[Test]

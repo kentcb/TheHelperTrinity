@@ -180,7 +180,7 @@ namespace Kent.Boogaart.HelperTrinity
 		{
 			Type type = typeof(T);
 
-			if (type.IsClass || (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(Nullable<>))))
+			if (!type.IsValueType || (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(Nullable<>))))
 			{
 				AssertNotNull((object) arg, argName);
 			}
