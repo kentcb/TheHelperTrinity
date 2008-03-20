@@ -1,6 +1,6 @@
 ﻿<project schemaVersion="1.6.0.2">
     <assemblies>
-        <assembly assemblyPath="..\Src\HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.dll" xmlCommentsPath="..\Src\HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\Src\HelperTrinity\bin\Release 3.5\Kent.Boogaart.HelperTrinity.dll" xmlCommentsPath="..\Src\HelperTrinity\bin\Release 3.5\Kent.Boogaart.HelperTrinity.xml" commentsOnly="False" />
     </assemblies>
     <ProjectSummary />
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
@@ -15,14 +15,14 @@
     <HelpFileFormat>HtmlHelp1x</HelpFileFormat>
     <PurgeDuplicateTopics>True</PurgeDuplicateTopics>
     <CppCommentsFixup>False</CppCommentsFixup>
-    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <FrameworkVersion>3.5</FrameworkVersion>
     <BinaryTOC>True</BinaryTOC>
     <IncludeFavorites>False</IncludeFavorites>
     <Preliminary>False</Preliminary>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <RootNamespaceTitle />
     <HelpTitle>The Helper Trinity</HelpTitle>
-    <HtmlHelpName>TheHelperTrinity</HtmlHelpName>
+    <HtmlHelpName>TheHelperTrinity-FXv3.5</HtmlHelpName>
     <Language>en-US</Language>
     <CopyrightHref />
     <CopyrightText />

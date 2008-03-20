@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Kent.Boogaart.HelperTrinity;
 
 namespace Kent.Boogaart.HelperTrinity.UnitTest
 {

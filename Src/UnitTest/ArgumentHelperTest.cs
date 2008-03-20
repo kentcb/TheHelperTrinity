@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Kent.Boogaart.HelperTrinity;
 
 namespace Kent.Boogaart.HelperTrinity.UnitTest
 {

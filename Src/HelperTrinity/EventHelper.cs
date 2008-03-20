@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Text;
 
 namespace Kent.Boogaart.HelperTrinity
@@ -77,25 +76,7 @@ namespace Kent.Boogaart.HelperTrinity
 	/// </example>
 	public static class EventHelper
 	{
-		/// <summary>
-		/// Begins raising a non-generic event.
-		/// </summary>
-		/// <remarks>
-		/// This method begins raising the specified non-generic event and passes in <c>EventArgs.Empty</c> as the event
-		/// arguments.
-		/// </remarks>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="callback">
-		/// A delegate to call once the event has been raised, or <see langword="null"/> if no delegate should be called.
-		/// </param>
-		/// <param name="asyncState">
-		/// Any additional information to pass to the <paramref name="callback"/>.
-		/// </param>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise(EventHandler,object,AsyncCallback,object)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void BeginRaise(EventHandler handler, object sender, AsyncCallback callback, object asyncState)
@@ -112,18 +93,7 @@ namespace Kent.Boogaart.HelperTrinity
 
 		private delegate void Raise_EventHandler_Object_Handler(EventHandler hander, object sender);
 
-		/// <summary>
-		/// Raises a non-generic event.
-		/// </summary>
-		/// <remarks>
-		/// This method raises the specified non-generic event and passes in <c>EventArgs.Empty</c> as the event arguments.
-		/// </remarks>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise(EventHandler,object)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void Raise(EventHandler handler, object sender)
@@ -138,30 +108,7 @@ namespace Kent.Boogaart.HelperTrinity
 			}
 		}
 
-		/// <summary>
-		/// Begins raising a non-generic event.
-		/// </summary>
-		/// <remarks>
-		/// This method can be used to begin raising a non-generic event that needs a specific <see cref="EventArgs"/> subclass
-		/// as its second parameter. This method assumes that <paramref name="handler"/> points to a method that conforms to the
-		/// standard .NET event signature. That is, it takes an <see cref="object"/> as its first parameter and an
-		/// <see cref="EventArgs"/> instance as its second.
-		/// </remarks>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="e">
-		/// The event arguments.
-		/// </param>
-		/// <param name="callback">
-		/// A delegate to call once the event has been raised, or <see langword="null"/> if no delegate should be called.
-		/// </param>
-		/// <param name="asyncState">
-		/// Any additional information to pass to the <paramref name="callback"/>.
-		/// </param>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise(Delegate,object,EventArgs,AsyncCallback,object)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void BeginRaise(Delegate handler, object sender, EventArgs e, AsyncCallback callback, object asyncState)
@@ -178,28 +125,7 @@ namespace Kent.Boogaart.HelperTrinity
 
 		private delegate void Raise_Delegate_Object_EventArgs_Handler(Delegate handler, object sender, EventArgs e);
 
-		/// <summary>
-		/// Raises a non-generic event.
-		/// </summary>
-		/// <remarks>
-		/// This method can be used to raise a non-generic event that needs a specific <see cref="EventArgs"/> subclass as its
-		/// second parameter. This method assumes that <paramref name="handler"/> points to a method that conforms to the
-		/// standard .NET event signature. That is, it takes an <see cref="object"/> as its first parameter and an
-		/// <see cref="EventArgs"/> instance as its second.
-		/// </remarks>
-		/// <param name="handler">
-		/// The event handler.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="e">
-		/// The arguments for the event.
-		/// </param>
-		/// <exception cref="TargetParameterCountException">
-		/// If <paramref name="handler"/> does not contain the correct number of arguments or contains arguments of the wrong
-		/// type or in the wrong order.
-		/// </exception>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise(Delegate,object,EventArgs)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void Raise(Delegate handler, object sender, EventArgs e)
@@ -214,27 +140,7 @@ namespace Kent.Boogaart.HelperTrinity
 			}
 		}
 
-		/// <summary>
-		/// Begins raising a generic event.
-		/// </summary>
-		/// <remarks>
-		/// This method begins raising a generic event, passing in the specified event arguments.
-		/// </remarks>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="e">
-		/// The event arguments.
-		/// </param>
-		/// <param name="callback">
-		/// A delegate to call once the event has been raised, or <see langword="null"/> if no delegate should be called.
-		/// </param>
-		/// <param name="asyncState">
-		/// Any additional information to pass to the <paramref name="callback"/>.
-		/// </param>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise{T}(EventHandler{T},object,T,AsyncCallback,object)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void BeginRaise<T>(EventHandler<T> handler, object sender, T e, AsyncCallback callback, object asyncState)
@@ -253,24 +159,7 @@ namespace Kent.Boogaart.HelperTrinity
 		private delegate void Raise_GenericEventHandler_Object_EventArgs_Handler<T>(EventHandler<T> handler, object sender, T e)
 			where T : EventArgs;
 
-		/// <summary>
-		/// Raises a generic event.
-		/// </summary>
-		/// <remarks>
-		/// This method raises a generic event, passing in the specified event arguments.
-		/// </remarks>
-		/// <typeparam name="T">
-		/// The event arguments type.
-		/// </typeparam>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="e">
-		/// The arguments for the event.
-		/// </param>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise{T}(EventHandler{T},object,T)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void Raise<T>(EventHandler<T> handler, object sender, T e)
@@ -286,24 +175,7 @@ namespace Kent.Boogaart.HelperTrinity
 			}
 		}
 
-		/// <summary>
-		/// Begins raising a generic event.
-		/// </summary>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="createEventArguments">
-		/// The delegate to invoke if an event arguments instance is needed.
-		/// </param>
-		/// <param name="callback">
-		/// A delegate to call once the event has been raised, or <see langword="null"/> if no delegate should be called.
-		/// </param>
-		/// <param name="asyncState">
-		/// Any additional information to pass to the <paramref name="callback"/>.
-		/// </param>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise{T}(EventHandler{T},object,CreateEventArguments{T},AsyncCallback,object)"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void BeginRaise<T>(EventHandler<T> handler, object sender, CreateEventArguments<T> createEventArguments, AsyncCallback callback, object asyncState)
@@ -324,24 +196,7 @@ namespace Kent.Boogaart.HelperTrinity
 		private delegate void Raise_GenericEventHandler_Object_GenericCreateEventArguments_Handler<T>(EventHandler<T> handler, object sender, CreateEventArguments<T> createEventArguments)
 			where T : EventArgs;
 
-		/// <summary>
-		/// Raises a generic event, but does not create the event arguments unless there is at least one handler for the event.
-		/// </summary>
-		/// <typeparam name="T">
-		/// The event arguments type.
-		/// </typeparam>
-		/// <param name="handler">
-		/// The event to be raised.
-		/// </param>
-		/// <param name="sender">
-		/// The sender of the event.
-		/// </param>
-		/// <param name="createEventArguments">
-		/// The delegate to invoke if an event arguments instance is needed.
-		/// </param>
-		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="createEventArguments"/> is <see langword="null"/>.
-		/// </exception>
+		/// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise{T}(EventHandler{T},object,CreateEventArguments{T})"]/*' />
 		[SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
 		[DebuggerHidden]
 		public static void Raise<T>(EventHandler<T> handler, object sender, CreateEventArguments<T> createEventArguments)
