@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<doc>
+	<member name="AssertNotNull{T}(T,string)">
+		<summary>
+			Ensures the specified argument is non-<see langword="null"/>. If it is, an <see cref="ArgumentNullException"/> is thrown.
+		</summary>
+		<typeparam name="T">
+			The type of the argument.
+		</typeparam>
+		<param name="arg">
+			The argument to check for <see langword="null"/>.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<exception cref="ArgumentNullException">
+			If <paramref name="arg"/> is <see langword="null"/>.
+		</exception>
+	</member>
+
+	<member name="AssertNotNull{T}(Nullable{T},string)">
+		<summary>
+			Ensures the specified nullable value argument is non-<see langword="null"/>. If it is, an <see cref="ArgumentNullException"/> is thrown.
+		</summary>
+		<typeparam name="T">
+			The type of the nullable argument.
+		</typeparam>
+		<param name="arg">
+			The nullable argument.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<exception cref="ArgumentNullException">
+			If <paramref name="arg"/> is <see langword="null"/>.
+		</exception>
+	</member>
+
+	<member name="AssertGenericArgumentNotNull{T}(T,string)">
+		<summary>
+			Ensures the specified argument is non-<see langword="null"/>. If it is, an <see cref="ArgumentNullException"/> is thrown.
+		</summary>
+		<remarks>
+			<para>
+				This method can be used instead of one of the <see cref="AssertNotNull"/> overloads in the case where the argument
+				being checked is generic. It will ensure that <paramref name="arg"/> is not <see langword="null"/> if it is a
+				reference type or if it is an instance of <see cref="Nullable{T}"/>.
+			</para>
+		</remarks>
+		<typeparam name="T">
+			The type of the argument.
+		</typeparam>
+		<param name="arg">
+			The argument.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<exception cref="ArgumentNullException">
+			If <paramref name="arg"/> is <see langword="null"/>.
+		</exception>
+		<example>
+			The following code ensures that the <c>name</c> argument is not <see langword="null"/> or an empty <c>string</c>:
+			<code>
+				public void SomeMethod&lt;T&gt;(T arg)
+				{
+						ArgumentHelper.AssertGenericArgumentNotNull(arg, "arg");
+						//now we know that arg is not null, regardless of whether it is a reference type or a Nullable type
+						...
+				}
+			</code>
+		</example>
+	</member>
+
+	<member name="AssertNotNull{T}(IEnumerable{T},string,bool)">
+		<summary>
+			Ensures the specified enumerable argument is non-<see langword="null"/>, optionally checking each item in it for
+			<see langword="null"/>. If any checked items are <see langword="null"/>, an exception is thrown.
+		</summary>
+		<remarks>
+			<para>
+				This method throws an <see cref="ArgumentNullException"/> if <paramref name="arg"/> is <see langword="null"/>. If
+				<paramref name="assertContentsNotNull"/> is <see langword="true"/> and one of the items in <paramref name="arg"/>
+				is found to be <see langword="null"/>, an <see cref="ArgumentException"/> is thrown.
+			</para>
+		</remarks>
+		<typeparam name="T">
+			The type of the items in the <paramref name="arg"/> enumeration.
+		</typeparam>
+		<param name="arg">
+			The argument to check for <see langword="null"/>.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<param name="assertContentsNotNull">
+			If <see langword="true"/>, each item inside the <paramref name="arg"/> enumeration is also checked for
+			<see langword="null"/>. If <see langword="false"/>, only <paramref name="arg"/> itself is checked for
+			<see langword="null"/>.
+		</param>
+		<exception cref="ArgumentException">
+			If <paramref name="assertContentsNotNull"/> is <see langword="true"/> and one of the items in <paramref name="arg"/>
+			is <see langword="null"/>.
+		</exception>
+	</member>
+
+	<member name="AssertNotNullOrEmpty(string,string)">
+		<summary>
+			Ensures the specified argument is non-<see langword="null"/> and not an empty <c>string</c>. If it is, an
+			<see cref="ArgumentException"/> is thrown.
+		</summary>
+		<param name="arg">
+			The argument to check for <see langword="null"/> or an empty <c>string</c>.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+	</member>
+
+	<member name="AssertNotNullOrEmpty(string,string,bool)">
+		<summary>
+			Ensures the specified argument is non-<see langword="null"/> and not an empty <c>string</c>, optionally trimming
+			<paramref name="arg"/> first. If it is, an <see cref="ArgumentException"/> is thrown.
+		</summary>
+		<param name="arg">
+			The argument to check for <see langword="null"/> or an empty <c>string</c>.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<param name="trim">
+			If <see langword="true"/> and <paramref name="arg"/> is not <see langword="null"/> or an empty <c>string</c>, it is
+			trimmed and re-tested for being empty.
+		</param>
+		<exception cref="ArgumentException">
+			If <paramref name="arg"/> is <see langword="null"/> or an empty <c>string</c>, or if it is a blank <c>string</c> and
+			<paramref name="trim"/> is <see langword="true"/>.
+		</exception>
+	</member>
+
+	<member name="AssertEnumMember{TEnum}(TEnum,string)">
+		<summary>
+			Ensures the specified enumeration argument is a valid member of the <typeparamref name="TEnum"/> enumeration. If it
+			is not, an <see cref="ArgumentException"/> is thrown.
+		</summary>
+		<remarks>
+			<para>
+				This method can be used to validate all publicly-supplied enumeration values. Without such an assertion, it is
+				possible to cast any <c>int</c> value to the enumeration type and pass it in.
+			</para>
+			<para>
+				This method works for both flags and non-flags enumerations. In the case of a flags enumeration, any combination of
+				values in the enumeration is accepted. In the case of a non-flags enumeration, <paramref name="enumValue"/> must
+				be equal to one of the values in the enumeration.
+			</para>
+			<para>
+				This method is generic and quite slow as a result. You should prefer using the
+				<see cref="AssertEnumMember{TEnum}(TEnum, TEnum[])"/> overload where possible. That overload is both faster and
+				safer. Faster because it does not incur reflection costs, and safer because you are able to specify the exact
+				values accepted by your method.
+			</para>
+		</remarks>
+		<typeparam name="TEnum">
+			The enumeration type.
+		</typeparam>
+		<param name="enumValue">
+			The value of the enumeration.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<exception cref="ArgumentException">
+			If <paramref name="enumValue"/> is not a valid member of the <typeparamref name="TEnum"/> enumeration.
+		</exception>
+	</member>
+
+	<member name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])">
+		<summary>
+			Ensures the specified enumeration argument is included in the values specified by <paramref name="validValues"/>. If
+			it is not, an <see cref="ArgumentException"/> is thrown.
+		</summary>
+		<remarks>
+			<para>
+				This method can be used to ensure that an enumeration argument is valid for the context of the method. It works for
+				both flags and non-flags enumerations. For flags enumerations, <paramref name="enumValue"/> must be any combination
+				of values specified by <paramref name="validValues"/>. For non-flags enumerations, <paramref name="enumValue"/>
+				must be one of the values specified by <paramref name="validValues"/>.
+			</para>
+			<para>
+				This method is much faster than the <see cref="AssertEnumMember{TEnum}(TEnum)"/> overload. This is because it does
+				not use reflection to determine the values defined by the enumeration. For this reason you should prefer this method
+				when validating enumeration arguments.
+			</para>
+			<para>
+				Another reason why this method is prefered is because it allows you to explicitly specify the values that your code
+				handles. If you use the <see cref="AssertEnumMember{TEnum}(TEnum)"/> overload and a new value is later added to the
+				enumeration, the assertion will not fail but your code probably will.
+			</para>
+		</remarks>
+		<typeparam name="TEnum">
+			The enumeration type.
+		</typeparam>
+		<param name="enumValue">
+			The value of the enumeration.
+		</param>
+		<param name="argName">
+			The name of the argument.
+		</param>
+		<param name="validValues">
+			An array of all valid values.
+		</param>
+		<exception cref="ArgumentNullException">
+			If <paramref name="validValues"/> is <see langword="null"/>.
+		</exception>
+		<exception cref="ArgumentException">
+			If <paramref name="enumValue"/> is not present in <paramref name="validValues"/>, or (for flag enumerations) if
+			<paramref name="enumValue"/> is not some combination of values specified in <paramref name="validValues"/>.
+		</exception>
+	</member>
+</doc>
