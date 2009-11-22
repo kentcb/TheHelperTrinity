@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using Kent.Boogaart.HelperTrinity.Extensions;
 
 namespace Kent.Boogaart.HelperTrinity
 {
@@ -18,8 +19,8 @@ namespace Kent.Boogaart.HelperTrinity
 	/// </para>
 	/// <para>
 	/// Exception information is stored in an embedded resource called <c>ExceptionHelper.xml</c>, which must reside in the
-	/// <c>Properties</c> namespace for the calling assembly. For example, if the root namespace for an assembly is
-	/// <c>Company.Product</c> then the exception information must be stored in a resource called
+	/// <c>Properties</c> namespace for the assembly in which the for type is stored. For example, if the root namespace for
+	/// an assembly is <c>Company.Product</c> then the exception information must be stored in a resource called
 	/// <c>Company.Product.Properties.ExceptionHelper.xml</c>
 	/// </para>
 	/// <para>
@@ -34,9 +35,33 @@ namespace Kent.Boogaart.HelperTrinity
 	/// </note>
 	/// </remarks>
 	/// <example>
+	/// The following example shows how an exception can thrown:
+	/// <code>
+	/// var exceptionHelper = new ExceptionHelper(typeof(Bar));
+	/// throw exceptionHelper.Resolve("myKey", "hello");
+	/// </code>
+	/// Assuming this code resides in a class called <c>Foo.Bar</c>, the XML configuration might look like this:
+	/// <code>
+	/// <![CDATA[
+	/// <?xml version="1.0" encoding="utf-8" ?> 
+	/// 
+	/// <exceptionHelper>
+	/// 	<exceptionGroup type="Foo.Bar">
+	/// 		<exception key="myKey" type="System.NullReferenceException">
+	/// 			Foo is null but I'll say '{0}' anyway.
+	/// 		</exception>
+	/// 	</exceptionGroup>
+	/// </exceptionHelper>
+	/// ]]>
+	/// </code>
+	/// With this configuration, a <see cref="NullReferenceException"/> will be thrown. The exception message will be
+	/// "Foo is null but I'll say 'hello' anyway.".
+	/// </example>
+	/// <example>
 	/// The following example shows how an exception can be conditionally thrown:
 	/// <code>
-	/// ExceptionHelper.ThrowIf(foo == null, "myKey", "hello");
+	/// var exceptionHelper = new ExceptionHelper(typeof(Bar));
+	/// exceptionHelper.ResolveAndThrowIf(foo == null, "myKey", "hello");
 	/// </code>
 	/// Assuming this code resides in a class called <c>Foo.Bar</c>, the XML configuration might look like this:
 	/// <code>
@@ -55,262 +80,146 @@ namespace Kent.Boogaart.HelperTrinity
 	/// With this configuration, a <see cref="NullReferenceException"/> will be thrown if <c>foo</c> is <see langword="null"/>.
 	/// The exception message will be "Foo is null but I'll say 'hello' anyway.".
 	/// </example>
-	public static class ExceptionHelper
+	public class ExceptionHelper
 	{
-		/// <summary>
-		/// Caches exception information for each participating assembly.
-		/// </summary>
 		private static readonly IDictionary<Assembly, XmlDocument> _exceptionInfos = new Dictionary<Assembly, XmlDocument>();
-
-		/// <summary>
-		/// Synchronizes access to <see cref="_exceptionInfos"/>.
-		/// </summary>
 		private static readonly object _exceptionInfosLock = new object();
-
-		/// <summary>
-		/// The name of the attribute that holds the exception type.
-		/// </summary>
+		private readonly Type _forType;
 		private const string _typeAttributeName = "type";
 
 		/// <summary>
-		/// Conditionally throws an exception.
+		/// Initializes a new instance of the <c>ExceptionHelper</c> class.
 		/// </summary>
-		/// <param name="condition">
-		/// The condition.
+		/// <param name="forType">
+		/// The type for which exceptions will be resolved.
 		/// </param>
+		public ExceptionHelper(Type forType)
+		{
+			forType.AssertNotNull("forType");
+			_forType = forType;
+		}
+
+		/// <summary>
+		/// Resolves an exception.
+		/// </summary>
 		/// <param name="exceptionKey">
 		/// The exception key.
 		/// </param>
 		/// <param name="messageArgs">
-		/// Arguments to the exception message.
+		/// Arguments to be substituted into the resolved exception's message.
 		/// </param>
+		/// <returns>
+		/// The resolved exception.
+		/// </returns>
 		[DebuggerHidden]
-		public static void ThrowIf(bool condition, string exceptionKey, params object[] messageArgs)
+		public Exception Resolve(string exceptionKey, params object[] messageArgs)
 		{
-			ThrowIf(condition, exceptionKey, null, null, messageArgs);
+			return Resolve(exceptionKey, null, null, messageArgs);
 		}
 
 		/// <summary>
-		/// Conditionally throws an exception.
+		/// Resolves an exception.
 		/// </summary>
-		/// <param name="condition">
-		/// The condition.
-		/// </param>
 		/// <param name="exceptionKey">
 		/// The exception key.
 		/// </param>
 		/// <param name="innerException">
-		/// The inner exception - the cause of the new exception.
+		/// The inner exception of the resolved exception.
 		/// </param>
 		/// <param name="messageArgs">
-		/// Arguments to the exception message.
+		/// Arguments to be substituted into the resolved exception's message.
 		/// </param>
+		/// <returns>
+		/// The resolved exception.
+		/// </returns>
 		[DebuggerHidden]
-		public static void ThrowIf(bool condition, string exceptionKey, Exception innerException, params object[] messageArgs)
+		public Exception Resolve(string exceptionKey, Exception innerException, params object[] messageArgs)
 		{
-			ThrowIf(condition, exceptionKey, null, innerException, messageArgs);
+			return Resolve(exceptionKey, null, innerException, messageArgs);
 		}
 
 		/// <summary>
-		/// Conditionally throws an exception.
-		/// </summary>
-		/// <param name="condition">
-		/// The condition.
-		/// </param>
-		/// <param name="exceptionKey">
-		/// The exception key.
-		/// </param>
-		/// <param name="constructorArgs">
-		/// Additional arguments for the exception constructor.
-		/// </param>
-		/// <param name="innerException">
-		/// The inner exception - the cause of the new exception.
-		/// </param>
-		[DebuggerHidden]
-		public static void ThrowIf(bool condition, string exceptionKey, object[] constructorArgs, Exception innerException)
-		{
-			ThrowIf(condition, exceptionKey, constructorArgs, innerException, null);
-		}
-
-		/// <summary>
-		/// Conditionally throws an exception.
-		/// </summary>
-		/// <param name="condition">
-		/// The condition.
-		/// </param>
-		/// <param name="exceptionKey">
-		/// The exception key.
-		/// </param>
-		/// <param name="constructorArgs">
-		/// Additional arguments for the exception constructor.
-		/// </param>
-		/// <param name="messageArgs">
-		/// Arguments to the exception message.
-		/// </param>
-		[DebuggerHidden]
-		public static void ThrowIf(bool condition, string exceptionKey, object[] constructorArgs, params object[] messageArgs)
-		{
-			ThrowIf(condition, exceptionKey, constructorArgs, null, messageArgs);
-		}
-
-		/// <summary>
-		/// Conditionally throws an exception.
-		/// </summary>
-		/// <param name="condition">
-		/// The condition.
-		/// </param>
-		/// <param name="exceptionKey">
-		/// The exception key.
-		/// </param>
-		/// <param name="constructorArgs">
-		/// Additional arguments for the exception constructor.
-		/// </param>
-		/// <param name="messageArgs">
-		/// Arguments to the exception message.
-		/// </param>
-		/// <param name="innerException">
-		/// The inner exception - the cause of the new exception.
-		/// </param>
-		[DebuggerHidden]
-		public static void ThrowIf(bool condition, string exceptionKey, object[] constructorArgs, Exception innerException, params object[] messageArgs)
-		{
-			if (condition)
-			{
-				Throw(exceptionKey, constructorArgs, innerException, messageArgs);
-			}
-		}
-
-		/// <summary>
-		/// Throws an exception.
-		/// </summary>
-		/// <param name="exceptionKey">
-		/// The exception key.
-		/// </param>
-		/// <param name="messageArgs">
-		/// Arguments to the exception message.
-		/// </param>
-		[DebuggerHidden]
-		public static void Throw(string exceptionKey, params object[] messageArgs)
-		{
-			Throw(exceptionKey, null, null, messageArgs);
-		}
-
-		/// <summary>
-		/// Throws an exception.
-		/// </summary>
-		/// <param name="exceptionKey">
-		/// The exception key.
-		/// </param>
-		/// <param name="messageArgs">
-		/// Arguments to the exception message.
-		/// </param>
-		/// <param name="innerException">
-		/// The inner exception - the cause of the new exception.
-		/// </param>
-		[DebuggerHidden]
-		public static void Throw(string exceptionKey, Exception innerException, params object[] messageArgs)
-		{
-			Throw(exceptionKey, null, innerException, messageArgs);
-		}
-
-		/// <summary>
-		/// Throws an exception.
+		/// Resolves an exception.
 		/// </summary>
 		/// <param name="exceptionKey">
 		/// The exception key.
 		/// </param>
 		/// <param name="constructorArgs">
-		/// Additional arguments for the exception constructor.
+		/// Additional arguments for the resolved exception's constructor.
 		/// </param>
 		/// <param name="innerException">
-		/// The inner exception - the cause of the new exception.
+		/// The inner exception of the resolved exception.
 		/// </param>
+		/// <returns>
+		/// The resolved exception.
+		/// </returns>
 		[DebuggerHidden]
-		public static void Throw(string exceptionKey, object[] constructorArgs, Exception innerException)
+		public Exception Resolve(string exceptionKey, object[] constructorArgs, Exception innerException)
 		{
-			Throw(exceptionKey, constructorArgs, innerException, null);
+			return Resolve(exceptionKey, constructorArgs, innerException, null);
 		}
 
 		/// <summary>
-		/// Throws an exception.
+		/// Resolves an exception.
 		/// </summary>
 		/// <param name="exceptionKey">
 		/// The exception key.
 		/// </param>
 		/// <param name="constructorArgs">
-		/// Additional arguments for the exception constructor.
+		/// Additional arguments for the resolved exception's constructor.
 		/// </param>
 		/// <param name="messageArgs">
-		/// Arguments to the exception message.
+		/// Arguments to be substituted into the resolved exception's message.
 		/// </param>
+		/// <returns>
+		/// The resolved exception.
+		/// </returns>
 		[DebuggerHidden]
-		public static void Throw(string exceptionKey, object[] constructorArgs, params object[] messageArgs)
+		public Exception Resolve(string exceptionKey, object[] constructorArgs, params object[] messageArgs)
 		{
-			Throw(exceptionKey, constructorArgs, null, messageArgs);
+			return Resolve(exceptionKey, constructorArgs, null, messageArgs);
 		}
 
 		/// <summary>
-		/// Throws an exception.
+		/// Resolves an exception.
 		/// </summary>
 		/// <param name="exceptionKey">
 		/// The exception key.
 		/// </param>
 		/// <param name="constructorArgs">
-		/// Additional arguments for the exception constructor.
-		/// </param>
-		/// <param name="messageArgs">
-		/// Arguments to the exception message.
+		/// Additional arguments for the resolved exception's constructor.
 		/// </param>
 		/// <param name="innerException">
-		/// The inner exception - the cause of the new exception.
+		/// The inner exception of the resolved exception.
 		/// </param>
-		/// <exception cref="InvalidOperationException">
-		/// If any problem occurs locating the details of the exception to throw, or in constructing the exception to throw.
-		/// </exception>
-		/// <exception cref="Exception">
-		/// This method always throws an exception. The exact type of the exception depends on the configuration.
-		/// </exception>
+		/// <param name="messageArgs">
+		/// Arguments to be substituted into the resolved exception's message.
+		/// </param>
+		/// <returns>
+		/// The resolved exception.
+		/// </returns>
 		[DebuggerHidden]
-		public static void Throw(string exceptionKey, object[] constructorArgs, Exception innerException, params object[] messageArgs)
+		public Exception Resolve(string exceptionKey, object[] constructorArgs, Exception innerException, params object[] messageArgs)
 		{
-			ArgumentHelper.AssertNotNull(exceptionKey, "exceptionKey");
+			exceptionKey.AssertNotNull("exceptionKey");
 
-			//first we need to find the type from which we were invoked - this is used as a grouping mechanism in the XML config file
-			Type invokingType;
-			int skipFrames = 1;
-
-			while (true)
-			{
-				StackFrame stackFrame = new StackFrame(skipFrames);
-				Debug.Assert(stackFrame.GetMethod() != null);
-
-				if (stackFrame.GetMethod().DeclaringType != typeof(ExceptionHelper))
-				{
-					invokingType = stackFrame.GetMethod().DeclaringType;
-					break;
-				}
-
-				++skipFrames;
-			}
-
-			XmlDocument exceptionInfo = GetExceptionInfo(invokingType.Assembly);
-
-			string xpath = string.Concat("/exceptionHelper/exceptionGroup[@type=\"", invokingType.FullName, "\"]/exception[@key=\"", exceptionKey, "\"]");
-			XmlNode exceptionNode = exceptionInfo.SelectSingleNode(xpath);
+			var exceptionInfo = GetExceptionInfo(_forType.Assembly);
+			var xpath = string.Concat("/exceptionHelper/exceptionGroup[@type=\"", _forType.FullName, "\"]/exception[@key=\"", exceptionKey, "\"]");
+			var exceptionNode = exceptionInfo.SelectSingleNode(xpath);
 
 			if (exceptionNode == null)
 			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The exception details for key '{0}' could not be found (they should be under '{1}')", exceptionKey, xpath));
 			}
 
-			XmlAttribute typeAttribute = exceptionNode.Attributes[_typeAttributeName];
+			var typeAttribute = exceptionNode.Attributes[_typeAttributeName];
 
 			if (typeAttribute == null)
 			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The '{0}' attribute could not be found for exception with key '{1}'", _typeAttributeName, exceptionKey));
 			}
 
-			Type type = Type.GetType(typeAttribute.Value);
+			var type = Type.GetType(typeAttribute.Value);
 
 			if (type == null)
 			{
@@ -322,14 +231,14 @@ namespace Kent.Boogaart.HelperTrinity
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "Type '{0}' for exception with key '{1}' does not inherit from '{2}'", type.FullName, exceptionKey, typeof(Exception).FullName));
 			}
 
-			string message = exceptionNode.InnerText.Trim();
+			var message = exceptionNode.InnerText.Trim();
 
 			if ((messageArgs != null) && (messageArgs.Length > 0))
 			{
 				message = string.Format(CultureInfo.InvariantCulture, message, messageArgs);
 			}
 
-			List<object> constructorArgsList = new List<object>();
+			var constructorArgsList = new List<object>();
 			//message is always first
 			constructorArgsList.Add(message);
 
@@ -345,14 +254,14 @@ namespace Kent.Boogaart.HelperTrinity
 				constructorArgsList.Add(innerException);
 			}
 
-			object[] constructorArgsArr = constructorArgsList.ToArray();
-			BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance;
+			var constructorArgsArr = constructorArgsList.ToArray();
+			var bindingFlags = BindingFlags.Public | BindingFlags.Instance;
 			ConstructorInfo constructor = null;
 
 			try
 			{
 				object state;
-				constructor = (ConstructorInfo) Type.DefaultBinder.BindToMethod(bindingFlags, type.GetConstructors(bindingFlags), ref constructorArgsArr, null, null, null, out state);
+				constructor = (ConstructorInfo)Type.DefaultBinder.BindToMethod(bindingFlags, type.GetConstructors(bindingFlags), ref constructorArgsArr, null, null, null, out state);
 			}
 			catch (MissingMethodException)
 			{
@@ -364,21 +273,129 @@ namespace Kent.Boogaart.HelperTrinity
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "An appropriate constructor could not be found for exception type '{0}, for exception with key '{1}'", type.FullName, exceptionKey));
 			}
 
-			//create the exception instance
-			Exception e = (Exception) constructor.Invoke(constructorArgsArr);
-			//finally, throw the exception
-			throw e;
+			return (Exception)constructor.Invoke(constructorArgsArr);
 		}
 
 		/// <summary>
-		/// Gets exception information for a specified assembly.
+		/// Resolves and throws the specified exception if the given condition is met.
 		/// </summary>
-		/// <param name="assembly">
-		/// The assembly for which exception information should be retrieved.
-		/// </param>0
-		/// <returns>
-		/// The exception information.
-		/// </returns>
+		/// <param name="condition">
+		/// The condition that determines whether the exception will be resolved and thrown.
+		/// </param>
+		/// <param name="exceptionKey">
+		/// The exception key.
+		/// </param>
+		/// <param name="messageArgs">
+		/// Arguments to be substituted into the resolved exception's message.
+		/// </param>
+		[DebuggerHidden]
+		public void ResolveAndThrowIf(bool condition, string exceptionKey, params object[] messageArgs)
+		{
+			if (condition)
+			{
+				throw Resolve(exceptionKey, messageArgs);
+			}
+		}
+
+		/// <summary>
+		/// Resolves and throws the specified exception if the given condition is met.
+		/// </summary>
+		/// <param name="condition">
+		/// The condition that determines whether the exception will be resolved and thrown.
+		/// </param>
+		/// <param name="exceptionKey">
+		/// The exception key.
+		/// </param>
+		/// <param name="innerException">
+		/// The inner exception of the resolved exception.
+		/// </param>
+		/// <param name="messageArgs">
+		/// Arguments to be substituted into the resolved exception's message.
+		/// </param>
+		[DebuggerHidden]
+		public void ResolveAndThrowIf(bool condition, string exceptionKey, Exception innerException, params object[] messageArgs)
+		{
+			if (condition)
+			{
+				throw Resolve(exceptionKey, innerException, messageArgs);
+			}
+		}
+
+		/// <summary>
+		/// Resolves and throws the specified exception if the given condition is met.
+		/// </summary>
+		/// <param name="condition">
+		/// The condition that determines whether the exception will be resolved and thrown.
+		/// </param>
+		/// <param name="exceptionKey">
+		/// The exception key.
+		/// </param>
+		/// <param name="constructorArgs">
+		/// Additional arguments for the resolved exception's constructor.
+		/// </param>
+		/// <param name="innerException">
+		/// The inner exception of the resolved exception.
+		/// </param>
+		[DebuggerHidden]
+		public void ResolveAndThrowIf(bool condition, string exceptionKey, object[] constructorArgs, Exception innerException)
+		{
+			if (condition)
+			{
+				throw Resolve(exceptionKey, constructorArgs, innerException);
+			}
+		}
+
+		/// <summary>
+		/// Resolves and throws the specified exception if the given condition is met.
+		/// </summary>
+		/// <param name="condition">
+		/// The condition that determines whether the exception will be resolved and thrown.
+		/// </param>
+		/// <param name="exceptionKey">
+		/// The exception key.
+		/// </param>
+		/// <param name="constructorArgs">
+		/// Additional arguments for the resolved exception's constructor.
+		/// </param>
+		/// <param name="messageArgs">
+		/// Arguments to be substituted into the resolved exception's message.
+		/// </param>
+		[DebuggerHidden]
+		public void ResolveAndThrowIf(bool condition, string exceptionKey, object[] constructorArgs, params object[] messageArgs)
+		{
+			if (condition)
+			{
+				throw Resolve(exceptionKey, constructorArgs, messageArgs);
+			}
+		}
+
+		/// <summary>
+		/// Resolves and throws the specified exception if the given condition is met.
+		/// </summary>
+		/// <param name="condition">
+		/// The condition that determines whether the exception will be resolved and thrown.
+		/// </param>
+		/// <param name="exceptionKey">
+		/// The exception key.
+		/// </param>
+		/// <param name="constructorArgs">
+		/// Additional arguments for the resolved exception's constructor.
+		/// </param>
+		/// <param name="innerException">
+		/// The inner exception of the resolved exception.
+		/// </param>
+		/// <param name="messageArgs">
+		/// Arguments to be substituted into the resolved exception's message.
+		/// </param>
+		[DebuggerHidden]
+		public void ResolveAndThrowIf(bool condition, string exceptionKey, object[] constructorArgs, Exception innerException, params object[] messageArgs)
+		{
+			if (condition)
+			{
+				throw Resolve(exceptionKey, constructorArgs, innerException, messageArgs);
+			}
+		}
+
 		[DebuggerHidden]
 		private static XmlDocument GetExceptionInfo(Assembly assembly)
 		{

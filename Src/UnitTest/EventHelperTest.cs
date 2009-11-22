@@ -1,26 +1,24 @@
 using System;
 using System.Reflection;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kent.Boogaart.HelperTrinity.UnitTest
 {
-	[TestFixture]
 	public sealed class EventHelperTest
 	{
 		private object _sender;
 		private MockEventArgs _e;
 		private int _handlerCount;
 
-		[SetUp]
-		public void SetUp()
+		public EventHelperTest()
 		{
 			_sender = null;
 			_e = null;
 			_handlerCount = 0;
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseNonGeneric_ShouldntThrowWhenPassedNull()
 		{
 			//this simulates the case where no handlers are attached to the event
@@ -28,7 +26,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			EventHelper.BeginRaise(null, null, null, null);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseNonGeneric_ShouldntThrowWhenPassedNull()
 		{
 			//this simulates the case where no handlers are attached to the event
@@ -36,10 +34,10 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			EventHelper.Raise(null, null);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseNonGeneric_SenderNull()
 		{
-			Assert.IsNull(_sender);
+			Assert.Null(_sender);
 			EventHandler del = NonGenericHandler;
 
 			using (EventWaiter waiter = new EventWaiter())
@@ -47,21 +45,21 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, null, waiter.Callback, null);
 			}
 
-			Assert.IsNull(_sender);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Null(_sender);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseNonGeneric_SenderNull()
 		{
-			Assert.IsNull(_sender);
+			Assert.Null(_sender);
 			EventHandler del = NonGenericHandler;
 			EventHelper.Raise(del, null);
-			Assert.IsNull(_sender);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Null(_sender);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseNonGeneric_SingleHandlerShouldBeCalled()
 		{
 			EventHandler del = NonGenericHandler;
@@ -71,20 +69,20 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, this, waiter.Callback, null);
 			}
 
-			Assert.AreEqual(this, _sender);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseNonGeneric_SingleHandlerShouldBeCalled()
 		{
 			EventHandler del = NonGenericHandler;
 			EventHelper.Raise(del, this);
-			Assert.AreEqual(this, _sender);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseNonGeneric_MultipleHandlersShouldEachBeCalled()
 		{
 			EventHandler del = NonGenericHandler;
@@ -99,11 +97,11 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, this, waiter.Callback, null);
 			}
 
-			Assert.AreEqual(this, _sender);
-			Assert.AreEqual(51, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.Equal(51, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseNonGeneric_MultipleHandlersShouldEachBeCalled()
 		{
 			EventHandler del = NonGenericHandler;
@@ -114,51 +112,49 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			}
 
 			EventHelper.Raise(del, this);
-			Assert.AreEqual(this, _sender);
-			Assert.AreEqual(51, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.Equal(51, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseNonGenericWithEventArgs_ShouldntThrowWhenAllNull()
 		{
 			//it shouldn't matter that all arguments are null - this is quite possible in regular usage
 			EventHelper.BeginRaise(null, null, null, null, null);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseNonGenericWithEventArgs_ShouldntThrowWhenAllNull()
 		{
 			//it shouldn't matter that all arguments are null - this is quite possible in regular usage
 			EventHelper.Raise(null, null, null);
 		}
 
-		[Test]
-		[ExpectedException(typeof(TargetParameterCountException))]
+		[Fact]
 		public void RaiseNonGenericWithEventArgs_DelegateMismatchShouldThrow()
 		{
 			MockDelegateInvalid1 del = delegate
 			{
 			};
 
-			EventHelper.Raise(del, null, null);
+			Assert.Throws<TargetParameterCountException>(() => EventHelper.Raise(del, null, null));
 		}
 
-		[Test]
-		[ExpectedException(typeof(TargetParameterCountException))]
+		[Fact]
 		public void RaiseNonGenericWithEventArgs_DelegateMismatchShouldThrow2()
 		{
 			MockDelegateInvalid2 del = delegate
 			{
 			};
 
-			EventHelper.Raise(del, null, null);
+			Assert.Throws<TargetParameterCountException>(() => EventHelper.Raise(del, null, null));
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseNonGeneric_ValidShouldResultInEventBeingRaised()
 		{
-			Assert.IsNull(_sender);
-			Assert.IsNull(_e);
+			Assert.Null(_sender);
+			Assert.Null(_e);
 			MockDelegate del = Handler;
 
 			using (EventWaiter waiter = new EventWaiter())
@@ -166,22 +162,22 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, "sender", new MockEventArgs("data"), waiter.Callback, null);
 			}
 
-			Assert.AreEqual("sender", _sender);
-			Assert.AreEqual("data", _e.Data);
+			Assert.Equal("sender", _sender);
+			Assert.Equal("data", _e.Data);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseNonGeneric_ValidShouldResultInEventBeingRaised()
 		{
-			Assert.IsNull(_sender);
-			Assert.IsNull(_e);
+			Assert.Null(_sender);
+			Assert.Null(_e);
 			MockDelegate del = Handler;
 			EventHelper.Raise(del, "sender", new MockEventArgs("data"));
-			Assert.AreEqual("sender", _sender);
-			Assert.AreEqual("data", _e.Data);
+			Assert.Equal("sender", _sender);
+			Assert.Equal("data", _e.Data);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseGeneric_ShouldntThrowIfDelegateNull()
 		{
 			//simulate the case where there are no event handlers
@@ -189,7 +185,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			EventHelper.BeginRaise(null, null, EventArgs.Empty, null, null);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseGeneric_ShouldntThrowIfDelegateNull()
 		{
 			//simulate the case where there are no event handlers
@@ -197,11 +193,11 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			EventHelper.Raise(null, null, EventArgs.Empty);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseGeneric_SenderNullShouldComeThroughAsNull()
 		{
-			Assert.IsNull(_sender);
-			Assert.IsNull(_e);
+			Assert.Null(_sender);
+			Assert.Null(_e);
 			EventHandler<MockEventArgs> del = Handler;
 
 			using (EventWaiter waiter = new EventWaiter())
@@ -209,29 +205,29 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, null, new MockEventArgs("my data"), waiter.Callback, null);
 			}
 
-			Assert.IsNull(_sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("my data", _e.Data);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Null(_sender);
+			Assert.NotNull(_e);
+			Assert.Equal("my data", _e.Data);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseGeneric_SenderNullShouldComeThroughAsNull()
 		{
-			Assert.IsNull(_sender);
-			Assert.IsNull(_e);
+			Assert.Null(_sender);
+			Assert.Null(_e);
 			EventHandler<MockEventArgs> del = Handler;
 			EventHelper.Raise(del, null, new MockEventArgs("my data"));
-			Assert.IsNull(_sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("my data", _e.Data);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Null(_sender);
+			Assert.NotNull(_e);
+			Assert.Equal("my data", _e.Data);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseGeneric_SingleHandlerShouldBeCalled()
 		{
-			Assert.IsNull(_e);
+			Assert.Null(_e);
 			EventHandler<MockEventArgs> del = Handler;
 
 			using (EventWaiter waiter = new EventWaiter())
@@ -239,28 +235,28 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, this, new MockEventArgs("my data"), waiter.Callback, null);
 			}
 
-			Assert.AreEqual(this, _sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("my data", _e.Data);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.NotNull(_e);
+			Assert.Equal("my data", _e.Data);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseGeneric_SingleHandlerShouldBeCalled()
 		{
-			Assert.IsNull(_e);
+			Assert.Null(_e);
 			EventHandler<MockEventArgs> del = Handler;
 			EventHelper.Raise(del, this, new MockEventArgs("my data"));
-			Assert.AreEqual(this, _sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("my data", _e.Data);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.NotNull(_e);
+			Assert.Equal("my data", _e.Data);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseGeneric_MultipleHandlersShouldEachBeCalled()
 		{
-			Assert.IsNull(_e);
+			Assert.Null(_e);
 			EventHandler<MockEventArgs> del = Handler;
 
 			for (int i = 0; i < 50; ++i)
@@ -273,16 +269,16 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				EventHelper.BeginRaise(del, this, new MockEventArgs("my data"), waiter.Callback, null);
 			}
 
-			Assert.AreEqual(this, _sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("my data", _e.Data);
-			Assert.AreEqual(51, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.NotNull(_e);
+			Assert.Equal("my data", _e.Data);
+			Assert.Equal(51, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseGeneric_MultipleHandlersShouldEachBeCalled()
 		{
-			Assert.IsNull(_e);
+			Assert.Null(_e);
 			EventHandler<MockEventArgs> del = Handler;
 
 			for (int i = 0; i < 50; ++i)
@@ -291,13 +287,13 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			}
 
 			EventHelper.Raise(del, this, new MockEventArgs("my data"));
-			Assert.AreEqual(this, _sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("my data", _e.Data);
-			Assert.AreEqual(51, _handlerCount);
+			Assert.Equal(this, _sender);
+			Assert.NotNull(_e);
+			Assert.Equal("my data", _e.Data);
+			Assert.Equal(51, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void BeginRaiseGenericWithCallback_CallbackShouldBeCalledToCreateEventArgs()
 		{
 			bool callback = false;
@@ -312,14 +308,14 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				}, waiter.Callback, null);
 			}
 
-			Assert.IsTrue(callback);
-			Assert.AreEqual(this, _sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("test", _e.Data);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.True(callback);
+			Assert.Equal(this, _sender);
+			Assert.NotNull(_e);
+			Assert.Equal("test", _e.Data);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseGenericWithCallback_CallbackShouldBeCalledToCreateEventArgs()
 		{
 			bool callback = false;
@@ -329,21 +325,21 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 				callback = true;
 				return new MockEventArgs("test");
 			});
-			Assert.IsTrue(callback);
-			Assert.AreEqual(this, _sender);
-			Assert.IsNotNull(_e);
-			Assert.AreEqual("test", _e.Data);
-			Assert.AreEqual(1, _handlerCount);
+			Assert.True(callback);
+			Assert.Equal(this, _sender);
+			Assert.NotNull(_e);
+			Assert.Equal("test", _e.Data);
+			Assert.Equal(1, _handlerCount);
 		}
 
-		[Test]
+		[Fact]
 		public void RaiseGeneric_EnsureEventsAreRaisedInThreadSafeManner()
 		{
-			Assert.AreEqual(0, _handlerCount);
+			Assert.Equal(0, _handlerCount);
 			EventHandler<EventArgs> del = null;
 			//add a single handler
 			del += NonGenericHandler;
-			Assert.IsNotNull(del);
+			Assert.NotNull(del);
 
 			//these are used to synchronize the two threads
 			ManualResetEvent waitForEventRaiseStart = new ManualResetEvent(false);
@@ -361,13 +357,13 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 			//now remove the handler
 			del -= NonGenericHandler;
 			//del should be null here but not in the Raise() method (that is the whole point)
-			Assert.IsNull(del);
+			Assert.Null(del);
 			//tell the other thread the delegate has been removed
 			waitForDelegateRemoval.Set();
 			//wait for the other thread to finish firing the event
 			waitForEventRaiseEnd.WaitOne();
 			//event should have been raised because we removed the delegate *after* the Raise() method had started
-			Assert.AreEqual(1, _handlerCount);
+			Assert.Equal(1, _handlerCount);
 		}
 
 		//simulates the work of the EventHelper class but includes wait handles so that we can effectively test the thread
@@ -377,7 +373,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 		{
 			//tell the main thread that we've entered the method
 			waitForEventRaiseStart.Set();
-			Assert.IsNotNull(handler);
+			Assert.NotNull(handler);
 
 			if (handler != null)
 			{

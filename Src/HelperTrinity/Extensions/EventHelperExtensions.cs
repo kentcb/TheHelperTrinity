@@ -1,6 +1,4 @@
-﻿#if FX35
-
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace Kent.Boogaart.HelperTrinity.Extensions
@@ -75,5 +73,3 @@ namespace Kent.Boogaart.HelperTrinity.Extensions
 		}
 	}
 }
-
-#endif

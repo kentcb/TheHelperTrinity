@@ -1,174 +1,96 @@
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Kent.Boogaart.HelperTrinity.UnitTest
 {
-	[TestFixture]
 	public sealed class ExceptionHelperTest
 	{
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "The exception details for key 'invalidKey' could not be found (they should be under '/exceptionHelper/exceptionGroup[@type=\"Kent.Boogaart.HelperTrinity.UnitTest.ExceptionHelperTest\"]/exception[@key=\"invalidKey\"]')")]
-		public void Throw_ShouldThrowIfKeyNotFound()
+		private readonly ExceptionHelper _exceptionHelper;
+
+		public ExceptionHelperTest()
 		{
-			ExceptionHelper.Throw("invalidKey");
+			_exceptionHelper = new ExceptionHelper(GetType());
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "The 'type' attribute could not be found for exception with key 'noTypeAttribute'")]
-		public void Throw_ShouldThrowIfTypeAttributeNotFound()
+		[Fact]
+		public void Resolve_ShouldThrowIfKeyNotFound()
 		{
-			ExceptionHelper.Throw("noTypeAttribute");
+			var ex = Assert.Throws<InvalidOperationException>(() => _exceptionHelper.Resolve("invalidKey"));
+			Assert.Equal("The exception details for key 'invalidKey' could not be found (they should be under '/exceptionHelper/exceptionGroup[@type=\"Kent.Boogaart.HelperTrinity.UnitTest.ExceptionHelperTest\"]/exception[@key=\"invalidKey\"]')", ex.Message);
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "Type 'Foo.Bar.Wont.Load, Anywhere' could not be loaded for exception with key 'typeCouldNotBeLoaded'")]
-		public void Throw_ShouldThrowIfTypeCouldNotBeLoaded()
+		[Fact]
+		public void Resolve_ShouldThrowIfTypeAttributeNotFound()
 		{
-			ExceptionHelper.Throw("typeCouldNotBeLoaded");
+			var ex = Assert.Throws<InvalidOperationException>(() => _exceptionHelper.Resolve("noTypeAttribute"));
+			Assert.Equal("The 'type' attribute could not be found for exception with key 'noTypeAttribute'", ex.Message);
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "Type 'System.DateTime' for exception with key 'typeNotException' does not inherit from 'System.Exception'")]
-		public void Throw_ShouldThrowIfTheTypeIsNotAnException()
+		[Fact]
+		public void Resolve_ShouldThrowIfTypeCouldNotBeLoaded()
 		{
-			ExceptionHelper.Throw("typeNotException");
+			var ex = Assert.Throws<InvalidOperationException>(() => _exceptionHelper.Resolve("typeCouldNotBeLoaded"));
+			Assert.Equal("Type 'Foo.Bar.Wont.Load, Anywhere' could not be loaded for exception with key 'typeCouldNotBeLoaded'", ex.Message);
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "An appropriate constructor could not be found for exception type 'Kent.Boogaart.HelperTrinity.UnitTest.ExceptionHelperTest+TestException, for exception with key 'noConstructorFound'")]
-		public void Throw_ShouldThrowIfNoConstructorWasFound()
+		[Fact]
+		public void Resolve_ShouldThrowIfTheTypeIsNotAnException()
 		{
-			ExceptionHelper.Throw("noConstructorFound");
+			var ex = Assert.Throws<InvalidOperationException>(() => _exceptionHelper.Resolve("typeNotException"));
+			Assert.Equal("Type 'System.DateTime' for exception with key 'typeNotException' does not inherit from 'System.Exception'", ex.Message);
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "Here is the message.")]
-		public void Throw_ShouldThrowCorrectExceptionIfAllSetupIsCorrect()
+		[Fact]
+		public void Resolve_ShouldThrowIfNoConstructorWasFound()
 		{
-			ExceptionHelper.Throw("valid");
+			var ex = Assert.Throws<InvalidOperationException>(() => _exceptionHelper.Resolve("noConstructorFound"));
+			Assert.Equal("An appropriate constructor could not be found for exception type 'Kent.Boogaart.HelperTrinity.UnitTest.ExceptionHelperTest+TestException, for exception with key 'noConstructorFound'", ex.Message);
 		}
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "Here is the message with argument (hello) or two (12).")]
-		public void Throw_ShouldAllowFormattingOfExceptionMessage()
+		[Fact]
+		public void Resolve_ShouldReturnCorrectExceptionIfAllSetupIsCorrect()
 		{
-			ExceptionHelper.Throw("withMessageArgs", "hello", 12);
+			var ex = _exceptionHelper.Resolve("valid");
+			Assert.True(ex is InvalidOperationException);
+			Assert.Equal("Here is the message.", ex.Message);
 		}
 
-		[Test]
-		public void Throw_ShouldAllowInnerExceptionToBeSpecified()
+		[Fact]
+		public void Resolve_ShouldAllowFormattingOfExceptionMessage()
 		{
-			Exception inner = new ArgumentException();
-
-			try
-			{
-				ExceptionHelper.Throw("valid", inner);
-			}
-			catch (InvalidOperationException e)
-			{
-				Assert.IsNotNull(e.InnerException);
-				Assert.IsTrue(e.InnerException.GetType() == typeof(ArgumentException));
-			}
+			var ex = _exceptionHelper.Resolve("withMessageArgs", "hello", 12);
+			Assert.Equal("Here is the message with argument (hello) or two (12).", ex.Message);
 		}
 
-		[Test]
-		public void Throw_ShouldAllowCustomConstructorToBeCalled()
+		[Fact]
+		public void Resolve_ShouldAllowInnerExceptionToBeSpecified()
 		{
-			try
-			{
-				ExceptionHelper.Throw("withConstructorArgs", new object[] { 1, 2, "more info" }, (Exception) null);
-			}
-			catch (TestException e)
-			{
-				Assert.AreEqual("A message.", e.Message);
-				Assert.AreEqual(1, e.Num1);
-				Assert.AreEqual(2, e.Num2);
-				Assert.AreEqual("more info", e.Info);
-			}
+			var inner = new ArgumentException();
+			var ex = _exceptionHelper.Resolve("valid", inner);
+			Assert.NotNull(ex.InnerException);
+			Assert.Same(inner, ex.InnerException);
 		}
 
-		[Test]
-		public void Throw_ShouldAllowCustomConstructorAndMessageFormattingInTandem()
+		[Fact]
+		public void Resolve_ShouldAllowCustomConstructorToBeCalled()
 		{
-			try
-			{
-				ExceptionHelper.Throw("withConstructorAndMessageArgs", new object[] { 1, 2, "more info" }, "param1");
-			}
-			catch (TestException e)
-			{
-				Assert.AreEqual("My message with a parameter: 'param1'", e.Message);
-				Assert.AreEqual(1, e.Num1);
-				Assert.AreEqual(2, e.Num2);
-				Assert.AreEqual("more info", e.Info);
-			}
+			var ex = _exceptionHelper.Resolve("withConstructorArgs", new object[] { 1, 2, "more info" }, (Exception)null) as TestException;
+			Assert.NotNull(ex);
+			Assert.Equal("A message.", ex.Message);
+			Assert.Equal(1, ex.Num1);
+			Assert.Equal(2, ex.Num2);
+			Assert.Equal("more info", ex.Info);
 		}
 
-		[Test]
-		public void ThrowIf_ShouldntThrowIfConditionIsFalse()
+		[Fact]
+		public void Resolve_ShouldAllowCustomConstructorAndMessageFormattingInTandem()
 		{
-			ExceptionHelper.ThrowIf(false, "valid");
-		}
-
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException), "Here is the message.")]
-		public void ThrowIf_ShouldThrowIfConditionIsTrue()
-		{
-			ExceptionHelper.ThrowIf(true, "valid");
-		}
-
-		[Test]
-		public void ThrowIf_ShouldAllowCustomConstructorAndMessageFormattingInTandem()
-		{
-			ExceptionHelper.ThrowIf(false, "withConstructorAndMessageArgs", new object[] { 1, 2, "more info" }, "param1");
-
-			try
-			{
-				ExceptionHelper.ThrowIf(true, "withConstructorAndMessageArgs", new object[] { 1, 2, "more info" }, "param1");
-			}
-			catch (TestException e)
-			{
-				Assert.AreEqual("My message with a parameter: 'param1'", e.Message);
-				Assert.AreEqual(1, e.Num1);
-				Assert.AreEqual(2, e.Num2);
-				Assert.AreEqual("more info", e.Info);
-			}
-		}
-
-		[Test]
-		public void ThrowIf_ShouldAllowCustomConstructorAndInnerExceptionInTandem()
-		{
-			Exception inner = new ArgumentException();
-			ExceptionHelper.ThrowIf(false, "withConstructorArgs", new object[] { 1, 2, "more info" }, inner);
-
-			try
-			{
-				ExceptionHelper.ThrowIf(true, "withConstructorArgs", new object[] { 1, 2, "more info" }, inner);
-			}
-			catch (TestException e)
-			{
-				Assert.AreEqual("A message.", e.Message);
-				Assert.AreEqual(1, e.Num1);
-				Assert.AreEqual(2, e.Num2);
-				Assert.AreEqual("more info", e.Info);
-				Assert.AreSame(inner, e.InnerException);
-			}
-		}
-
-		[Test]
-		public void ThrowIf_ShouldAllowMessageFormattingAndInnerExceptionInTandem()
-		{
-			Exception inner = new ArgumentException();
-			ExceptionHelper.ThrowIf(false, "withMessageArgs", inner, 1, "two");
-
-			try
-			{
-				ExceptionHelper.ThrowIf(true, "withMessageArgs", inner, 1, "two");
-			}
-			catch (InvalidOperationException e)
-			{
-				Assert.AreEqual("Here is the message with argument (1) or two (two).", e.Message);
-				Assert.AreSame(inner, e.InnerException);
-			}
+			var ex = _exceptionHelper.Resolve("withConstructorAndMessageArgs", new object[] { 1, 2, "more info" }, "param1") as TestException;
+			Assert.NotNull(ex);
+			Assert.Equal("My message with a parameter: 'param1'", ex.Message);
+			Assert.Equal(1, ex.Num1);
+			Assert.Equal(2, ex.Num2);
+			Assert.Equal("more info", ex.Info);
 		}
 
 		#region Supporting Types

@@ -1,8 +1,24 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <GenDir>$(MSBuildProjectDirectory)\..\..\Gen</GenDir>
-    <MSBuildCommunityTasksPath>..\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
-    <SandcastleHelpFileBuilderPath>C:\Program Files\EWSoftware\Sandcastle Help File Builder</SandcastleHelpFileBuilderPath>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -18,35 +34,13 @@
     <AssemblyOriginatorKeyFile>..\Kent.Boogaart.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 2.0|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug 2.0\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FX20</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 2.0|AnyCPU' ">
-    <OutputPath>bin\Release 2.0\</OutputPath>
-    <DefineConstants>TRACE;FX20</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 3.5|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug 3.5\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;FX35</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,9 +48,10 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 3.5|AnyCPU' ">
-    <OutputPath>bin\Release 3.5\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;FX35</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -65,6 +60,7 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ArgumentHelperTest.cs" />
@@ -75,60 +71,49 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\ExceptionHelper.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\..\Lib\xUnit\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\..\Lib\xUnit\xunit.extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\HelperTrinity\HelperTrinity.csproj">
       <Project>{9F0FA58D-CE35-48B7-9BB4-3CB6826B8D93}</Project>
       <Name>HelperTrinity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\ExceptionHelper.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Include="Build.targets" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\Lib\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <CallTarget Targets="GenerateDoc;CreateZips" Condition="'$(Configuration)' == 'Release 2.0' OR '$(Configuration)' == 'Release 3.5'" />
-  </Target>
-  <Target Name="CreateZips">
-    <GetAssemblyIdentity AssemblyFiles="$(OutputPath)\Kent.Boogaart.HelperTrinity.dll">
-      <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
-    </GetAssemblyIdentity>
-    <CreateProperty Value="@(AssemblyIdentity -> '%(Version)')">
-      <Output TaskParameter="Value" PropertyName="Version" />
-    </CreateProperty>
-    <MakeDir Directories="$(GenDir)" Condition="!Exists('$(GenDir)')" />
-    <RemoveDir Directories="$(GenDir)\Temp" />
-    <MakeDir Directories="$(GenDir)\Temp" Condition="!Exists('$(GenDir)\Temp')" />
-    <CreateItem Include="..\..\**\*.*" Exclude="..\.\**\*.suo;..\..\**\*.csproj.user;..\..\**\*.gpState;..\..\**\bin\**;..\..\**\obj\**;..\..\**\.svn\**;..\..\Gen\**">
-      <Output ItemName="Source" TaskParameter="Include" />
-    </CreateItem>
-    <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-FX$(TargetFrameworkVersion)-src.zip" WorkingDirectory="..\..\" ZipLevel="9" Files="@(Source)" />
-    <!-- collect binaries into one place -->
-    <CreateItem Include="$(OutputPath)\*.*" Exclude="$(OutputPath)\Coverage.log">
-      <Output ItemName="Files" TaskParameter="Include" />
-    </CreateItem>
-    <Copy SourceFiles="@(Files)" DestinationFolder="$(GenDir)\Temp" />
-    <CreateItem Include="$(GenDir)\Temp\*.*">
-      <Output ItemName="Binaries" TaskParameter="Include" />
-    </CreateItem>
-    <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-FX$(TargetFrameworkVersion)-bin.zip" WorkingDirectory="$(GenDir)\Temp\" ZipLevel="9" Files="@(Binaries)" />
-    <CreateItem Include="$(GenDir)\TheHelperTrinity-FX$(TargetFrameworkVersion).chm">
-      <Output ItemName="DocFiles" TaskParameter="Include" />
-    </CreateItem>
-    <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-FX$(TargetFrameworkVersion)-doc.zip" WorkingDirectory="$(GenDir)" ZipLevel="9" Files="@(DocFiles)" />
-  </Target>
-  <Target Name="GenerateDoc">
-    <Error Text="Could not find Sandcastle Help File Builder - please check paths and SandcastleHelpFileBuilderPath MSBuild property." Condition="!Exists('$(SandcastleHelpFileBuilderPath)\SandcastleBuilderConsole.exe')" />
-    <Exec Command="&quot;$(SandcastleHelpFileBuilderPath)\SandcastleBuilderConsole.exe&quot; ..\..\Tools\Sandcastle-FX$(TargetFrameworkVersion).shfb" />
+    <MSBuild Projects="Build.targets" Condition="'$(Configuration)' == 'Release'" />
   </Target>
 </Project>

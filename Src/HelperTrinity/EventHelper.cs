@@ -239,13 +239,13 @@ namespace Kent.Boogaart.HelperTrinity
 		{
 			Debug.Assert(handler != null);
 			string threadName = System.Threading.Thread.CurrentThread.Name;
-			Debug.WriteLine(string.Format("Event being raised by thread '{0}'.", threadName));
+			//Debug.WriteLine(string.Format("Event being raised by thread '{0}'.", threadName));
 
 			foreach (Delegate del in handler.GetInvocationList())
 			{
 				try
 				{
-					Debug.WriteLine(string.Format("   Calling method '{0}.{1}'.", del.Method.DeclaringType.FullName, del.Method.Name));
+					//Debug.WriteLine(string.Format("   Calling method '{0}.{1}'.", del.Method.DeclaringType.FullName, del.Method.Name));
 					del.DynamicInvoke(parameters);
 				}
 				catch (Exception ex)
@@ -272,7 +272,7 @@ namespace Kent.Boogaart.HelperTrinity
 				}
 			}
 
-			Debug.WriteLine(string.Format("Finished raising event by thread '{0}'.", threadName));
+			//Debug.WriteLine(string.Format("Finished raising event by thread '{0}'.", threadName));
 		}
 #endif
 
