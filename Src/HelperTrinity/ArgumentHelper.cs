@@ -160,6 +160,7 @@ namespace Kent.Boogaart.HelperTrinity
 			}
 		}
 
+#if !SILVERLIGHT
 		/// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />
 		[DebuggerHidden]
 		[CLSCompliant(false)]
@@ -207,6 +208,7 @@ namespace Kent.Boogaart.HelperTrinity
 				}
 			}
 		}
+#endif
 
 		/// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])"]/*' />
 		[DebuggerHidden]

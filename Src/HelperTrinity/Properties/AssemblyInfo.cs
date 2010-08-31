@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 
 [assembly: AssemblyTitle("The Helper Trinity")]
 [assembly: AssemblyDescription("A set of helper classes applicable to almost any .NET coding venture.")]
@@ -14,7 +13,9 @@ using System.Security;
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyVersion("1.3.0.0")]
 [assembly: AssemblyFileVersion("1.3.0.0")]
-[assembly: AllowPartiallyTrustedCallers]
+#if !SILVERLIGHT
+[assembly: System.Security.AllowPartiallyTrustedCallers]
+#endif
 
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

@@ -238,10 +238,10 @@ namespace Kent.Boogaart.HelperTrinity
 		private static void RaiseWithDiagnostics(Delegate handler, params object[] parameters)
 		{
 			Debug.Assert(handler != null);
-			string threadName = System.Threading.Thread.CurrentThread.Name;
+			var threadName = System.Threading.Thread.CurrentThread.Name;
 			//Debug.WriteLine(string.Format("Event being raised by thread '{0}'.", threadName));
 
-			foreach (Delegate del in handler.GetInvocationList())
+			foreach (var del in handler.GetInvocationList())
 			{
 				try
 				{
@@ -250,7 +250,7 @@ namespace Kent.Boogaart.HelperTrinity
 				}
 				catch (Exception ex)
 				{
-					StringBuilder sb = new StringBuilder();
+					var sb = new StringBuilder();
 					sb.AppendLine("   An exception occurred in the event handler:");
 
 					while (ex != null)
