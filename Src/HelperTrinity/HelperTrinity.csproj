@@ -63,6 +63,7 @@
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -107,13 +107,9 @@
       <Name>HelperTrinity</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Build.targets" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <MSBuild Projects="Build.targets" Condition="'$(Configuration)' == 'Release'" />
   </Target>
 </Project>
