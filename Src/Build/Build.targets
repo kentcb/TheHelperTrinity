@@ -1,90 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<Project ToolsVersion="3.5" DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<GenDir>..\..\Gen</GenDir>
-		<LibDir>..\..\Lib</LibDir>
-		<DocDir>..\..\Doc</DocDir>
-		<MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
-		<OutputPath>bin\Release\</OutputPath>
-		<SLOutputPath>bin\Release\SL\</SLOutputPath>
-	</PropertyGroup>
+<Project ToolsVersion="4.0" DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <!--
+        RTW is always a release build
+        -->
+        <Configuration>Release</Configuration>
+    </PropertyGroup>
 
-	<Import Project="$(LibDir)\MSBuild Community Tasks\MSBuild.Community.Tasks.Targets" />
-	<UsingTask AssemblyFile="$(LibDir)\xUnit\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
+    <Import Project="Build.properties"/>
 
-	<Target Name="All" DependsOnTargets="SetupDirectories;BuildRelease;RunTests;GenerateDocumentation;CreateArchives"/>
+    <Import Project="$(LibDir)\MSBuild Community Tasks\MSBuild.Community.Tasks.Targets" />
+    <UsingTask AssemblyFile="$(LibDir)\xUnit\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
 
-	<Target Name="SetupDirectories">
-		<RemoveDir Directories="$(GenDir)" />
-		<MakeDir Directories="$(GenDir)\Tests" />
-		<MakeDir Directories="$(GenDir)\Documentation" />
-	</Target>
+    <Target Name="All" DependsOnTargets="Clean;Build;Test;GenerateDocumentation;CreateArchives"/>
 
-    <Target Name="BuildRelease">
-        <MSBuild Projects="..\HelperTrinity.sln" Properties="Configuration=Release" Targets="Clean;Build"/>
-        <MSBuild Projects="..\HelperTrinitySL.sln" Properties="Configuration=Release" Targets="Clean;Build"/>
+    <Target Name="Clean">
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=$(Configuration)" Targets="Clean" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinitySL.sln" Properties="Configuration=$(Configuration)" Targets="Clean" BuildInParallel="True"/>
+        <RemoveDir Directories="$(GenDir)\Tests" />
+        <RemoveDir Directories="$(GenDir)\Documentation" />
     </Target>
 
-	<Target Name="RunTests">
-		<xunit Assembly="..\UnitTest\$(OutputPath)\Kent.Boogaart.HelperTrinity.UnitTest.dll" Xml="$(GenDir)\Tests\Kent.Boogaart.HelperTrinity.UnitTest.xml" />
-	</Target>
+    <Target Name="Build">
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=$(Configuration)" Targets="Build" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinitySL.sln" Properties="Configuration=$(Configuration)" Targets="Build" BuildInParallel="True"/>
+    </Target>
 
-	<Target Name="GenerateDocumentation">
-		<!--
-		Build documentation. This relies on the following components being installed:
-		 - Latest Sandcastle (http://sandcastle.codeplex.com/)
-		 - Latest Sandcastle Help File Builder (http://shfb.codeplex.com/)
-		 - Any relevant updates to styles from Sandcastle Styles (http://sandcastlestyles.codeplex.com/)
-		-->
-		<MSBuild Projects="$(DocDir)\HelperTrinity.shfbproj"/>
-		<OnError ExecuteTargets="GenerateDocumentationFailed"/>
-	</Target>
+    <Target Name="Test">
+        <MakeDir Directories="$(GenDir)\Tests" />
+        <xunit Assembly="$(SrcDir)\UnitTest\$(OutputPath)\Kent.Boogaart.HelperTrinity.UnitTest.dll" Xml="$(GenDir)\Tests\Kent.Boogaart.HelperTrinity.UnitTest.xml" />
+    </Target>
 
-	<Target Name="GenerateDocumentationFailed">
-		<Error Text="Building documentation failed. Please ensure you have the following components installed: Latest Sandcastle (http://sandcastle.codeplex.com/), latest Sandcastle Help File Builder (http://shfb.codeplex.com/), any relevant updates to styles from Sandcastle Styles (http://sandcastlestyles.codeplex.com/). You may also need to log out and back in."/>
-	</Target>
+    <Target Name="GenerateDocumentation">
+        <MakeDir Directories="$(GenDir)\Documentation" />
 
-	<Target Name="CreateArchives">
-		<GetAssemblyIdentity AssemblyFiles="..\HelperTrinity\$(OutputPath)\Kent.Boogaart.HelperTrinity.dll">
-			<Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
-		</GetAssemblyIdentity>
-		<CreateProperty Value="@(AssemblyIdentity -> '%(Version)')">
-			<Output TaskParameter="Value" PropertyName="Version" />
-		</CreateProperty>
+        <!--
+        Build documentation. This relies on the following components being installed:
+         - Latest Sandcastle (http://sandcastle.codeplex.com/)
+         - Latest Sandcastle Help File Builder (http://shfb.codeplex.com/)
+         - Any relevant updates to styles from Sandcastle Styles (http://sandcastlestyles.codeplex.com/)
+        -->
+        <MSBuild Projects="$(DocDir)\HelperTrinity.shfbproj"/>
+        <OnError ExecuteTargets="GenerateDocumentationFailed"/>
+    </Target>
 
-		<MakeDir Directories="$(GenDir)" Condition="!Exists('$(GenDir)')" />
-		<RemoveDir Directories="$(GenDir)\Temp" />
-		<MakeDir Directories="$(GenDir)\Temp" Condition="!Exists('$(GenDir)\Temp')" />
-		
-		<!-- zip source -->
-		<CreateItem Include="..\..\**\*.*" Exclude="..\.\**\*.suo;..\..\**\*.csproj.user;..\..\**\*.gpState;..\..\**\bin\**;..\..\**\obj\**;..\..\**\.svn\**;..\..\Gen\**">
-			<Output ItemName="Source" TaskParameter="Include" />
-		</CreateItem>
-		<Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-src.zip" WorkingDirectory="..\..\" ZipLevel="9" Files="@(Source)" />
-		
-		<!-- zip binaries -->
-		<CreateItem Include="..\HelperTrinity\$(OutputPath)\*.*">
-			<Output ItemName="Files" TaskParameter="Include" />
-		</CreateItem>
-		<Copy SourceFiles="@(Files)" DestinationFolder="$(GenDir)\Temp" />
-		<CreateItem Include="$(GenDir)\Temp\*.*">
-			<Output ItemName="Binaries" TaskParameter="Include" />
-		</CreateItem>
-		<Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-bin.zip" WorkingDirectory="$(GenDir)\Temp\" ZipLevel="9" Files="@(Binaries)" />
-		<CreateItem Include="..\HelperTrinity\$(SLOutputPath)\*.*">
-			<Output ItemName="SLFiles" TaskParameter="Include" />
-		</CreateItem>
-		<Copy SourceFiles="@(SLFiles)" DestinationFolder="$(GenDir)\Temp\SL" />
-		<CreateItem Include="$(GenDir)\Temp\SL\*.*">
-			<Output ItemName="SLBinaries" TaskParameter="Include" />
-		</CreateItem>
-		<Zip ZipFileName="$(GenDir)\TheHelperTrinity-SL-$(Version)-bin.zip" WorkingDirectory="$(GenDir)\Temp\SL\" ZipLevel="9" Files="@(SLBinaries)" />
-		
-		<!-- zip documentation -->
-		<CreateItem Include="$(GenDir)\Documentation\The Helper Trinity.chm">
-			<Output ItemName="DocFiles" TaskParameter="Include" />
-		</CreateItem>
-		<Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-doc.zip" WorkingDirectory="$(GenDir)\Documentation" ZipLevel="9" Files="@(DocFiles)" />
-	</Target>
+    <Target Name="GenerateDocumentationFailed">
+        <Error Text="Building documentation failed. Please ensure you have the following components installed: Latest Sandcastle (http://sandcastle.codeplex.com/), latest Sandcastle Help File Builder (http://shfb.codeplex.com/), any relevant updates to styles from Sandcastle Styles (http://sandcastlestyles.codeplex.com/). You may also need to log out and back in."/>
+    </Target>
+
+    <Target Name="CreateArchives">
+        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\$(OutputPath)\Kent.Boogaart.HelperTrinity.dll">
+            <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
+        </GetAssemblyIdentity>
+        <CreateProperty Value="@(AssemblyIdentity -> '%(Version)')">
+            <Output TaskParameter="Value" PropertyName="Version" />
+        </CreateProperty>
+
+        <MakeDir Directories="$(GenDir)" Condition="!Exists('$(GenDir)')" />
+        <RemoveDir Directories="$(GenDir)\Temp" />
+        <MakeDir Directories="$(GenDir)\Temp" Condition="!Exists('$(GenDir)\Temp')" />
+
+        <!-- zip source -->
+        <CreateItem Include="..\..\**\*.*" Exclude="..\..\**\*.suo;..\..\**\*.csproj.user;..\..\**\*.gpState;..\..\**\bin\**;..\..\**\obj\**;..\..\**\.svn\**;..\..\Gen\**">
+            <Output ItemName="Source" TaskParameter="Include" />
+        </CreateItem>
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-src.zip" WorkingDirectory="..\..\" ZipLevel="9" Files="@(Source)" />
+
+        <!-- zip binaries -->
+        <CreateItem Include="$(SrcDir)\UnitTest\$(OutputPath)\*.*" Exclude="$(SrcDir)\UnitTest\$(OutputPath)\Coverage.log">
+            <Output ItemName="Files" TaskParameter="Include" />
+        </CreateItem>
+        <Copy SourceFiles="@(Files)" DestinationFolder="$(GenDir)\Temp" />
+        <CreateItem Include="$(GenDir)\Temp\*.*">
+            <Output ItemName="Binaries" TaskParameter="Include" />
+        </CreateItem>
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-bin.zip" WorkingDirectory="$(GenDir)\Temp\" ZipLevel="9" Files="@(Binaries)" />
+        <CreateItem Include="$(SrcDir)\HelperTrinity\$(OutputPath)\SL\*.*">
+            <Output ItemName="SLFiles" TaskParameter="Include" />
+        </CreateItem>
+        <Copy SourceFiles="@(SLFiles)" DestinationFolder="$(GenDir)\Temp\SL" />
+        <CreateItem Include="$(GenDir)\Temp\SL\*.*">
+            <Output ItemName="SLBinaries" TaskParameter="Include" />
+        </CreateItem>
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-SL-$(Version)-bin.zip" WorkingDirectory="$(GenDir)\Temp\SL\" ZipLevel="9" Files="@(SLBinaries)" />
+
+        <!-- zip documentation -->
+        <CreateItem Include="$(GenDir)\Documentation\The Helper Trinity.chm">
+            <Output ItemName="DocFiles" TaskParameter="Include" />
+        </CreateItem>
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-doc.zip" WorkingDirectory="$(GenDir)\Documentation\" ZipLevel="9" Files="@(DocFiles)" />
+    </Target>
 </Project>

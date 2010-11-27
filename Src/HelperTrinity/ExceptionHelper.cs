@@ -413,18 +413,21 @@ namespace Kent.Boogaart.HelperTrinity
                 else
                 {
                     var assemblyName = new AssemblyName(assembly.FullName);
-                    //if the exception info isn't cached we have to load it from an embedded resource in the calling assembly
+
+                    // if the exception info isn't cached we have to load it from an embedded resource in the calling assembly
                     var resourceName = string.Concat(assemblyName.Name, ".Properties.ExceptionHelper.xml");
 
                     using (var stream = assembly.GetManifestResourceStream(resourceName))
-                    using (var streamReader = new StreamReader(stream))
                     {
                         if (stream == null)
                         {
                             throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "XML resource file '{0}' could not be found in assembly '{1}'.", resourceName, assembly.FullName));
                         }
 
-                        retVal = XDocument.Load(streamReader);
+                        using (var streamReader = new StreamReader(stream))
+                        {
+                            retVal = XDocument.Load(streamReader);
+                        }
                     }
 
                     _exceptionInfos[assembly] = retVal;
