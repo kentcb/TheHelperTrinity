@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ad6dfea7-79fd-4205-9c2e-ff0f98840497" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <section address="LazyEventCreationSample">
+      <title>Lazy Event Creation Sample</title>
+      <content>
+        <para>
+        	The following provides a complete example of using the <codeInline>EventHelper</codeInline>'s lazy event arguments creation facility. The code includes explanatory comments.
+        </para>
+        <code language="C#"><![CDATA[
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using Kent.Boogaart.HelperTrinity;
+
+namespace Test
+{
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			MouseInfo mi = new MouseInfo();
+
+			//attach event handler only to prove that the event works
+			//if attached, an EventArgs instance will be created every time the event fires
+			//if unattached, no objects at all will be created when the event fires
+
+			//mi.MouseMoved += delegate(object sender, MouseInfoEventArgs e)
+			//{
+			//    Console.WriteLine("x = {0}, y = {1}", e.X, e.Y);
+			//};
+
+			Console.WriteLine("Press any key to exit . . .");
+			Console.ReadKey();
+		}
+	}
+
+	public sealed class MouseInfo
+	{
+		private int _x;
+		private int _y;
+
+		public event EventHandler MouseMoved;
+		private EventHelper.CreateEventArguments _createMouseInfoEventArgs;
+
+		public MouseInfo()
+		{
+			_createMouseInfoEventArgs = CreateMouseInfoEventArgs;
+
+			//kick off a separate thread to simulate an event that fires often (approx every 5ms)
+			Thread thread = new Thread(delegate()
+			{
+				Random r = new Random();
+
+				while (true)
+				{
+					//just randomly set coordinates and then raise event
+					_x = r.Next();
+					_y = r.Next();
+					OnMouseMoved();
+					Thread.Sleep(5);
+				}
+			});
+
+			thread.IsBackground = true;
+			thread.Start();
+		}
+
+		private void OnMouseMoved()
+		{
+			//using an anonymous delegate will cause a delegate instance to be created each time the event is raised
+			//this is not desirable if the event fires often and rarely has any listeners
+			//EventHelper.Raise(MouseMoved, this, delegate
+			//{
+			//    return new MouseInfoEventArgs(_x, _y);
+			//});
+
+			//this way uses a pre-created delegate so there is no need to create another on each invocation
+			//this is ideal because absolutely no objects are created if there are no listeners for the event
+			//if there are listeners, only the EventArgs instance is created
+			EventHelper.Raise(MouseMoved, this, _createMouseInfoEventArgs);
+		}
+
+		private MouseInfoEventArgs CreateMouseInfoEventArgs()
+		{
+			return new MouseInfoEventArgs(_x, _y);
+		}
+	}
+
+	public sealed class MouseInfoEventArgs : EventArgs
+	{
+		private int _x;
+		private int _y;
+
+		public int X
+		{
+			get
+			{
+				return _x;
+			}
+		}
+
+		public int Y
+		{
+			get
+			{
+				return _y;
+			}
+		}
+
+		internal MouseInfoEventArgs(int x, int y)
+		{
+			_x = x;
+			_y = y;
+		}
+	}
+}
+        ]]>
+        </code>
+      </content>
+    </section>
+  </developerConceptualDocument>
+</topic>
