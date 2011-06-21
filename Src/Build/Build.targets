@@ -179,7 +179,7 @@
             <Output TaskParameter="Value" PropertyName="Version" />
         </CreateProperty>
         
-        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity $(Version).nupkg"'/>
-        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity $(Version).symbols.nupkg"'/>
+        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.$(Version).nupkg"'/>
+        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.symbols.$(Version).nupkg"'/>
     </Target>
 </Project>
