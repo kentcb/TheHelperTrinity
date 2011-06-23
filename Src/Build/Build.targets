@@ -111,8 +111,6 @@
     
     <Target Name="CreateNuGetPackages">
         <MakeDir Directories="$(GenDir)\NuGet"/>
-        <MakeDir Directories="$(GenDir)\NuGet\Library"/>
-        <MakeDir Directories="$(GenDir)\NuGet\Symbols"/>
 
         <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
             <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
@@ -127,43 +125,29 @@
             </Tokens>
         </ItemGroup>
 
-        <!-- generate nuspec files from the templates -->
-        <TemplateFile Template="$(SrcDir)\HelperTrinity.nuspec.library.template" OutputFileName="$(GenDir)\NuGet\Library\Kent.Boogaart.HelperTrinity $(Version).nuspec" Tokens="@(Tokens)"/>
-        <TemplateFile Template="$(SrcDir)\HelperTrinity.nuspec.symbols.template" OutputFileName="$(GenDir)\NuGet\Symbols\Kent.Boogaart.HelperTrinity $(Version).symbols.nuspec" Tokens="@(Tokens)"/>
+        <!-- generate nuspec file from the template -->
+        <TemplateFile Template="$(SrcDir)\HelperTrinity.nuspec.template" OutputFileName="$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.nuspec" Tokens="@(Tokens)"/>
 
         <!-- copy files into the appropriate locations -->
-        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\FX35 $(Configuration)\*.*" Exclude="$(SrcDir)\HelperTrinity\bin\FX35 $(Configuration)\*.pdb">
-            <Output ItemName="FX35_Library_Files" TaskParameter="Include" />
-        </CreateItem>
-        <Copy SourceFiles="@(FX35_Library_Files)" DestinationFolder="$(GenDir)\NuGet\Library\lib\net35" />
-        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\*.*" Exclude="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\*.pdb">
-            <Output ItemName="FX40_Library_Files" TaskParameter="Include" />
-        </CreateItem>
-        <Copy SourceFiles="@(FX40_Library_Files)" DestinationFolder="$(GenDir)\NuGet\Library\lib\net40" />
-        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\SL40 $(Configuration)\*.*" Exclude="$(SrcDir)\HelperTrinity\bin\SL40 $(Configuration)\*.pdb">
-            <Output ItemName="SL40_Library_Files" TaskParameter="Include" />
-        </CreateItem>
-        <Copy SourceFiles="@(SL40_Library_Files)" DestinationFolder="$(GenDir)\NuGet\Library\lib\sl40" />
         <CreateItem Include="$(SrcDir)\HelperTrinity\bin\FX35 $(Configuration)\*.*">
-            <Output ItemName="FX35_Symbols_Files" TaskParameter="Include" />
+            <Output ItemName="FX35_Files" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(FX35_Symbols_Files)" DestinationFolder="$(GenDir)\NuGet\Symbols\lib\net35" />
+        <Copy SourceFiles="@(FX35_Files)" DestinationFolder="$(GenDir)\NuGet\lib\net35" />
         <CreateItem Include="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\*.*">
-            <Output ItemName="FX40_Symbols_Files" TaskParameter="Include" />
+            <Output ItemName="FX40_Files" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(FX40_Symbols_Files)" DestinationFolder="$(GenDir)\NuGet\Symbols\lib\net40" />
+        <Copy SourceFiles="@(FX40_Files)" DestinationFolder="$(GenDir)\NuGet\lib\net40" />
         <CreateItem Include="$(SrcDir)\HelperTrinity\bin\SL40 $(Configuration)\*.*">
-            <Output ItemName="SL40_Symbols_Files" TaskParameter="Include" />
+            <Output ItemName="SL40_Files" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(SL40_Symbols_Files)" DestinationFolder="$(GenDir)\NuGet\Symbols\lib\sl40" />
+        <Copy SourceFiles="@(SL40_Files)" DestinationFolder="$(GenDir)\NuGet\lib\sl40" />
         <CreateItem Include="$(SrcDir)\**\*.*" Exclude="$(SrcDir)\**\*.suo;$(SrcDir)\**\*.csproj.user;$(SrcDir)\**\*.gpState;$(SrcDir)\**\bin\**;$(SrcDir)\**\obj\**;$(SrcDir)\**\.svn\**">
-            <Output ItemName="Source_Symbols_Files" TaskParameter="Include" />
+            <Output ItemName="Source_Files" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(Source_Symbols_Files)" DestinationFolder="$(GenDir)\NuGet\Symbols\src\%(RecursiveDir)"/>
+        <Copy SourceFiles="@(Source_Files)" DestinationFolder="$(GenDir)\NuGet\src\%(RecursiveDir)"/>
 
         <!-- pack the nugets -->
-        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" pack "$(GenDir)\NuGet\Library\Kent.Boogaart.HelperTrinity $(Version).nuspec"' WorkingDirectory="$(GenDir)\NuGet"/>
-        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" pack -symbols "$(GenDir)\NuGet\Symbols\Kent.Boogaart.HelperTrinity $(Version).symbols.nuspec"' WorkingDirectory="$(GenDir)\NuGet"/>
+        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" pack -symbols "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.nuspec"' WorkingDirectory="$(GenDir)\NuGet"/>
 
         <Message Text="NuGet packages created but not published. Type 'msbuild Build.targets /t:PublishNuGetPackages' to publish." Importance="High"/>
     </Target>
@@ -178,8 +162,8 @@
         <CreateProperty Condition="$(Version) == ''" Value="@(AssemblyIdentity -> '%(Version)')">
             <Output TaskParameter="Value" PropertyName="Version" />
         </CreateProperty>
-        
+
+        <!-- symbols package is automatically pushed too -->
         <Exec Command='"$(LibDir)\NuGet\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.$(Version).nupkg"'/>
-        <Exec Command='"$(LibDir)\NuGet\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.symbols.$(Version).nupkg"'/>
     </Target>
 </Project>

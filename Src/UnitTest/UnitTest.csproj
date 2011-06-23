@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Configuration Condition=" '$(Configuration)' == '' ">FX35 Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProductVersion>9.0.21022</ProductVersion>
         <SchemaVersion>2.0</SchemaVersion>
@@ -12,10 +12,9 @@
         <AssemblyName>Kent.Boogaart.HelperTrinity.UnitTest</AssemblyName>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kent.Boogaart.snk</AssemblyOriginatorKeyFile>
-        <FileUpgradeFlags>
-        </FileUpgradeFlags>
-        <UpgradeBackupLocation>
-        </UpgradeBackupLocation>
+        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FX35 Debug|AnyCPU'">
         <DebugSymbols>true</DebugSymbols>
@@ -23,10 +22,7 @@
         <DefineConstants>TRACE;DEBUG</DefineConstants>
         <DebugType>full</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
         <ErrorReport>prompt</ErrorReport>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     </PropertyGroup>
@@ -36,10 +32,7 @@
         <Optimize>true</Optimize>
         <DebugType>pdbonly</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
         <ErrorReport>prompt</ErrorReport>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     </PropertyGroup>
@@ -49,10 +42,7 @@
         <DefineConstants>TRACE;DEBUG</DefineConstants>
         <DebugType>full</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
         <ErrorReport>prompt</ErrorReport>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     </PropertyGroup>
@@ -62,13 +52,7 @@
         <Optimize>true</Optimize>
         <DebugType>pdbonly</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
         <ErrorReport>prompt</ErrorReport>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-        <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-        <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-        <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     </PropertyGroup>
@@ -78,12 +62,9 @@
         <DefineConstants>TRACE;DEBUG;SILVERLIGHT</DefineConstants>
         <DebugType>full</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
         <NoStdLib>true</NoStdLib>
         <NoConfig>true</NoConfig>
         <ErrorReport>prompt</ErrorReport>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
         <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
         <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -96,12 +77,9 @@
         <Optimize>true</Optimize>
         <DebugType>pdbonly</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
         <NoStdLib>true</NoStdLib>
         <NoConfig>true</NoConfig>
         <ErrorReport>prompt</ErrorReport>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
         <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
         <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
