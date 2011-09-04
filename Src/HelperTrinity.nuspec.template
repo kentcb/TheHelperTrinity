@@ -11,6 +11,6 @@
     <description>
         The Helper Trinity is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions. Online at http://thehelpertrinity.codeplex.com/.
     </description>
-    <tags>.NET helper mono argument-checking event-raising exception-raising</tags>
+    <tags>.NET helper mono Silverlight argument-checking event-raising exception-raising</tags>
   </metadata>
 </package>
