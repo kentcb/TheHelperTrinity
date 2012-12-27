@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using Kent.Boogaart.HelperTrinity.Extensions;
@@ -112,31 +113,52 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_ThrowWhenNull()
+		public void AssertNotNullOrEmpty_String_ThrowWhenNull()
 		{
 			string arg = null;
 			Assert.Throws<ArgumentException>(() => arg.AssertNotNullOrEmpty("test"));
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_ThrowWhenEmpty()
+        public void AssertNotNullOrEmpty_String_ThrowWhenEmpty()
 		{
 			Assert.Throws<ArgumentException>(() => string.Empty.AssertNotNullOrEmpty("test"));
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_ThrowWhenBlankAndTrimmed()
+        public void AssertNotNullOrEmpty_String_ThrowWhenBlankAndTrimmed()
 		{
 			Assert.Throws<ArgumentException>(() => "   ".AssertNotNullOrEmpty("test", true));
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_DontThrowWhenNotNullOrBlank()
+        public void AssertNotNullOrEmpty_String_DontThrowWhenNotNullOrBlank()
 		{
 			"test".AssertNotNullOrEmpty("test");
 			"  a ".AssertNotNullOrEmpty("test", true);
 			"  ".AssertNotNullOrEmpty("test", false);
 		}
+
+        [Fact]
+        public void AssertNotNullOrEmpty_Collection_ThrowWhenNull()
+        {
+            ICollection arg = null;
+            Assert.Throws<ArgumentException>(() => arg.AssertNotNullOrEmpty("test"));
+        }
+
+        [Fact]
+        public void AssertNotNullOrEmpty_Collection_ThrowWhenEmpty()
+        {
+            var collection = new List<string>();
+            Assert.Throws<ArgumentException>(() => collection.AssertNotNullOrEmpty("test"));
+        }
+
+        [Fact]
+        public void AssertNotNullOrEmpty_Collection_DontThrowWhenNotNullOrEmpty()
+        {
+            var collection = new List<string>(new string[] { "First", "Second" });
+            collection.AssertNotNullOrEmpty("test");
+        }
 
 		[Fact]
 		public void AssertEnumMember_ThrowWhenInvalidFlags()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using Xunit;
@@ -107,30 +108,48 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_ThrowWhenNull()
+		public void AssertNotNullOrEmpty_String_ThrowWhenNull()
 		{
-			Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty(null, "test"));
+			Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty((string)null, "test"));
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_ThrowWhenEmpty()
+        public void AssertNotNullOrEmpty_String_ThrowWhenEmpty()
 		{
 			Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty(string.Empty, "test"));
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_ThrowWhenBlankAndTrimmed()
+        public void AssertNotNullOrEmpty_String_ThrowWhenBlankAndTrimmed()
 		{
 			Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty("  ", "test", true));
 		}
 
 		[Fact]
-		public void AssertNotNullOrEmpty_DontThrowWhenNotNullOrBlank()
+        public void AssertNotNullOrEmpty_String_DontThrowWhenNotNullOrBlank()
 		{
 			ArgumentHelper.AssertNotNullOrEmpty("test", "test");
 			ArgumentHelper.AssertNotNullOrEmpty("  a ", "test", true);
 			ArgumentHelper.AssertNotNullOrEmpty("  ", "test", false);
 		}
+
+        [Fact]
+        public void AssertNotNullOrEmpty_Collection_ThrowWhenNull()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty((ICollection)null, "test"));
+        }
+
+        [Fact]
+        public void AssertNotNullOrEmpty_Collection_ThrowWhenEmpty()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty(new List<string>(), "test"));
+        }
+
+        [Fact]
+        public void AssertNotNullOrEmpty_Collection_DontThrowWhenNotNullOrEmpty()
+        {
+            ArgumentHelper.AssertNotNullOrEmpty(new List<string>(new string[] { "First", "Second" }), "test");
+        }
 
 		[Fact]
 		public void AssertEnumMember_ThrowWhenInvalidFlags()

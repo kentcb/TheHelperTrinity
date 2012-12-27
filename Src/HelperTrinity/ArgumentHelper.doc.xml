@@ -139,7 +139,20 @@
 		</exception>
 	</member>
 
-	<member name="AssertEnumMember{TEnum}(TEnum,string)">
+  <member name="AssertNotNullOrEmpty(ICollection,string)">
+    <summary>
+      Ensures the specified argument is non-<see langword="null"/> and not an empty collection. If it is, an
+      <see cref="ArgumentException"/> is thrown.
+    </summary>
+    <param name="arg">
+      The collection to check for <see langword="null"/> or empty.
+    </param>
+    <param name="argName">
+      The name of the argument.
+    </param>
+  </member>
+
+  <member name="AssertEnumMember{TEnum}(TEnum,string)">
 		<summary>
 			Ensures the specified enumeration argument is a valid member of the <typeparamref name="TEnum"/> enumeration. If it
 			is not, an <see cref="ArgumentException"/> is thrown.

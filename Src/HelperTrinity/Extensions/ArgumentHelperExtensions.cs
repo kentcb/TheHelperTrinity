@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -56,6 +57,13 @@ namespace Kent.Boogaart.HelperTrinity.Extensions
 		{
 			ArgumentHelper.AssertNotNullOrEmpty(arg, argName, trim);
 		}
+
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(ICollection,string)"]/*' />
+        [DebuggerHidden]
+        public static void AssertNotNullOrEmpty(this ICollection arg, string argName)
+        {
+            ArgumentHelper.AssertNotNullOrEmpty(arg, argName);
+        }
 
 		/// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />
 		[DebuggerHidden]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -159,6 +160,16 @@ namespace Kent.Boogaart.HelperTrinity
 				throw new ArgumentException("Cannot be null or empty.", argName);
 			}
 		}
+
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(ICollection,string)"]/*' />
+        [DebuggerHidden]
+        public static void AssertNotNullOrEmpty(ICollection arg, string argName)
+        {
+            if (arg == null || arg.Count == 0)
+            {
+                throw new ArgumentException("Cannot be null or empty.", argName);
+            }
+        }
 
 #if !SILVERLIGHT
 		/// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />
