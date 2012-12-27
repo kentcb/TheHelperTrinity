@@ -17,8 +17,10 @@
 
     <Target Name="Clean">
         <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=SL40 $(Configuration)" Targets="Clean" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=SL50 $(Configuration)" Targets="Clean" BuildInParallel="True"/>
         <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=FX35 $(Configuration)" Targets="Clean" BuildInParallel="True"/>
         <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=FX40 $(Configuration)" Targets="Clean" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=FX45 $(Configuration)" Targets="Clean" BuildInParallel="True"/>
 
         <RemoveDir Directories="$(GenDir)" />
     </Target>
@@ -30,13 +32,15 @@
         the Silverlight build.
         -->
         <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=SL40 $(Configuration)" Targets="Build" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=SL50 $(Configuration)" Targets="Build" BuildInParallel="True"/>
         <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=FX35 $(Configuration)" Targets="Build" BuildInParallel="True"/>
         <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=FX40 $(Configuration)" Targets="Build" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=FX45 $(Configuration)" Targets="Build" BuildInParallel="True"/>
     </Target>
 
     <Target Name="Test">
         <MakeDir Directories="$(GenDir)\Tests" />
-        <xunit Assembly="$(SrcDir)\UnitTest\bin\FX40 $(Configuration)\Kent.Boogaart.HelperTrinity.UnitTest.dll" Xml="$(GenDir)\Tests\Kent.Boogaart.HelperTrinity.UnitTest.xml" />
+        <xunit Assembly="$(SrcDir)\UnitTest\bin\FX45 $(Configuration)\Kent.Boogaart.HelperTrinity.UnitTest.dll" Xml="$(GenDir)\Tests\Kent.Boogaart.HelperTrinity.UnitTest.xml" />
     </Target>
 
     <Target Name="GenerateDocumentation">
@@ -57,7 +61,7 @@
     </Target>
 
     <Target Name="CreateArchives">
-        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
+        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX45 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
             <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
         </GetAssemblyIdentity>
         <CreateProperty Condition="$(Version) == ''" Value="@(AssemblyIdentity -> '%(Version)')">
@@ -99,6 +103,15 @@
         </CreateItem>
         <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-FX40-bin.zip" WorkingDirectory="$(GenDir)\Temp\FX40\" ZipLevel="9" Files="@(FX40Binaries)" />
 
+        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\FX45 $(Configuration)\*.*">
+            <Output ItemName="FX45Files" TaskParameter="Include" />
+        </CreateItem>
+        <Copy SourceFiles="@(FX45Files)" DestinationFolder="$(GenDir)\Temp\FX45" />
+        <CreateItem Include="$(GenDir)\Temp\FX45\*.*">
+            <Output ItemName="FX45Binaries" TaskParameter="Include" />
+        </CreateItem>
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-FX45-bin.zip" WorkingDirectory="$(GenDir)\Temp\FX45\" ZipLevel="9" Files="@(FX45Binaries)" />
+
         <CreateItem Include="$(SrcDir)\HelperTrinity\bin\SL40 $(Configuration)\*.*" Exclude="$(SrcDir)\HelperTrinity\bin\SL40 $(Configuration)\Coverage.log">
             <Output ItemName="SL40Files" TaskParameter="Include" />
         </CreateItem>
@@ -107,12 +120,21 @@
             <Output ItemName="SL40Binaries" TaskParameter="Include" />
         </CreateItem>
         <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-SL40-bin.zip" WorkingDirectory="$(GenDir)\Temp\SL40\" ZipLevel="9" Files="@(SL40Binaries)" />
+
+        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\SL50 $(Configuration)\*.*" Exclude="$(SrcDir)\HelperTrinity\bin\SL50 $(Configuration)\Coverage.log">
+            <Output ItemName="SL50Files" TaskParameter="Include" />
+        </CreateItem>
+        <Copy SourceFiles="@(SL50Files)" DestinationFolder="$(GenDir)\Temp\SL50" />
+        <CreateItem Include="$(GenDir)\Temp\SL50\*.*">
+            <Output ItemName="SL50Binaries" TaskParameter="Include" />
+        </CreateItem>
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-SL50-bin.zip" WorkingDirectory="$(GenDir)\Temp\SL50\" ZipLevel="9" Files="@(SL50Binaries)" />
     </Target>
     
     <Target Name="CreateNuGetPackages">
         <MakeDir Directories="$(GenDir)\NuGet"/>
 
-        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
+        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX45 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
             <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
         </GetAssemblyIdentity>
         <CreateProperty Condition="$(Version) == ''" Value="@(AssemblyIdentity -> '%(Version)')">
@@ -137,10 +159,18 @@
             <Output ItemName="FX40_Files" TaskParameter="Include" />
         </CreateItem>
         <Copy SourceFiles="@(FX40_Files)" DestinationFolder="$(GenDir)\NuGet\lib\net40" />
+        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\FX45 $(Configuration)\*.*">
+            <Output ItemName="FX45_Files" TaskParameter="Include" />
+        </CreateItem>
+        <Copy SourceFiles="@(FX45_Files)" DestinationFolder="$(GenDir)\NuGet\lib\net45" />
         <CreateItem Include="$(SrcDir)\HelperTrinity\bin\SL40 $(Configuration)\*.*">
             <Output ItemName="SL40_Files" TaskParameter="Include" />
         </CreateItem>
         <Copy SourceFiles="@(SL40_Files)" DestinationFolder="$(GenDir)\NuGet\lib\sl40" />
+        <CreateItem Include="$(SrcDir)\HelperTrinity\bin\SL50 $(Configuration)\*.*">
+            <Output ItemName="SL50_Files" TaskParameter="Include" />
+        </CreateItem>
+        <Copy SourceFiles="@(SL50_Files)" DestinationFolder="$(GenDir)\NuGet\lib\sl50" />
         <CreateItem Include="$(SrcDir)\**\*.*" Exclude="$(SrcDir)\**\*.suo;$(SrcDir)\**\*.csproj.user;$(SrcDir)\**\*.gpState;$(SrcDir)\**\bin\**;$(SrcDir)\**\obj\**;$(SrcDir)\**\.svn\**">
             <Output ItemName="Source_Files" TaskParameter="Include" />
         </CreateItem>
@@ -156,7 +186,7 @@
     this target does not execute automatically - it must be done explicitly
     -->
     <Target Name="PublishNuGetPackages">
-        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX40 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
+        <GetAssemblyIdentity AssemblyFiles="$(SrcDir)\HelperTrinity\bin\FX45 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
             <Output TaskParameter="Assemblies" ItemName="AssemblyIdentity" />
         </GetAssemblyIdentity>
         <CreateProperty Condition="$(Version) == ''" Value="@(AssemblyIdentity -> '%(Version)')">

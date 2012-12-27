@@ -5,7 +5,7 @@
       <title>ExceptionHelper</title>
       <content>
         <para>
-        	The <codeInline>ExceptionHelper</codeInline> class provides helper methods for raising exceptions. The main advantage to using the <codeInline>ExceptionHelper</codeInline> class is that your exception messages are centralized and easy to review for consistency and correctness. Another advantage is that your code will be cleaner and therefore clearer.
+        	The <codeInline>ExceptionHelper</codeInline> class provides helper methods for resolving and raising exceptions. The main advantage to using the <codeInline>ExceptionHelper</codeInline> class is that your exception messages are centralized and easy to review for consistency and correctness. Another advantage is that your code will be cleaner and therefore clearer.
         </para>
       	<autoOutline />
       </content>
@@ -14,7 +14,7 @@
               <title>Set Up</title>
               <content>
                   <para>
-                  	The <codeInline>ExceptionHelper</codeInline> class relies on finding your exception messages in an embedded resource called <legacyItalic>ExceptionHelper.xml</legacyItalic>. The resource name used to look up this XML document is "assembly name.Properties.ExceptionHelper.xml", where the assembly is determined by the type you pass to the <codeInline>ExceptionHelper</codeInline> constructor. The easiest way to set this up in Visual Studio is:           	
+                  	By default, the <codeInline>ExceptionHelper</codeInline> class relies on finding your exception messages in an embedded resource called <legacyItalic>[assemblyName].Properties.ExceptionHelper.xml</legacyItalic>, where the assembly name is determined by the type you pass to the <codeInline>ExceptionHelper</codeInline> constructor. The easiest way to set this up in Visual Studio is:           	
 <list class="ordered">
   <listItem><para>Add a new XML file called <legacyItalic>ExceptionHelper.xml</legacyItalic> to your project.</para></listItem>
   <listItem><para>View the properties of this file and change the <legacyItalic>Build Action</legacyItalic> to <legacyItalic>Embedded Resource</legacyItalic>.</para></listItem>
@@ -26,6 +26,10 @@
                   	<mediaLink>
 					<image xlink:href="ExceptionHelper.xml"/>
 					</mediaLink>
+                  </para>
+                  <para>
+                  	Sometimes the default resource name will not work, such as when the assembly name does not match the root namespace (common for executable assemblies).
+                  	To address this case, <codeInline>ExceptionHelper</codeInline> provides a constructor overload that allows you to specify a custom resource name.
                   </para>
               </content>
           </section>

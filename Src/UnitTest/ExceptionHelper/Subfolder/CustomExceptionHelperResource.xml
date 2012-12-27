@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<exceptionHelper>
+  <exceptionGroup type="Kent.Boogaart.HelperTrinity.UnitTest.ExceptionHelperTest">
+    <exception key="anException" type="System.InvalidOperationException">
+      Here is the message.
+    </exception>
+  </exceptionGroup>
+</exceptionHelper>

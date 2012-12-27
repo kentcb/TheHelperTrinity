@@ -13,6 +13,24 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
         }
 
         [Fact]
+        public void Constructor_ShouldThrowIfTypeIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ExceptionHelper(null));
+        }
+
+        [Fact]
+        public void Constructor_ShouldThrowIfResourceNameIsNull()
+        {
+            Assert.Throws<ArgumentException>(() => new ExceptionHelper(GetType(), null));
+        }
+
+        [Fact]
+        public void Constructor_ShouldThrowIfResourceNameIsEmpty()
+        {
+            Assert.Throws<ArgumentException>(() => new ExceptionHelper(GetType(), "   "));
+        }
+
+        [Fact]
         public void Resolve_ShouldThrowIfKeyNotFound()
         {
             var ex = Assert.Throws<InvalidOperationException>(() => _exceptionHelper.Resolve("invalidKey"));
@@ -91,6 +109,14 @@ namespace Kent.Boogaart.HelperTrinity.UnitTest
             Assert.Equal(1, ex.Num1);
             Assert.Equal(2, ex.Num2);
             Assert.Equal("more info", ex.Info);
+        }
+
+        [Fact]
+        public void ExceptionHelperResourceCanBeInCustomLocation()
+        {
+            var exceptionHelper = new ExceptionHelper(GetType(), "Kent.Boogaart.HelperTrinity.UnitTest.ExceptionHelper.Subfolder.CustomExceptionHelperResource.xml");
+            var ex = Assert.Throws<InvalidOperationException>(() => exceptionHelper.ResolveAndThrowIf(true, "anException"));
+            Assert.Equal("Here is the message.", ex.Message);
         }
 
         #region Supporting Types

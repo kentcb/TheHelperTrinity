@@ -72,17 +72,22 @@ public class MyClass<T>
               <title>AssertNotNullOrEmpty()</title>
               <content>
                   <para>
-                  	The <codeInline>AssertNotNullOrEmpty()</codeInline> methods are special-case assertions for <codeInline>string</codeInline> arguments. They allow you to ensure that a <codeInline>string</codeInline> argument is non-<codeInline>null</codeInline> and not an empty <codeInline>string</codeInline>. One overload allows the <codeInline>string</codeInline> to be trimmed, thus ensuring that the <codeInline>string</codeInline> is non-<codeInline>null</codeInline> and is not empty and does not consist entirely of whitespace.
+                  	The <codeInline>AssertNotNullOrEmpty()</codeInline> methods can be used against <codeInline>string</codeInline>s or collections. They allow you to
+                  	ensure that the argument is non-<codeInline>null</codeInline> and that it is not empty. By default, a <codeInline>string</codeInline> is considered
+                  	empty if it contains no characters, but an overload allows you to trim the <codeInline>string</codeInline> first, thus ensuring that it also does not
+                  	consist entirely of whitespace.
                   </para>
                   <code language="C#"><![CDATA[
 public class MyClass
 {
-	public void MyMethod(string arg1, string arg2)
+	public void MyMethod(string arg1, string arg2, IList<int> arg3)
 	{
 		// this will throw if arg1 is null or "" but not if it is " "
 		ArgumentHelper.AssertNotNullOrEmpty(arg1, "arg1");
 		// this will throw if arg2 is null or "" or " " or any combination of whitespace
 		ArgumentHelper.AssertNotNullOrEmpty(arg2, "arg2", true);
+		// this will throw if arg3 is null or does not contain at least one integer
+		ArgumentHelper.AssertNotNullOrEmpty(arg3, "arg3");
 	}
 }]]>
                   </code>
@@ -182,9 +187,9 @@ using Kent.Boogaart.HelperTrinity.Extensions;
 
 public class MyClass
 {
-	public void MyMethod(string arg1, string arg2)
+	public void MyMethod(User arg1, string arg2)
 	{
-		arg1.AssertNotNullOrEmpty("arg1");
+		arg1.AssertNotNull("arg1");
 		arg2.AssertNotNullOrEmpty("arg2", true);
 	}
 }]]>

@@ -15,14 +15,14 @@ namespace Kent.Boogaart.HelperTrinity
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <c>ExceptionHelper</c> class provides a centralised mechanism for throwing exceptions. This helps to keep exception
-    /// messages and types consistent.
+    /// The <c>ExceptionHelper</c> class provides a centralised mechanism for creating and throwing exceptions. This helps to
+    /// keep exception messages and types consistent.
     /// </para>
     /// <para>
-    /// Exception information is stored in an embedded resource called <c>ExceptionHelper.xml</c>, which must reside in the
-    /// <c>Properties</c> namespace for the assembly in which the for type is stored. For example, if the root namespace for
-    /// an assembly is <c>Company.Product</c> then the exception information must be stored in a resource called
-    /// <c>Company.Product.Properties.ExceptionHelper.xml</c>
+    /// Exception information is stored in an embedded resource with a default name of <c>[assemblyName].Properties.ExceptionHelper.xml</c>.
+    /// The type passed into the constructor is used to determine the assembly name. If, for any reason, the default naming scheme
+    /// does not work (such as when the assembly name does not match the root namespace name), there is a constructor overload that
+    /// allows you to specify a custom resource name.
     /// </para>
     /// <para>
     /// The format for the exception information XML includes a grouping mechanism such that exception keys are scoped to the
@@ -83,21 +83,62 @@ namespace Kent.Boogaart.HelperTrinity
     /// </example>
     public class ExceptionHelper
     {
-        private static readonly IDictionary<Assembly, XDocument> _exceptionInfos = new Dictionary<Assembly, XDocument>();
+        private static readonly IDictionary<ExceptionInfoKey, XDocument> _exceptionInfos = new Dictionary<ExceptionInfoKey, XDocument>();
         private static readonly object _exceptionInfosLock = new object();
         private readonly Type _forType;
+        private readonly string _resourceName;
         private const string _typeAttributeName = "type";
 
         /// <summary>
-        /// Initializes a new instance of the <c>ExceptionHelper</c> class.
+        /// Initializes a new instance of the <c>ExceptionHelper</c> class for the specified type.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// A default resource name of <c>[assemblyName].Properties.ExceptionHelper.xml</c> is used, where <c>assemblyName</c> is the name of <paramref name="forType"/>'s containing assembly.
+        /// </para>
+        /// </remarks>
         /// <param name="forType">
         /// The type for which exceptions will be resolved.
         /// </param>
         public ExceptionHelper(Type forType)
+            : this(forType, null, 0)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <c>ExceptionHelper</c> class for the specified type and with the specified resource name.
+        /// </summary>
+        /// <param name="forType">
+        /// The type for which exceptions will be resolved.
+        /// </param>
+        /// <param name="resourceName">
+        /// The name of the resource in which to find <c>ExceptionHelper</c> configuration.
+        /// </param>
+        public ExceptionHelper(Type forType, string resourceName)
+            : this(forType, resourceName, 0)
+        {
+            resourceName.AssertNotNullOrEmpty("resource", true);
+        }
+
+        private ExceptionHelper(Type forType, string resourceName, int dummy)
         {
             forType.AssertNotNull("forType");
             _forType = forType;
+
+            if (resourceName != null)
+            {
+                _resourceName = resourceName;
+            }
+            else
+            {
+                // here we determine the default name for the resource
+                // we use a separate, slightly less efficient, code path for Silverlight, since it doesn't have Assembly.GetName()
+#if SILVERLIGHT
+                _resourceName = string.Concat(new AssemblyName(forType.Assembly.FullName).Name, ".Properties.ExceptionHelper.xml");
+#else
+                _resourceName = string.Concat(forType.Assembly.GetName().Name, ".Properties.ExceptionHelper.xml");
+#endif
+            }
         }
 
         /// <summary>
@@ -204,7 +245,7 @@ namespace Kent.Boogaart.HelperTrinity
         {
             exceptionKey.AssertNotNull("exceptionKey");
 
-            var exceptionInfo = GetExceptionInfo(_forType.Assembly);
+            var exceptionInfo = GetExceptionInfo(_forType.Assembly, _resourceName);
             var exceptionNode = (from exceptionGroup in exceptionInfo.Element("exceptionHelper").Elements("exceptionGroup")
                                  from exception in exceptionGroup.Elements("exception")
                                  where string.Equals(exceptionGroup.Attribute("type").Value, _forType.FullName, StringComparison.Ordinal) && string.Equals(exception.Attribute("key").Value, exceptionKey, StringComparison.Ordinal)
@@ -400,22 +441,20 @@ namespace Kent.Boogaart.HelperTrinity
         }
 
         [DebuggerHidden]
-        private static XDocument GetExceptionInfo(Assembly assembly)
+        private static XDocument GetExceptionInfo(Assembly assembly, string resourceName)
         {
             var retVal = (XDocument)null;
+            var exceptionInfoKey = new ExceptionInfoKey(assembly, resourceName);
 
             lock (_exceptionInfosLock)
             {
-                if (_exceptionInfos.ContainsKey(assembly))
+                if (_exceptionInfos.ContainsKey(exceptionInfoKey))
                 {
-                    retVal = _exceptionInfos[assembly];
+                    retVal = _exceptionInfos[exceptionInfoKey];
                 }
                 else
                 {
                     var assemblyName = new AssemblyName(assembly.FullName);
-
-                    // if the exception info isn't cached we have to load it from an embedded resource in the calling assembly
-                    var resourceName = string.Concat(assemblyName.Name, ".Properties.ExceptionHelper.xml");
 
                     using (var stream = assembly.GetManifestResourceStream(resourceName))
                     {
@@ -430,11 +469,46 @@ namespace Kent.Boogaart.HelperTrinity
                         }
                     }
 
-                    _exceptionInfos[assembly] = retVal;
+                    _exceptionInfos[exceptionInfoKey] = retVal;
                 }
             }
 
             return retVal;
+        }
+
+        private struct ExceptionInfoKey : IEquatable<ExceptionInfoKey>
+        {
+            private readonly Assembly _assembly;
+            private readonly string _resourceName;
+
+            public ExceptionInfoKey(Assembly assembly, string resourceName)
+            {
+                _assembly = assembly;
+                _resourceName = resourceName;
+            }
+
+            public bool Equals(ExceptionInfoKey other)
+            {
+                return other._assembly.Equals(_assembly) && string.Equals(other._resourceName, _resourceName, StringComparison.Ordinal);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (!(obj is ExceptionInfoKey))
+                {
+                    return false;
+                }
+
+                return this.Equals((ExceptionInfoKey)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                var hash = 17;
+                hash = hash * 23 + _assembly.GetHashCode();
+                hash = hash * 23 + _resourceName.GetHashCode();
+                return hash;
+            }
         }
     }
 }
