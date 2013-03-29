@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Items", "Shared Items", "{CF9CCA85-B60D-4CCB-9804-614C1D9B8F13}"
 	ProjectSection(SolutionItems) = preProject
 		AssemblyInfoCommon.cs = AssemblyInfoCommon.cs
+		AssemblyInfoCommonSecurity.cs = AssemblyInfoCommonSecurity.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kent.Boogaart.HelperTrinity", "Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj", "{9F0FA58D-CE35-48B7-9BB4-3CB6826B8D93}"
