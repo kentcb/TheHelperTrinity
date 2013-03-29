@@ -4,11 +4,11 @@
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
          sources -->
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">FX45 Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{875651eb-17e7-40c8-87bf-1ca148cec0f5}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -18,14 +18,14 @@
     <OutputPath>..\Gen\Documentation\</OutputPath>
     <HtmlHelpName>The Helper Trinity</HtmlHelpName>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Src\HelperTrinity\bin\FX40 Release\Kent.Boogaart.HelperTrinity.dll" />
-      <DocumentationSource sourceFile="..\Src\HelperTrinity\bin\FX40 Release\Kent.Boogaart.HelperTrinity.xml" />
+      <DocumentationSource sourceFile="..\Src\Kent.Boogaart.HelperTrinity\bin\FX45 Release\Kent.Boogaart.HelperTrinity.dll" />
+      <DocumentationSource sourceFile="..\Src\Kent.Boogaart.HelperTrinity\bin\FX45 Release\Kent.Boogaart.HelperTrinity.xml" />
     </DocumentationSources>
-    <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>The Helper Trinity</HelpTitle>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>API Documentation</RootNamespaceTitle>
-    <MissingTags>Summary, Parameter, Returns, Namespace, TypeParameter</MissingTags>
+    <MissingTags>Summary, Parameter, Returns, Namespace, TypeParameter, IncludeTargets</MissingTags>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
       <NamespaceSummaryItem name="Kent.Boogaart.HelperTrinity" isDocumented="True">Contains the helper trinity utility classes.</NamespaceSummaryItem>
@@ -33,14 +33,36 @@
     </NamespaceSummaries>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
     <Preliminary>False</Preliminary>
-    <HelpFileVersion>1.1.0.0</HelpFileVersion>
-    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <SdkLinkTarget>Self</SdkLinkTarget>
+    <ComponentConfigurations>
+      <ComponentConfig id="Code Block Component" enabled="True">
+        <component id="Code Block Component" type="SandcastleBuilder.Components.CodeBlockComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <basePath value="{@HtmlEncProjectFolder}" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="false" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml" styleFile="{@SHFBFolder}Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" language="cs" tabSize="4" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
+    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp</SyntaxFilters>
+    <PresentationStyle>VS2010</PresentationStyle>
+    <NamingMethod>MemberName</NamingMethod>
+    <Language>en-US</Language>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'FX45 Debug|AnyCPU' ">
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'FX45 Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

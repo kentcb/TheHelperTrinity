@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<exceptionHelper>
+	<exceptionGroup type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture">
+		<exception key="noTypeAttribute"/>
+		
+		<exception key="typeCouldNotBeLoaded" type="Foo.Bar.Wont.Load, Anywhere"/>
+
+		<exception key="typeNotException" type="System.DateTime"/>
+
+		<exception key="noConstructorFound" type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, Kent.Boogaart.HelperTrinity.UnitTests"/>
+
+		<exception key="valid" type="System.InvalidOperationException">
+			Here is the message.
+		</exception>
+
+		<exception key="withMessageArgs" type="System.InvalidOperationException">
+			Here is the message with argument ({0}) or two ({1}).
+		</exception>
+
+		<exception key="withConstructorArgs" type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, Kent.Boogaart.HelperTrinity.UnitTests">
+			A message.
+		</exception>
+
+		<exception key="withConstructorAndMessageArgs" type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, Kent.Boogaart.HelperTrinity.UnitTests">
+			My message with a parameter: '{0}'
+		</exception>
+	</exceptionGroup>
+</exceptionHelper>
