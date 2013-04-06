@@ -230,6 +230,25 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         }
 
         [Fact]
+        public void begin_raise_invokes_event_handler_on_different_thread()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var threadId = -1;
+            EventHelper.BeginRaise(
+                (EventHandler)((s, e) =>
+                {
+                    threadId = Thread.CurrentThread.ManagedThreadId;
+                    waitHandle.Set();
+                }),
+                this,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId);
+        }
+
+        [Fact]
         public void begin_raise_invokes_all_event_handlers_in_multicast_delegate()
         {
             var waitHandle1 = new ManualResetEventSlim(false);
@@ -245,6 +264,43 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_invokes_all_event_handlers_in_multicast_delegate_on_same_background_thread()
+        {
+            var waitHandle1 = new ManualResetEventSlim(false);
+            var waitHandle2 = new ManualResetEventSlim(false);
+            var waitHandle3 = new ManualResetEventSlim(false);
+            var threadId1 = -1;
+            var threadId2 = -1;
+            var threadId3 = -1;
+
+            var handler = (EventHandler)((s, e) =>
+            {
+                threadId1 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle1.Set();
+            });
+            handler += (s, e) =>
+            {
+                threadId2 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle2.Set();
+            };
+            handler += (s, e) =>
+            {
+                threadId3 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle3.Set();
+            };
+
+            EventHelper.BeginRaise(handler, this, null, null);
+
+            Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId1);
+            Assert.Equal(threadId1, threadId2);
+            Assert.Equal(threadId2, threadId3);
         }
 
         [Fact]
@@ -368,6 +424,26 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         }
 
         [Fact]
+        public void begin_raise_generic_invokes_event_handler_on_different_thread()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var threadId = -1;
+            EventHelper.BeginRaise(
+                (s, e) =>
+                {
+                    threadId = Thread.CurrentThread.ManagedThreadId;
+                    waitHandle.Set();
+                },
+                this,
+                EventArgs.Empty,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId);
+        }
+
+        [Fact]
         public void begin_raise_generic_invokes_all_event_handlers_in_multicast_delegate()
         {
             var waitHandle1 = new ManualResetEventSlim(false);
@@ -383,6 +459,43 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_generic_invokes_all_event_handlers_in_multicast_delegate_on_same_background_thread()
+        {
+            var waitHandle1 = new ManualResetEventSlim(false);
+            var waitHandle2 = new ManualResetEventSlim(false);
+            var waitHandle3 = new ManualResetEventSlim(false);
+            var threadId1 = -1;
+            var threadId2 = -1;
+            var threadId3 = -1;
+
+            var handler = (EventHandler<EventArgs>)((s, e) =>
+            {
+                threadId1 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle1.Set();
+            });
+            handler += (s, e) =>
+            {
+                threadId2 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle2.Set();
+            };
+            handler += (s, e) =>
+            {
+                threadId3 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle3.Set();
+            };
+
+            EventHelper.BeginRaise(handler, this, EventArgs.Empty, null, null);
+
+            Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId1);
+            Assert.Equal(threadId1, threadId2);
+            Assert.Equal(threadId2, threadId3);
         }
 
         [Fact]
@@ -511,6 +624,25 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         }
 
         [Fact]
+        public void begin_raise_generic_with_lazy_event_args_creation_invokes_event_handler_on_different_thread()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var threadId = -1;
+            EventHelper.BeginRaise((s, e) =>
+                {
+                    threadId = Thread.CurrentThread.ManagedThreadId;
+                    waitHandle.Set();
+                },
+                this,
+                () => EventArgs.Empty,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId);
+        }
+
+        [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_invokes_all_event_handlers_in_multicast_delegate()
         {
             var waitHandle1 = new ManualResetEventSlim(false);
@@ -526,6 +658,43 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_generic_with_lazy_event_args_creation_invokes_all_event_handlers_in_multicast_delegate_on_same_background_thread()
+        {
+            var waitHandle1 = new ManualResetEventSlim(false);
+            var waitHandle2 = new ManualResetEventSlim(false);
+            var waitHandle3 = new ManualResetEventSlim(false);
+            var threadId1 = -1;
+            var threadId2 = -1;
+            var threadId3 = -1;
+
+            var handler = (EventHandler<EventArgs>)((s, e) =>
+            {
+                threadId1 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle1.Set();
+            });
+            handler += (s, e) =>
+            {
+                threadId2 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle2.Set();
+            };
+            handler += (s, e) =>
+            {
+                threadId3 = Thread.CurrentThread.ManagedThreadId;
+                waitHandle3.Set();
+            };
+
+            EventHelper.BeginRaise(handler, this, () => EventArgs.Empty, null, null);
+
+            Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId1);
+            Assert.Equal(threadId1, threadId2);
+            Assert.Equal(threadId2, threadId3);
         }
 
         [Fact]

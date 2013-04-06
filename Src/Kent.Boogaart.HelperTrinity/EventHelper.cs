@@ -9,8 +9,11 @@ namespace Kent.Boogaart.HelperTrinity
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <c>EventHelper</c> class provides methods that can be used to raise events. It avoids the need for explicitly
-    /// checking event sinks for <see langword="null"/> before raising the event.
+    /// The <c>EventHelper</c> class provides methods that can be used to raise events. It avoids the need for explicitly checking event sinks for <see langword="null"/> before raising the event.
+    /// </para>
+    /// <para>
+    /// The <see cref="Raise"/> overloads raise an event synchronously. All handlers will be invoked one after the other on the calling thread. The <see cref="BeginRaise"/> overloads raise an event asynchronously.
+    /// All handlers will be invoked one after the other on a background thread.
     /// </para>
     /// </remarks>
     /// <example>
@@ -115,7 +118,6 @@ namespace Kent.Boogaart.HelperTrinity
         /// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise(Delegate,object,EventArgs)"]/*' />
         [SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
         [DebuggerHidden]
-        [Obsolete("This API will be removed in a future version of The Helper Trinity.")]
         public static void Raise(Delegate handler, object sender, EventArgs e)
         {
             if (handler != null)
@@ -164,7 +166,6 @@ namespace Kent.Boogaart.HelperTrinity
         /// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise(Delegate,object,EventArgs,AsyncCallback,object)"]/*' />
         [SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
         [DebuggerHidden]
-        [Obsolete("This API will be removed in a future version of The Helper Trinity.")]
         public static void BeginRaise(Delegate handler, object sender, EventArgs e, AsyncCallback callback, object asyncState)
         {
             if (handler != null)

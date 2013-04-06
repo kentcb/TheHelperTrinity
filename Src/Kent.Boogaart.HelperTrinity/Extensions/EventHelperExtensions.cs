@@ -37,7 +37,6 @@
 
         /// <include file='../EventHelper.doc.xml' path='doc/member[@name="Raise(Delegate,object,EventArgs)"]/*' />
         [DebuggerHidden]
-        [Obsolete("This API will be removed in a future version of The Helper Trinity.")]
         public static void Raise(this Delegate handler, object sender, EventArgs e)
         {
             EventHelper.Raise(handler, sender, e);
@@ -68,7 +67,6 @@
 
         /// <include file='../EventHelper.doc.xml' path='doc/member[@name="BeginRaise(Delegate,object,EventArgs,AsyncCallback,object)"]/*' />
         [DebuggerHidden]
-        [Obsolete("This API will be removed in a future version of The Helper Trinity.")]
         public static void BeginRaise(this Delegate handler, object sender, EventArgs e, AsyncCallback callback, object asyncState)
         {
             EventHelper.BeginRaise(handler, sender, e, callback, asyncState);
