@@ -4,8 +4,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 // this is used to version artifacts. AssemblyInformationalVersion should use semantic versioning (http://semver.org/)
-[assembly: AssemblyInformationalVersion("1.5.2")]
-[assembly: AssemblyVersion("1.5.2.0")]
+[assembly: AssemblyInformationalVersion("1.5.3")]
+[assembly: AssemblyVersion("1.5.3.0")]
 
 [assembly: AssemblyCompany("Kent Boogaart")]
 [assembly: AssemblyProduct("The Helper Trinity")]
