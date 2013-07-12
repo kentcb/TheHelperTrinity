@@ -6,3 +6,5 @@ Gen
 *.user
 *.[Cc]ache
 *.shfbproj_*
+*.chm
+LastBuild.log
