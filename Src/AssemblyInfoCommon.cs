@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Resources;
-using System.Runtime.InteropServices;
 
 // this is used to version artifacts. AssemblyInformationalVersion should use semantic versioning (http://semver.org/)
 [assembly: AssemblyInformationalVersion("1.5.3")]
@@ -13,7 +12,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
 [assembly: NeutralResourcesLanguage("en-US")]
 
 #if DEBUG

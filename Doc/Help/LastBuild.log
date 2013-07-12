@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shfbBuild product="Sandcastle Help File Builder" version="1.9.7.0" projectFile="C:\Users\Kent\Repository\thehelpertrinity\Doc\HelperTrinity2.shfbproj" started="12/07/2013 22:43:33">
+<buildStep step="Initializing">
+Finding tools...
+Found Sandcastle tools in &#39;C:\Program Files (x86)\Sandcastle\&#39;
+Searching for HTML Help 1 compiler...
+Found HTML Help 1 compiler in &#39;C:\Program Files (x86)\HTML Help Workshop\&#39;
+</buildStep>
+<buildStep step="ClearWorkFolder">
+Clearing working folder...
+</buildStep>
+<buildStep step="ValidatingDocumentationSources">
+Validating and copying documentation source information
+Source: C:\Users\Kent\Repository\thehelpertrinity\Src\Kent.Boogaart.HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.dll
+    Found assembly &#39;C:\Users\Kent\Repository\thehelpertrinity\Src\Kent.Boogaart.HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.dll&#39;
+Source: C:\Users\Kent\Repository\thehelpertrinity\Src\Kent.Boogaart.HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.xml
+
+Copying XML comments files
+    C:\Users\Kent\Repository\thehelpertrinity\Src\Kent.Boogaart.HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.xml -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Kent.Boogaart.HelperTrinity.xml
+</buildStep>
+<buildStep step="GenerateSharedContent">
+Generating shared content files (en-US, English (United States))...
+    Last step completed in 00:00:00.0060
+</buildStep>
+<buildStep step="GenerateApiFilter">
+Generating API filter for MRefBuilder...
+    Last step completed in 00:00:00.0020
+</buildStep>
+<buildStep step="GenerateReflectionInfo">
+Generating reflection information...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+  MRefBuilder (v2.7.3.0)
+  Copyright &#184; 2006-2013, Microsoft Corporation, All Rights Reserved.
+  Portions Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved.
+  Info: Loaded 1 assemblies for reflection and 0 dependency assemblies.
+  Info: Wrote information on 2 namespaces, 6 types, and 46 members
+  XslTransform (v2.7.3.0)
+  Copyright &#184; 2006-2013, Microsoft Corporation, All Rights Reserved.
+  Portions Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved.
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\ProductionTransforms\MergeDuplicates.xsl&#39;.
+    Last step completed in 00:00:02.9564
+</buildStep>
+<buildStep step="GenerateNamespaceSummaries">
+Generating namespace summary information...
+    Last step completed in 00:00:00.0120
+</buildStep>
+<buildStep step="ApplyVisibilityProperties">
+Applying visibility properties to reflection information file
+    4 attribute nodes removed
+    0 explicit interface implementations removed
+    0 local and base class EII elements removed
+    Last step completed in 00:00:00.0430
+</buildStep>
+<buildStep step="TransformReflectionInfo">
+Transforming reflection output...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+  XslTransform (v2.7.3.0)
+  Copyright &#184; 2006-2013, Microsoft Corporation, All Rights Reserved.
+  Portions Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved.
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\\ProductionTransforms\ApplyVSDocModel.xsl&#39;.
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\ProductionTransforms\AddGuidFilenames.xsl&#39;.
+  XslTransform (v2.7.3.0)
+  Copyright &#184; 2006-2013, Microsoft Corporation, All Rights Reserved.
+  Portions Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved.
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\ProductionTransforms\ReflectionToManifest.xsl&#39;.
+    Last step completed in 00:00:02.5253
+</buildStep>
+<buildStep step="ModifyHelpTopicFilenames">
+Modifying help topic filenames in reflection information file
+    No changes required
+    Last step completed in 00:00:00.0150
+</buildStep>
+<buildStep step="CopyStandardContent">
+Copying standard help content...
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\adm.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\adm_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm_dev.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\adm_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm_dev_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\adm_dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\alert_caution.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\alert_caution.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\alert_note.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\alert_note.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\alert_security.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\alert_security.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_adm.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\big_adm.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\big_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_dev.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\big_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_kw.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\big_kw.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\box.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\box.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\Caution.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\Caution.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\CFW.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\CFW.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\collall.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\collall.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\collapse.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\collapse.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\collapse_all.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\collapse_all.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\copycode.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\copycode.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\copycodeHighlight.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\copycodeHighlight.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dev.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dev_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dropdown.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\dropdown.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dropdownHover.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\dropdownHover.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpdown.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\drpdown.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpdown_orange.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\drpdown_orange.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpdown_orange_up.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\drpdown_orange_up.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpup.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\drpup.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\exp.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\exp.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\expall.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\expall.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\expand_all.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\expand_all.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\filter1a.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\filter1a.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\filter1c.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\filter1c.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\footer.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\footer.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\gradient.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\gradient.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\greencheck.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\greencheck.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\greychck.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\greychck.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\header_prev_next.jpg -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\header_prev_next.jpg
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\header_sql_tutorial_blank.jpg -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\header_sql_tutorial_blank.jpg
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\header_sql_tutorial_logo.GIF -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\header_sql_tutorial_logo.GIF
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_adm.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_adm_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm_dev.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_adm_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm_dev_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_adm_dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_dev.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_dev_arch.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\kw_dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\LastChild.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\LastChild.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\load.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\load.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\load_hover.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\load_hover.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\note.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\note.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pencil.GIF -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pencil.GIF
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privclass.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privclass.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privdelegate.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privdelegate.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privenum.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privenum.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privenumeration.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privenumeration.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privevent.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privevent.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privextension.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privextension.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privfield.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privfield.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privinterface.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privinterface.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privmethod.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privmethod.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privproperty.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privproperty.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privstructure.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\privstructure.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protclass.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protclass.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protdelegate.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protdelegate.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protenum.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protenum.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protenumeration.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protenumeration.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protevent.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protevent.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protextension.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protextension.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protfield.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protfield.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protinterface.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protinterface.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protmethod.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protmethod.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protoperator.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protoperator.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protproperty.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protproperty.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protstructure.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\protstructure.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubclass.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubclass.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubdelegate.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubdelegate.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubenum.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubenum.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubenumeration.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubenumeration.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubevent.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubevent.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubextension.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubextension.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubfield.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubfield.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubinterface.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubinterface.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubmethod.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubmethod.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\puboperator.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\puboperator.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubproperty.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubproperty.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubstructure.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\pubstructure.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\requirements1a.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\requirements1a.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\requirements1c.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\requirements1c.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\save.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\save.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\save_hover.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\save_hover.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\security.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\security.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\seealso1a.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\seealso1a.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\seealso1c.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\seealso1c.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\slMobile.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\slMobile.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\static.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\static.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\xna.gif -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\icons\xna.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\CheckboxMenu.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\CheckboxMenu.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\CommonUtilities.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\CommonUtilities.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\Dropdown.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\Dropdown.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\EventUtilities.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\EventUtilities.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\script_feedBack.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\script_feedBack.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\script_manifold.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\script_manifold.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\SplitScreen.js -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\scripts\SplitScreen.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\styles\Presentation.css -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\styles\Presentation.css
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\styles\Whidbey\Presentation.css -&gt; C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\styles\Whidbey\Presentation.css
+    Last step completed in 00:00:00.2630
+</buildStep>
+<buildStep step="CopyAdditionalContent">
+Copying additional content files...
+No additional content to copy
+    Last step completed in 00:00:00.0100
+</buildStep>
+<buildStep step="MergeTablesOfContents">
+Merging conceptual and additional tables of contents...
+    Last step completed in 00:00:00.0010
+</buildStep>
+<buildStep step="GenerateIntermediateTableOfContents">
+Generating intermediate table of contents file...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+  XslTransform (v2.7.3.0)
+  Copyright &#184; 2006-2013, Microsoft Corporation, All Rights Reserved.
+  Portions Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved.
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\\ProductionTransforms\CreateVSToc.xsl&#39;.
+Generating conceptual content intermediate TOC file...
+    Last step completed in 00:00:01.7992
+</buildStep>
+<buildStep step="CreateBuildAssemblerConfigs">
+Creating Sandcastle configuration files...
+    sandcastle.config
+    Last step completed in 00:00:00.3290
+</buildStep>
+<buildStep step="MergeCustomConfigs">
+Merging custom build component configurations
+C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\sandcastle.config
+    Last step completed in 00:00:00.0620
+</buildStep>
+<buildStep step="BuildReferenceTopics">
+Building reference help topics...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+  BuildAssembler (v2.7.3.0)
+  Copyright &#184; 2006-2013, Microsoft Corporation, All Rights Reserved.
+  Portions Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved.
+  Info: Loading configuration...
+  Diagnostic: ResolveReferenceLinksComponent2: The MSDN content ID cache &#39;C:\Users\Kent\AppData\Local\EWSoftware\Sandcastle Help File Builder\Cache\MsdnContentId.cache&#39; does not exist yet.  All IDs will be looked up in this build which will slow it down.
+  Info: Processing topics...
+  Warn: ShowMissingComponent: [N:Kent.Boogaart.HelperTrinity] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.ArgumentHelper.AssertEnumMember``1(``0,System.String)] Unknown reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum, TEnum[])&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.ArgumentHelper.AssertEnumMember``1(``0,System.String)] Invalid reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum, TEnum[])&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.ArgumentHelper.AssertEnumMember``1(``0,System.String,``0[])] Unknown reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.ArgumentHelper.AssertEnumMember``1(``0,System.String,``0[])] Invalid reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.ArgumentHelper.AssertEnumMember``1(``0,System.String,``0[])] Unknown reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.ArgumentHelper.AssertEnumMember``1(``0,System.String,``0[])] Invalid reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.EventHelper.Raise(System.Delegate,System.Object,System.EventArgs)] Unknown reference link target &#39;!:TargetParameterCountException&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.EventHelper.Raise(System.Delegate,System.Object,System.EventArgs)] Invalid reference link target &#39;!:TargetParameterCountException&#39;.
+  Warn: ShowMissingComponent: [N:Kent.Boogaart.HelperTrinity.Extensions] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.ArgumentHelperExtensions.AssertEnumMember``1(``0,System.String)] Unknown reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum, TEnum[])&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.ArgumentHelperExtensions.AssertEnumMember``1(``0,System.String)] Invalid reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum, TEnum[])&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.ArgumentHelperExtensions.AssertEnumMember``1(``0,System.String,``0[])] Unknown reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.ArgumentHelperExtensions.AssertEnumMember``1(``0,System.String,``0[])] Invalid reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.ArgumentHelperExtensions.AssertEnumMember``1(``0,System.String,``0[])] Unknown reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.ArgumentHelperExtensions.AssertEnumMember``1(``0,System.String,``0[])] Invalid reference link target &#39;!:AssertEnumMember&lt;TEnum&gt;(TEnum)&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.EventHelperExtensions.Raise(System.Delegate,System.Object,System.EventArgs)] Unknown reference link target &#39;!:TargetParameterCountException&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:Kent.Boogaart.HelperTrinity.Extensions.EventHelperExtensions.Raise(System.Delegate,System.Object,System.EventArgs)] Invalid reference link target &#39;!:TargetParameterCountException&#39;.
+  Info: Processed 77 topic(s)
+  Info: 18 warning(s)
+  Diagnostic: CopyFromIndexComponent: &quot;reflection&quot; in-memory cache entries used: 4 of 15.
+  Diagnostic: CopyFromIndexComponent: &quot;comments&quot; in-memory cache entries used: 3 of 30.
+  Diagnostic: ResolveReferenceLinksComponent2: New MSDN content ID cache size: 22 entries
+    Last step completed in 00:00:29.2303
+</buildStep>
+<buildStep step="CombiningIntermediateTocFiles">
+Combining conceptual and API intermediate TOC files...
+    Last step completed in 00:00:00.0060
+</buildStep>
+<buildStep step="ExtractingHtmlInfo">
+Extracting HTML info for HTML Help 1 and/or website...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+Sandcastle Help File Builder, version 1.9.7.0
+Copyright &#184; 2006-2013, Eric Woodruff, All Rights Reserved
+E-Mail: Eric@EWoodruff.us
+
+Using LCID &#39;1033&#39;, code page &#39;65001&#39;, encoding charset &#39;UTF-8&#39;.
+
+Processing Help 1 files in C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1
+Processed 77 HTML files
+Sorting keywords and generating See Also indices
+Saving HTML Help 1 keyword index to C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Documentation.hhk
+Saving HTML Help 1 table of contents to C:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Documentation.hhc
+    Last step completed in 00:00:01.8832
+</buildStep>
+<buildStep step="GenerateHelpFormatTableOfContents">
+Generating HTML Help 1 table of contents file...
+    Last step completed in 00:00:00.0010
+</buildStep>
+<buildStep step="GenerateHelpFileIndex">
+Generating HTML Help 1 index file...
+    Last step completed in 00:00:00.0020
+</buildStep>
+<buildStep step="GenerateHelpProject">
+Generating HTML Help 1 project file...
+    Last step completed in 00:00:00.0100
+</buildStep>
+<buildStep step="CompilingHelpFile">
+Compiling HTML Help 1 file...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+  Microsoft HTML Help Compiler 4.74.8702
+  
+  
+  
+  Compiling c:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\Documentation.chm
+  
+  
+  
+  
+  
+  Compile time: 0 minutes, 0 seconds
+  
+  79	Topics
+  
+  851	Local links
+  
+  311	Internet links
+  
+  0	Graphics
+  
+  
+  
+  
+  
+  Created c:\Users\Kent\Repository\thehelpertrinity\Doc\Help\Working\Output\HtmlHelp1\Documentation.chm, 238,035 bytes
+  
+  Compression decreased file by 1,149,674 bytes.
+  
+    Last step completed in 00:00:02.6872
+</buildStep>
+<buildStep step="CleanIntermediates">
+Removing intermediate files...
+    Last step completed in 00:00:00.0340
+</buildStep>
+<buildStep step="Completed">
+
+Build completed successfully at 07/12/2013 10:44 PM.  Total time: 00:00:41.9867
+
+</buildStep>
+</shfbBuild>

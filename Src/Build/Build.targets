@@ -9,33 +9,6 @@
         <Configuration Condition=" $(Configuration) == '' ">Release</Configuration>
     </PropertyGroup>
 
-    <ItemGroup>
-        <!--
-        order is very important here, for reasons I haven't investigated fully. If the Silverlight solutions are built second, invalid binaries
-        are produced. It seems that building the standard solution results in some properties being set that then affect the Silverlight build.
-        -->
-        <Framework Include="SL40">
-            <NuGetName>sl40</NuGetName>
-            <FriendlyName>Silverlight 4</FriendlyName>
-        </Framework>
-        <Framework Include="SL50">
-            <NuGetName>sl50</NuGetName>
-            <FriendlyName>Silverlight 5</FriendlyName>
-        </Framework>
-        <Framework Include="FX35">
-            <NuGetName>net35</NuGetName>
-            <FriendlyName>.NET 3.5</FriendlyName>
-        </Framework>
-        <Framework Include="FX40">
-            <NuGetName>net40</NuGetName>
-            <FriendlyName>.NET 4.0</FriendlyName>
-        </Framework>
-        <Framework Include="FX45">
-            <NuGetName>net45</NuGetName>
-            <FriendlyName>.NET 4.5</FriendlyName>
-        </Framework>
-    </ItemGroup>
-
     <Import Project="$(SrcDir)\.build\MSBuild.Community.Tasks.Targets" />
     <UsingTask AssemblyFile="$(SrcDir)\packages\xunit.1.9.1\lib\net20\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
 
@@ -65,18 +38,18 @@
     <Target Name="All" DependsOnTargets="Clean;Build;UnitTests;GenerateDocumentation;CreateArchives;CreateNuGetPackages"/>
 
     <Target Name="Clean">
-        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=%(Framework.Identity) $(Configuration)" Targets="Clean" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=$(Configuration)" Targets="Clean" BuildInParallel="True"/>
         <RemoveDir Directories="$(GenDir)" />
     </Target>
 
     <Target Name="Build">
-        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=%(Framework.Identity) $(Configuration)" Targets="Build" BuildInParallel="True"/>
+        <MSBuild Projects="$(SrcDir)\HelperTrinity.sln" Properties="Configuration=$(Configuration)" Targets="Build" BuildInParallel="True"/>
     </Target>
 
     <Target Name="UnitTests">
         <MakeDir Directories="$(GenDir)\Tests" />
 
-        <xunit Assembly="$(SrcDir)\Kent.Boogaart.HelperTrinity.UnitTests\bin\FX45 $(Configuration)\Kent.Boogaart.HelperTrinity.UnitTests.dll" Xml="$(GenDir)\Tests\Kent.Boogaart.HelperTrinity.UnitTests.xml" />
+        <xunit Assembly="$(SrcDir)\Kent.Boogaart.HelperTrinity.UnitTests\bin\$(Configuration)\Kent.Boogaart.HelperTrinity.UnitTests.dll" Xml="$(GenDir)\Tests\Kent.Boogaart.HelperTrinity.UnitTests.xml" />
     </Target>
 
     <Target Name="GenerateDocumentation">
@@ -114,14 +87,14 @@
         <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-doc.zip" WorkingDirectory="$(GenDir)\Documentation\" ZipLevel="9" Files="@(DocFiles)" />
 
         <!-- zip binaries -->
-        <CreateItem Include="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\%(Framework.Identity) $(Configuration)\*.*">
-            <Output ItemName="BinFiles%(Framework.Identity)" TaskParameter="Include" />
+        <CreateItem Include="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\$(Configuration)\*.*">
+            <Output ItemName="BinFiles" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(BinFiles%(Framework.Identity))" DestinationFolder="$(GenDir)\Temp\%(Framework.Identity)" />
-        <CreateItem Include="$(GenDir)\Temp\%(Framework.Identity)\*.*">
-            <Output ItemName="BinFilesCopy%(Framework.Identity)" TaskParameter="Include" />
+        <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(GenDir)\Temp\" />
+        <CreateItem Include="$(GenDir)\Temp\*.*">
+            <Output ItemName="BinFilesCopy" TaskParameter="Include" />
         </CreateItem>
-        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-%(Framework.Identity)-bin.zip" WorkingDirectory="$(GenDir)\Temp\%(Framework.Identity)\" ZipLevel="9" Files="@(BinFilesCopy%(Framework.Identity))" />
+        <Zip ZipFileName="$(GenDir)\TheHelperTrinity-$(Version)-bin.zip" WorkingDirectory="$(GenDir)\Temp\" ZipLevel="9" Files="@(BinFilesCopy)" />
     </Target>
 
     <Target Name="CreateNuGetPackages" DependsOnTargets="GetVersion">
@@ -137,10 +110,10 @@
         <TemplateFile Template="$(SrcDir)\HelperTrinity.nuspec.template" OutputFileName="$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.nuspec" Tokens="@(Tokens)"/>
 
         <!-- copy files into the appropriate locations -->
-        <CreateItem Include="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\%(Framework.Identity) $(Configuration)\Kent.Boogaart.HelperTrinity.*">
-            <Output ItemName="%(Framework.Identity)TheHelperTrinityFiles" TaskParameter="Include" />
+        <CreateItem Include="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\$(Configuration)\Kent.Boogaart.HelperTrinity.*">
+            <Output ItemName="TheHelperTrinityFiles" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(%(Framework.Identity)TheHelperTrinityFiles)" DestinationFolder="$(GenDir)\NuGet\lib\%(Framework.NuGetName)" />
+        <Copy SourceFiles="@(TheHelperTrinityFiles)" DestinationFolder="$(GenDir)\NuGet\lib\portable-win+net403+sl40+wp+Xbox40" />
 
         <CreateItem Include="$(SrcDir)\**\*.*" Exclude="$(SrcDir)\packages\**\*;$(SrcDir)\**\*.suo;$(SrcDir)\**\*.csproj.user;$(SrcDir)\**\*.gpState;$(SrcDir)\**\bin\**;$(SrcDir)\**\obj\**;$(SrcDir)\**\.svn\**">
             <Output ItemName="Source_Files" TaskParameter="Include" />
@@ -163,7 +136,7 @@
 
     <!-- ensure the Version property is set appropriately -->
     <Target Name="GetVersion">
-        <GetAssemblyInformationalVersion AssemblyFile="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\FX45 $(Configuration)\Kent.Boogaart.HelperTrinity.dll">
+        <GetAssemblyInformationalVersion AssemblyFile="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\$(Configuration)\Kent.Boogaart.HelperTrinity.dll">
             <Output TaskParameter="Version" PropertyName="AssemblyInformationalVersion" />
         </GetAssemblyInformationalVersion>
         <CreateProperty Condition="$(Version) == ''" Value="$(AssemblyInformationalVersion)">

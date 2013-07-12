@@ -4,7 +4,7 @@
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
          sources -->
-    <Configuration Condition=" '$(Configuration)' == '' ">FX45 Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{875651eb-17e7-40c8-87bf-1ca148cec0f5}</ProjectGuid>
@@ -18,10 +18,10 @@
     <OutputPath>..\Gen\Documentation\</OutputPath>
     <HtmlHelpName>The Helper Trinity</HtmlHelpName>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Src\Kent.Boogaart.HelperTrinity\bin\FX45 Release\Kent.Boogaart.HelperTrinity.dll" />
-      <DocumentationSource sourceFile="..\Src\Kent.Boogaart.HelperTrinity\bin\FX45 Release\Kent.Boogaart.HelperTrinity.xml" />
+      <DocumentationSource sourceFile="..\Src\Kent.Boogaart.HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.dll" />
+      <DocumentationSource sourceFile="..\Src\Kent.Boogaart.HelperTrinity\bin\Release\Kent.Boogaart.HelperTrinity.xml" />
     </DocumentationSources>
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Portable Library 4.0 (Legacy)</FrameworkVersion>
     <HelpTitle>The Helper Trinity</HelpTitle>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>API Documentation</RootNamespaceTitle>
@@ -60,9 +60,9 @@
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'FX45 Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'FX45 Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

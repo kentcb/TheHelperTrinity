@@ -1,71 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">FX45 Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9D07AA23-ABF7-4646-AA92-2EDD7857E498}</ProjectGuid>
+    <ProjectGuid>{0896198E-696F-4368-BA1F-429E932B037A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kent.Boogaart.HelperTrinity.UnitTests</RootNamespace>
     <AssemblyName>Kent.Boogaart.HelperTrinity.UnitTests</AssemblyName>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Kent.Boogaart.snk</AssemblyOriginatorKeyFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FX45 Debug|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\FX45 Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FX45</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FX45 Release|AnyCPU'">
-    <OutputPath>bin\FX45 Release\</OutputPath>
-    <DefineConstants>TRACE;FX45</DefineConstants>
-    <Optimize>true</Optimize>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
-    <Compile Include="ArgumentHelperFixture.cs" />
-    <Compile Include="EventHelperFixture.cs" />
-    <Compile Include="ExceptionHelperFixture.cs" />
-    <Compile Include="Extensions\ArgumentHelperExtensionsFixture.cs" />
-    <Compile Include="Extensions\EventHelperExtensionsFixture.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\ExceptionHelper.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExceptionHelper\Subfolder\CustomExceptionHelperResource.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="xunit, Version=1.9.1.1600, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="xunit">
       <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj">
-      <Project>{9F0FA58D-CE35-48B7-9BB4-3CB6826B8D93}</Project>
-      <Name>Kent.Boogaart.HelperTrinity</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoCommon.cs">
@@ -74,10 +48,32 @@
     <Compile Include="..\AssemblyInfoCommonSecurity.cs">
       <Link>Properties\AssemblyInfoCommonSecurity.cs</Link>
     </Compile>
+    <Compile Include="ArgumentHelperFixture.cs" />
+    <Compile Include="EventHelperFixture.cs" />
+    <Compile Include="ExceptionHelperFixture.cs" />
+    <Compile Include="Extensions\ArgumentHelperExtensionsFixture.cs" />
+    <Compile Include="Extensions\EventHelperExtensionsFixture.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj">
+      <Project>{673733c4-cba3-43fb-b519-a6bfac83d9c3}</Project>
+      <Name>Kent.Boogaart.HelperTrinity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExceptionHelper\Subfolder\CustomExceptionHelperResource.xml" />
+    <EmbeddedResource Include="Properties\ExceptionHelper.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Condition="$(TargetFrameworkIdentifier) == '.NETFramework'" Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Condition="$(TargetFrameworkIdentifier) == 'Silverlight'" Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

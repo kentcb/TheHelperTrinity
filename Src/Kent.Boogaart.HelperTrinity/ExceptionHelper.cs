@@ -132,12 +132,8 @@ namespace Kent.Boogaart.HelperTrinity
             else
             {
                 // here we determine the default name for the resource
-                // we use a separate, slightly less efficient, code path for Silverlight, since it doesn't have Assembly.GetName()
-#if SILVERLIGHT
+                // NOTE: PCL does not have Assembly.GetName()
                 this.resourceName = string.Concat(new AssemblyName(forType.Assembly.FullName).Name, ".Properties.ExceptionHelper.xml");
-#else
-                this.resourceName = string.Concat(forType.Assembly.GetName().Name, ".Properties.ExceptionHelper.xml");
-#endif
             }
         }
 
@@ -299,19 +295,13 @@ namespace Kent.Boogaart.HelperTrinity
                 constructorArgsList.Add(innerException);
             }
 
+            // find the most suitable constructor given the parameters and available constructors
             var constructorArgsArr = constructorArgsList.ToArray();
-            var bindingFlags = BindingFlags.Public | BindingFlags.Instance;
-            ConstructorInfo constructor = null;
-
-            try
-            {
-                object state;
-                constructor = (ConstructorInfo)Type.DefaultBinder.BindToMethod(bindingFlags, type.GetConstructors(bindingFlags), ref constructorArgsArr, null, null, null, out state);
-            }
-            catch (MissingMethodException)
-            {
-                // swallow and deal with below
-            }
+            var constructor = (from candidateConstructor in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+                               let rank = RankArgumentsAgainstParameters(constructorArgsArr, candidateConstructor.GetParameters())
+                               where rank > 0
+                               orderby rank descending
+                               select candidateConstructor).FirstOrDefault();
 
             if (constructor == null)
             {
@@ -472,6 +462,58 @@ namespace Kent.Boogaart.HelperTrinity
             }
 
             return retVal;
+        }
+
+        // the higher the rank, the more suited the arguments are to fitting into the given parameters
+        // a rank of zero means completely unsuitable and should be ignored
+        private static int RankArgumentsAgainstParameters(object[] arguments, ParameterInfo[] parameters)
+        {
+            if (arguments.Length != parameters.Length)
+            {
+                return 0;
+            }
+
+            var runningRank = 0;
+
+            for (var i = 0; i < arguments.Length; ++i)
+            {
+                var parameterRank = RankArgumentAgainstParameter(arguments[i], parameters[i]);
+
+                if (parameterRank == 0)
+                {
+                    return 0;
+                }
+
+                runningRank += parameterRank;
+            }
+
+            return runningRank;
+        }
+
+        // rank an individual argument's suitability to fit the given parameter
+        // a rank of zero means completely unsuitable
+        private static int RankArgumentAgainstParameter(object argument, ParameterInfo parameter)
+        {
+            if (argument == null)
+            {
+                // limited what we can do when we have no type for the argument
+                if (parameter.ParameterType.IsValueType && Nullable.GetUnderlyingType(parameter.ParameterType) == null)
+                {
+                    // parameter is not nullable, but argument is null
+                    return 0;
+                }
+
+                // null fits into this parameter
+                return 1;
+            }
+
+            if (!parameter.ParameterType.IsAssignableFrom(argument.GetType()))
+            {
+                // argument is not assignable to parameter type
+                return 0;
+            }
+
+            return 2;
         }
 
         private struct ExceptionInfoKey : IEquatable<ExceptionInfoKey>

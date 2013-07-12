@@ -5,6 +5,8 @@ namespace Kent.Boogaart.HelperTrinity
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Provides helper methods for asserting arguments.
@@ -171,7 +173,6 @@ namespace Kent.Boogaart.HelperTrinity
             }
         }
 
-#if !SILVERLIGHT
         /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />
         [DebuggerHidden]
         [CLSCompliant(false)]
@@ -188,11 +189,12 @@ namespace Kent.Boogaart.HelperTrinity
                 if (longValue == 0)
                 {
                     // only throw if zero isn't defined in the enum - we have to convert zero to the underlying type of the enum
-                    throwEx = !Enum.IsDefined(typeof(TEnum), ((IConvertible)0).ToType(Enum.GetUnderlyingType(typeof(TEnum)), CultureInfo.InvariantCulture));
+                    //throwEx = !Enum.IsDefined(typeof(TEnum), ((IConvertible)0).ToType(Enum.GetUnderlyingType(typeof(TEnum)), CultureInfo.InvariantCulture));
+                    throwEx = !Enum.IsDefined(typeof(TEnum), default(TEnum));
                 }
                 else
                 {
-                    foreach (TEnum value in Enum.GetValues(typeof(TEnum)))
+                    foreach (TEnum value in GetEnumValues<TEnum>())
                     {
                         longValue &= ~value.ToInt64(CultureInfo.InvariantCulture);
                     }
@@ -227,7 +229,6 @@ namespace Kent.Boogaart.HelperTrinity
                 }
             }
         }
-#endif
 
         /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])"]/*' />
         [DebuggerHidden]
@@ -328,6 +329,20 @@ namespace Kent.Boogaart.HelperTrinity
             }
 
             return true;
+        }
+
+        private static IEnumerable<T> GetEnumValues<T>()
+        {
+            var type = typeof(T);
+
+            if (!type.IsEnum)
+            {
+                throw new ArgumentException("Type '" + type.Name + "' is not an enum");
+            }
+
+            return from field in type.GetFields(BindingFlags.Public | BindingFlags.Static)
+                   where field.IsLiteral
+                   select (T)field.GetValue(null);
         }
     }
 }
