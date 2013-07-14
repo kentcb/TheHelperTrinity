@@ -150,14 +150,7 @@ namespace Kent.Boogaart.HelperTrinity
         [DebuggerHidden]
         public static void AssertNotNullOrEmpty(string arg, string argName)
         {
-            AssertNotNullOrEmpty(arg, argName, false);
-        }
-
-        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(string,string,bool)"]/*' />
-        [DebuggerHidden]
-        public static void AssertNotNullOrEmpty(string arg, string argName, bool trim)
-        {
-            if (string.IsNullOrEmpty(arg) || (trim && IsOnlyWhitespace(arg)))
+            if (string.IsNullOrEmpty(arg))
             {
                 throw new ArgumentException("Cannot be null or empty.", argName);
             }
@@ -181,6 +174,26 @@ namespace Kent.Boogaart.HelperTrinity
             {
                 throw new ArgumentException("Cannot be null or empty.", argName);
             }
+        }
+
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrWhiteSpace(string,string)"]/*' />
+        [DebuggerHidden]
+        public static void AssertNotNullOrWhiteSpace(string arg, string argName)
+        {
+            if (arg == null)
+            {
+                throw new ArgumentException("Cannot be null or white-space.", argName);
+            }
+
+            for (var i = 0; i < arg.Length; ++i)
+            {
+                if (!char.IsWhiteSpace(arg, i))
+                {
+                    return;
+                }
+            }
+
+            throw new ArgumentException("Cannot be null or white-space.", argName);
         }
 
         /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />

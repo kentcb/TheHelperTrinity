@@ -73,27 +73,45 @@ public class MyClass<T>
               <content>
                   <para>
                   	The <codeInline>AssertNotNullOrEmpty()</codeInline> methods can be used against <codeInline>string</codeInline>s, enumerables, or collections. They allow you to
-                  	ensure that the argument is non-<codeInline>null</codeInline> and that it is not empty. By default, a <codeInline>string</codeInline> is considered
-                  	empty if it contains no characters, but an overload allows you to trim the <codeInline>string</codeInline> first, thus ensuring that it also does not
-                  	consist entirely of whitespace.
+                  	ensure that the argument is non-<codeInline>null</codeInline> and that it is not empty.
                   </para>
                   <code language="C#"><![CDATA[
 public class MyClass
 {
-	public void MyMethod(string arg1, string arg2, IList<int> arg3)
+	public void MyMethod(string arg1, IList<int> arg2)
 	{
 		// this will throw if arg1 is null or "" but not if it is " "
 		ArgumentHelper.AssertNotNullOrEmpty(arg1, "arg1");
-		// this will throw if arg2 is null or "" or " " or any combination of whitespace
-		ArgumentHelper.AssertNotNullOrEmpty(arg2, "arg2", true);
-		// this will throw if arg3 is null or does not contain at least one integer
-		ArgumentHelper.AssertNotNullOrEmpty(arg3, "arg3");
+        
+		// this will throw if arg2 is null or does not contain at least one integer
+		ArgumentHelper.AssertNotNullOrEmpty(arg2, "arg2");
 	}
 }]]>
                   </code>
               </content>
           </section>
-          
+
+          <section address="AssertNotNullOrWhiteSpace()">
+              <title>AssertNotNullOrWhiteSpace()</title>
+              <content>
+                  <para>
+                      The <codeInline>AssertNotNullOrWhiteSpace()</codeInline> method can be used against <codeInline>string</codeInline>s only. It allows you to ensure that
+                      a <codeInline>string</codeInline> is non-<codeInline>null</codeInline>, non-empty, and does not consist entirely of white-space characters.
+                  </para>
+                  <code language="C#">
+                      <![CDATA[
+public class MyClass
+{
+	public void MyMethod(string arg1)
+	{
+		// this will throw if arg1 is null, "", "  ", or "  \t\r\n", but not if it's "  \t\r\n foo"
+		ArgumentHelper.AssertNotNullOrWhiteSpace(arg1, "arg1");
+	}
+}]]>
+                  </code>
+              </content>
+          </section>
+
           <section address="AssertEnumMember()">
               <title>AssertEnumMember()</title>
               <content>

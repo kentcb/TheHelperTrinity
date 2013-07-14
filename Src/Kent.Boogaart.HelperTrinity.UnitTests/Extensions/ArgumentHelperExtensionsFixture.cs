@@ -127,27 +127,9 @@
         }
 
         [Fact]
-        public void assert_not_null_or_empty_throws_if_string_is_blank_and_trimming_is_requested()
-        {
-            Assert.Throws<ArgumentException>(() => "  ".AssertNotNullOrEmpty("test", true));
-        }
-
-        [Fact]
         public void assert_not_null_or_empty_does_not_throw_if_string_is_not_null()
         {
             "test".AssertNotNullOrEmpty("test");
-        }
-
-        [Fact]
-        public void assert_not_null_or_empty_does_not_throw_if_string_is_not_empty()
-        {
-            "  a ".AssertNotNullOrEmpty("test", true);
-        }
-
-        [Fact]
-        public void assert_not_null_or_empty_does_not_throw_if_string_is_empty_but_trimming_is_not_requested()
-        {
-            "  ".AssertNotNullOrEmpty("test", false);
         }
 
         [Fact]
@@ -184,6 +166,30 @@
         public void assert_not_null_or_empty_does_not_throw_if_collection_is_not_empty()
         {
             new List<string>(new string[] { "First", "Second" }).AssertNotNullOrEmpty("test");
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_throws_if_string_is_null()
+        {
+            Assert.Throws<ArgumentException>(() => ((string)null).AssertNotNullOrWhiteSpace("test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_throws_if_string_is_empty()
+        {
+            Assert.Throws<ArgumentException>(() => string.Empty.AssertNotNullOrWhiteSpace("test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_throws_if_string_contains_only_white_space()
+        {
+            Assert.Throws<ArgumentException>(() => "  \t     \r \n  ".AssertNotNullOrWhiteSpace("test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_does_not_throw_if_string_is_not_entirely_white_space()
+        {
+            "  a ".AssertNotNullOrWhiteSpace("test");
         }
 
         [Fact]

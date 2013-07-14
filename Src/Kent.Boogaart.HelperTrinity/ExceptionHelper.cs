@@ -117,7 +117,7 @@ namespace Kent.Boogaart.HelperTrinity
         public ExceptionHelper(Type forType, string resourceName)
             : this(forType, resourceName, 0)
         {
-            resourceName.AssertNotNullOrEmpty("resource", true);
+            resourceName.AssertNotNullOrWhiteSpace("resource");
         }
 
         private ExceptionHelper(Type forType, string resourceName, int dummy)

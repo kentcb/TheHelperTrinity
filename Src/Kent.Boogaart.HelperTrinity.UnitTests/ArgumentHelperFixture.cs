@@ -126,27 +126,9 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         }
 
         [Fact]
-        public void assert_not_null_or_empty_throws_if_string_is_blank_and_trimming_is_requested()
-        {
-            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty("  ", "test", true));
-        }
-
-        [Fact]
         public void assert_not_null_or_empty_does_not_throw_if_string_is_not_null()
         {
             ArgumentHelper.AssertNotNullOrEmpty("test", "test");
-        }
-
-        [Fact]
-        public void assert_not_null_or_empty_does_not_throw_if_string_is_not_empty()
-        {
-            ArgumentHelper.AssertNotNullOrEmpty("  a ", "test", true);
-        }
-
-        [Fact]
-        public void assert_not_null_or_empty_does_not_throw_if_string_is_empty_but_trimming_is_not_requested()
-        {
-            ArgumentHelper.AssertNotNullOrEmpty("  ", "test", false);
         }
 
         [Fact]
@@ -183,6 +165,30 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         public void assert_not_null_or_empty_does_not_throw_if_collection_is_not_empty()
         {
             ArgumentHelper.AssertNotNullOrEmpty(new List<string>(new string[] { "First", "Second" }), "test");
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_throws_if_string_is_null()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrWhiteSpace((string)null, "test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_throws_if_string_is_empty()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrWhiteSpace(string.Empty, "test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_throws_if_string_contains_only_white_space()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrWhiteSpace("  \t     \r \n  ", "test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_white_space_does_not_throw_if_string_is_not_entirely_white_space()
+        {
+            ArgumentHelper.AssertNotNullOrWhiteSpace("  a ", "test");
         }
 
         [Fact]

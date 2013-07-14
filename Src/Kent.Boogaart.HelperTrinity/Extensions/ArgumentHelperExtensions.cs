@@ -51,13 +51,6 @@
             ArgumentHelper.AssertNotNullOrEmpty(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(string,string,bool)"]/*' />
-        [DebuggerHidden]
-        public static void AssertNotNullOrEmpty(this string arg, string argName, bool trim)
-        {
-            ArgumentHelper.AssertNotNullOrEmpty(arg, argName, trim);
-        }
-
         /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(IEnumerable,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNullOrEmpty(this IEnumerable arg, string argName)
@@ -70,6 +63,13 @@
         public static void AssertNotNullOrEmpty(this ICollection arg, string argName)
         {
             ArgumentHelper.AssertNotNullOrEmpty(arg, argName);
+        }
+
+        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrWhiteSpace(string,string)"]/*' />
+        [DebuggerHidden]
+        public static void AssertNotNullOrWhiteSpace(this string arg, string argName)
+        {
+            ArgumentHelper.AssertNotNullOrWhiteSpace(arg, argName);
         }
 
         /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />

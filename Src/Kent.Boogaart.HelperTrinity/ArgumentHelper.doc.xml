@@ -118,27 +118,6 @@
         </param>
     </member>
 
-    <member name="AssertNotNullOrEmpty(string,string,bool)">
-        <summary>
-            Ensures the specified argument is non-<see langword="null"/> and not an empty <c>string</c>, optionally trimming
-            <paramref name="arg"/> first. If it is, an <see cref="ArgumentException"/> is thrown.
-        </summary>
-        <param name="arg">
-            The argument to check for <see langword="null"/> or an empty <c>string</c>.
-        </param>
-        <param name="argName">
-            The name of the argument.
-        </param>
-        <param name="trim">
-            If <see langword="true"/> and <paramref name="arg"/> is not <see langword="null"/> or an empty <c>string</c>, it is
-            trimmed and re-tested for being empty.
-        </param>
-        <exception cref="ArgumentException">
-            If <paramref name="arg"/> is <see langword="null"/> or an empty <c>string</c>, or if it is a blank <c>string</c> and
-            <paramref name="trim"/> is <see langword="true"/>.
-        </exception>
-    </member>
-
     <member name="AssertNotNullOrEmpty(IEnumerable,string)">
         <summary>
             Ensures the specified argument is non-<see langword="null"/> and not an empty enumerable. If it is, an
@@ -159,6 +138,19 @@
         </summary>
         <param name="arg">
             The collection to check for <see langword="null"/> or empty.
+        </param>
+        <param name="argName">
+            The name of the argument.
+        </param>
+    </member>
+
+    <member name="AssertNotNullOrWhiteSpace(string,string)">
+        <summary>
+            Ensures the specified argument is non-<see langword="null"/>, non-empty, and does not consist only of white-space characters. If it is, an
+            <see cref="ArgumentException"/> is thrown.
+        </summary>
+        <param name="arg">
+            The argument to check for <see langword="null"/>, empty <c>string</c>, or all white-space characters.
         </param>
         <param name="argName">
             The name of the argument.
