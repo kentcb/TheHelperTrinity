@@ -1,5 +1,3 @@
 ﻿TODO in next (breaking) release:
- - change ArgumentHelper.AssertNotNullOrEmpty(string...) to have separate overloads for empty/blank as per the String class
  - remove EventHelper overload that takes Delegate
- - remove EventHelper.CreateEventArguments and use Func<T> instead
  - investigate the semantics of EventHelper.BeginRaise - should it use GetInvocationList and invoke each handler on a separate thread rather than all handlers on a single separate thread?

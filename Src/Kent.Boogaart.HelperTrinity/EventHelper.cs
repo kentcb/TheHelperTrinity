@@ -101,10 +101,10 @@ namespace Kent.Boogaart.HelperTrinity
             }
         }
 
-        /// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise{T}(EventHandler{T},object,CreateEventArguments{T})"]/*' />
+        /// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise{T}(EventHandler{T},object,Func{T})"]/*' />
         [SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
         [DebuggerHidden]
-        public static void Raise<T>(EventHandler<T> handler, object sender, CreateEventArguments<T> createEventArguments)
+        public static void Raise<T>(EventHandler<T> handler, object sender, Func<T> createEventArguments)
             where T : EventArgs
         {
             ArgumentHelper.AssertNotNull(createEventArguments, "createEventArguments");
@@ -149,17 +149,17 @@ namespace Kent.Boogaart.HelperTrinity
             }
         }
 
-        /// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise{T}(EventHandler{T},object,CreateEventArguments{T},AsyncCallback,object)"]/*' />
+        /// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise{T}(EventHandler{T},object,Func{T},AsyncCallback,object)"]/*' />
         [SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
         [DebuggerHidden]
-        public static void BeginRaise<T>(EventHandler<T> handler, object sender, CreateEventArguments<T> createEventArguments, AsyncCallback callback, object asyncState)
+        public static void BeginRaise<T>(EventHandler<T> handler, object sender, Func<T> createEventArguments, AsyncCallback callback, object asyncState)
             where T : EventArgs
         {
             ArgumentHelper.AssertNotNull(createEventArguments, "createEventArguments");
 
             if (handler != null)
             {
-                ((Action<EventHandler<T>, object, CreateEventArguments<T>>)Raise).BeginInvoke(handler, sender, createEventArguments, callback, asyncState);
+                ((Action<EventHandler<T>, object, Func<T>>)Raise).BeginInvoke(handler, sender, createEventArguments, callback, asyncState);
             }
         }
 
@@ -173,21 +173,5 @@ namespace Kent.Boogaart.HelperTrinity
                 ((Action<Delegate, object, EventArgs>)Raise).BeginInvoke(handler, sender, e, callback, asyncState);
             }
         }
-
-        /// <summary>
-        /// A handler used to create an event arguments instance for the <see cref="Raise{T}(EventHandler{T}, object, CreateEventArguments{T})"/> method.
-        /// </summary>
-        /// <remarks>
-        /// This delegate is invoked by the <see cref="Raise{T}(EventHandler{T}, object, CreateEventArguments{T})"/> method to create the event arguments instance.
-        /// The handler should create the instance and return it.
-        /// </remarks>
-        /// <typeparam name="T">
-        /// The event arguments type.
-        /// </typeparam>
-        /// <returns>
-        /// The event arguments instance.
-        /// </returns>
-        public delegate T CreateEventArguments<T>()
-            where T : EventArgs;
     }
 }

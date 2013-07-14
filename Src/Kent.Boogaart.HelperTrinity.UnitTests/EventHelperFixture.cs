@@ -134,7 +134,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         [Fact]
         public void raise_generic_with_lazy_event_args_creation_throws_if_creation_delegate_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => EventHelper.Raise<EventArgs>((s, e) => { }, this, (Kent.Boogaart.HelperTrinity.EventHelper.CreateEventArguments<EventArgs>)null));
+            Assert.Throws<ArgumentNullException>(() => EventHelper.Raise<EventArgs>((s, e) => { }, this, (Func<EventArgs>)null));
         }
 
         [Fact]
@@ -599,7 +599,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_throws_if_creation_delegate_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => EventHelper.BeginRaise<EventArgs>((s, e) => { }, this, (Kent.Boogaart.HelperTrinity.EventHelper.CreateEventArguments<EventArgs>)null, _ => { }, new object()));
+            Assert.Throws<ArgumentNullException>(() => EventHelper.BeginRaise<EventArgs>((s, e) => { }, this, (Func<EventArgs>)null, _ => { }, new object()));
         }
 
         [Fact]

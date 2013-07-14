@@ -137,7 +137,7 @@
         </param>
     </member>
 
-    <member name="BeginRaise{T}(EventHandler{T},object,CreateEventArguments{T},AsyncCallback,object)">
+    <member name="BeginRaise{T}(EventHandler{T},object,Func{T},AsyncCallback,object)">
         <summary>
             Begins raising a generic event.
         </summary>
@@ -161,7 +161,7 @@
         </param>
     </member>
 
-    <member name="Raise{T}(EventHandler{T},object,CreateEventArguments{T})">
+    <member name="Raise{T}(EventHandler{T},object,Func{T})">
         <summary>
             Raises a generic event, but does not create the event arguments unless there is at least one handler for the event.
         </summary>

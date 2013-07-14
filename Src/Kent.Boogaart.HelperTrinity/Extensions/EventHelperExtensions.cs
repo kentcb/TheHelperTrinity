@@ -27,9 +27,9 @@
             EventHelper.Raise(handler, sender, e);
         }
 
-        /// <include file='../EventHelper.doc.xml' path='doc/member[@name="Raise{T}(EventHandler{T},object,CreateEventArguments{T})"]/*' />
+        /// <include file='../EventHelper.doc.xml' path='doc/member[@name="Raise{T}(EventHandler{T},object,Func{T})"]/*' />
         [DebuggerHidden]
-        public static void Raise<T>(this EventHandler<T> handler, object sender, Kent.Boogaart.HelperTrinity.EventHelper.CreateEventArguments<T> createEventArguments)
+        public static void Raise<T>(this EventHandler<T> handler, object sender, Func<T> createEventArguments)
             where T : EventArgs
         {
             EventHelper.Raise(handler, sender, createEventArguments);
@@ -57,9 +57,9 @@
             EventHelper.BeginRaise(handler, sender, e, callback, asyncState);
         }
 
-        /// <include file='../EventHelper.doc.xml' path='doc/member[@name="BeginRaise{T}(EventHandler{T},object,CreateEventArguments{T},AsyncCallback,object)"]/*' />
+        /// <include file='../EventHelper.doc.xml' path='doc/member[@name="BeginRaise{T}(EventHandler{T},object,Func{T},AsyncCallback,object)"]/*' />
         [DebuggerHidden]
-        public static void BeginRaise<T>(this EventHandler<T> handler, object sender, Kent.Boogaart.HelperTrinity.EventHelper.CreateEventArguments<T> createEventArguments, AsyncCallback callback, object asyncState)
+        public static void BeginRaise<T>(this EventHandler<T> handler, object sender, Func<T> createEventArguments, AsyncCallback callback, object asyncState)
             where T : EventArgs
         {
             EventHelper.BeginRaise(handler, sender, createEventArguments, callback, asyncState);

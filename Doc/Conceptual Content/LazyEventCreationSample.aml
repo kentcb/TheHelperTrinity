@@ -7,7 +7,8 @@
         <para>
         	The following provides a complete example of using the <codeInline>EventHelper</codeInline>'s lazy event arguments creation facility. The code includes explanatory comments.
         </para>
-        <code language="C#"><![CDATA[
+        <code language="C#">
+            <![CDATA[
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,7 +43,7 @@ namespace Test
 		private int _y;
 
 		public event EventHandler MouseMoved;
-		private EventHelper.CreateEventArguments _createMouseInfoEventArgs;
+		private Func<MouseInfoEventArgs> _createMouseInfoEventArgs;
 
 		public MouseInfo()
 		{

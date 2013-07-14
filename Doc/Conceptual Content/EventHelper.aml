@@ -86,12 +86,12 @@ protected virtual void OnMyEvent(EventArgs e)
               <title>Lazy Event Argument Creation</title>
               <content>
                   <para>
-                  	Both the <codeInline>Raise()</codeInline> and <codeInline>BeginRaise()</codeInline> methods support overloads that take an instance of the <codeInline>CreateEventArgs&lt;T&gt;</codeInline> delegate instead of an instance of <codeInline>EventArgs</codeInline>. These overloads are intended for an esoteric use case. If all of the following is true, you should consider using these overloads when raising your event: 
+                  	Both the <codeInline>Raise()</codeInline> and <codeInline>BeginRaise()</codeInline> methods support overloads that take an instance of the <codeInline>Func&lt;T&gt;</codeInline> delegate instead of an instance of <codeInline>EventArgs</codeInline>. These overloads are intended for an esoteric use case. If all of the following is true, you should consider using these overloads when raising your event: 
 					<list class="bullet">
 					  <listItem><para>Your event is raised very frequently</para></listItem>
 					  <listItem><para>Your event rarely has listeners</para></listItem>
 					  <listItem><para>Your event data is a custom <codeInline>EventArgs</codeInline> instance</para></listItem>
-					  <listItem><para>The instance of the <codeInline>CreateEventArgs&lt;T&gt;</codeInline> delegate does not need to be recreated every time you raise the event</para></listItem>
+					  <listItem><para>The instance of the <codeInline>Func&lt;T&gt;</codeInline> delegate does not need to be recreated every time you raise the event</para></listItem>
 					</list>
                   </para>
                   <para>

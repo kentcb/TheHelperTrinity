@@ -149,7 +149,7 @@
         public void raise_generic_with_lazy_event_args_creation_throws_if_creation_delegate_is_null()
         {
             EventHandler<EventArgs> handler = (s, e) => { };
-            Assert.Throws<ArgumentNullException>(() => handler.Raise<EventArgs>(this, (Kent.Boogaart.HelperTrinity.EventHelper.CreateEventArguments<EventArgs>)null));
+            Assert.Throws<ArgumentNullException>(() => handler.Raise<EventArgs>(this, (Func<EventArgs>)null));
         }
 
         [Fact]
@@ -518,7 +518,7 @@
         public void begin_raise_generic_with_lazy_event_args_creation_throws_if_creation_delegate_is_null()
         {
             EventHandler<EventArgs> handler = (s, e) => { };
-            Assert.Throws<ArgumentNullException>(() => handler.BeginRaise<EventArgs>(this, (Kent.Boogaart.HelperTrinity.EventHelper.CreateEventArguments<EventArgs>)null, _ => { }, new object()));
+            Assert.Throws<ArgumentNullException>(() => handler.BeginRaise<EventArgs>(this, (Func<EventArgs>)null, _ => { }, new object()));
         }
 
         [Fact]
