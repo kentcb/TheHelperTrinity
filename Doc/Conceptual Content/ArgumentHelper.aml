@@ -72,7 +72,7 @@ public class MyClass<T>
               <title>AssertNotNullOrEmpty()</title>
               <content>
                   <para>
-                  	The <codeInline>AssertNotNullOrEmpty()</codeInline> methods can be used against <codeInline>string</codeInline>s or collections. They allow you to
+                  	The <codeInline>AssertNotNullOrEmpty()</codeInline> methods can be used against <codeInline>string</codeInline>s, enumerables, or collections. They allow you to
                   	ensure that the argument is non-<codeInline>null</codeInline> and that it is not empty. By default, a <codeInline>string</codeInline> is considered
                   	empty if it contains no characters, but an overload allows you to trim the <codeInline>string</codeInline> first, thus ensuring that it also does not
                   	consist entirely of whitespace.

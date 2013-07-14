@@ -150,6 +150,24 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         }
 
         [Fact]
+        public void assert_not_null_or_empty_throws_if_enumerable_is_null()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty((IEnumerable)null, "test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_empty_throws_if_enumerable_is_empty()
+        {
+            Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty(Enumerable.Empty<string>(), "test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_empty_does_not_throw_if_enumerable_is_not_empty()
+        {
+            ArgumentHelper.AssertNotNullOrEmpty(Enumerable.Range(0, 10), "test");
+        }
+
+        [Fact]
         public void assert_not_null_or_empty_throws_if_collection_is_null()
         {
             Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNullOrEmpty((ICollection)null, "test"));

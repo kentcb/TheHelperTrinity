@@ -163,6 +163,16 @@ namespace Kent.Boogaart.HelperTrinity
             }
         }
 
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(IEnumerable,string)"]/*' />
+        [DebuggerHidden]
+        public static void AssertNotNullOrEmpty(IEnumerable arg, string argName)
+        {
+            if (arg == null || !arg.GetEnumerator().MoveNext())
+            {
+                throw new ArgumentException("Cannot be null or empty.", argName);
+            }
+        }
+
         /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(ICollection,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNullOrEmpty(ICollection arg, string argName)

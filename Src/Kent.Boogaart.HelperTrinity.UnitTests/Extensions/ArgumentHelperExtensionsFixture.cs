@@ -151,6 +151,24 @@
         }
 
         [Fact]
+        public void assert_not_null_or_empty_throws_if_enumerable_is_null()
+        {
+            Assert.Throws<ArgumentException>(() => ((IEnumerable)null).AssertNotNullOrEmpty("test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_empty_throws_if_enumerable_is_empty()
+        {
+            Assert.Throws<ArgumentException>(() => Enumerable.Empty<string>().AssertNotNullOrEmpty("test"));
+        }
+
+        [Fact]
+        public void assert_not_null_or_empty_does_not_throw_if_enumerable_is_not_empty()
+        {
+            Enumerable.Range(0, 10).AssertNotNullOrEmpty("test");
+        }
+
+        [Fact]
         public void assert_not_null_or_empty_throws_if_collection_is_null()
         {
             Assert.Throws<ArgumentException>(() => ((ICollection)null).AssertNotNullOrEmpty("test"));
