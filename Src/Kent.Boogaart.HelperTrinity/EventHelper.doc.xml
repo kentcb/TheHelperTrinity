@@ -42,10 +42,17 @@
             Begins raising a non-generic event.
         </summary>
         <remarks>
-            This method can be used to begin raising a non-generic event that needs a specific <see cref="EventArgs"/> subclass
-            as its second parameter. This method assumes that <paramref name="handler"/> points to a method that conforms to the
-            standard .NET event signature. That is, it takes an <see cref="object"/> as its first parameter and an
-            <see cref="EventArgs"/> instance as its second.
+            <para>
+                This method can be used to begin raising a non-generic event that needs a specific <see cref="EventArgs"/> subclass
+                as its second parameter. This method assumes that <paramref name="handler"/> points to a method that conforms to the
+                standard .NET event signature. That is, it takes an <see cref="object"/> as its first parameter and an
+                <see cref="EventArgs"/> instance as its second.
+            </para>
+            <para>
+                This method is intended to address an esoteric scenario whereby an event has been declared without using the built-in
+                <see cref="EventHandler"/> or <see cref="EventHandler{T}"/> delegates. If possible, it is recommended that the event
+                be modified to conform to standards instead.
+            </para>
         </remarks>
         <param name="handler">
             The event to be raised.

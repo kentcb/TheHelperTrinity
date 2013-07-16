@@ -1,3 +1,0 @@
-﻿TODO in next (breaking) release:
- - remove EventHelper overload that takes Delegate
- - investigate the semantics of EventHelper.BeginRaise - should it use GetInvocationList and invoke each handler on a separate thread rather than all handlers on a single separate thread?

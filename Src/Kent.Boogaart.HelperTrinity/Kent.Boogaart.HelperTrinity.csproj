@@ -68,7 +68,7 @@
   <ItemGroup>
     <Content Include="ArgumentHelper.doc.xml" />
     <Content Include="EventHelper.doc.xml" />
-    <Content Include="TODO.txt" />
+    <EmbeddedResource Include="Properties\ExceptionHelper.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,6 +2,7 @@
 {
     using Kent.Boogaart.HelperTrinity.Extensions;
     using System;
+    using System.ComponentModel;
     using System.Threading;
     using Xunit;
 
@@ -668,5 +669,168 @@
             Assert.Same(asyncState, receivedAsyncState);
         }
 
+        [Fact]
+        public void begin_raise_delegate_does_not_throw_if_event_handler_is_null()
+        {
+            ((PseudoEventHandler)null).BeginRaise(this, EventArgs.Empty, _ => { }, new object());
+        }
+
+        [Fact]
+        public void begin_raise_delegate_does_not_throw_if_sender_is_null()
+        {
+            ((PseudoEventHandler)((s, e) => { })).BeginRaise(null, EventArgs.Empty, _ => { }, new object());
+        }
+
+        [Fact]
+        public void begin_raise_delegate_does_not_throw_if_callback_is_null()
+        {
+            ((PseudoEventHandler)((s, e) => { })).BeginRaise(this, EventArgs.Empty, null, new object());
+        }
+
+        [Fact]
+        public void begin_raise_delegate_does_not_throw_if_async_state_is_null()
+        {
+            ((PseudoEventHandler)((s, e) => { })).BeginRaise(this, EventArgs.Empty, _ => { }, null);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_invokes_event_handler()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            ((PseudoEventHandler)((s, e) => waitHandle.Set())).BeginRaise(this, EventArgs.Empty, null, null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_delegate_invokes_all_event_handlers_in_multicast_delegate()
+        {
+            var waitHandle1 = new ManualResetEventSlim(false);
+            var waitHandle2 = new ManualResetEventSlim(false);
+            var waitHandle3 = new ManualResetEventSlim(false);
+
+            var handler = (PseudoEventHandler)((s, e) => waitHandle1.Set());
+            handler += (s, e) => waitHandle2.Set();
+            handler += (s, e) => waitHandle3.Set();
+
+            handler.BeginRaise(this, EventArgs.Empty, null, null);
+
+            Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(waitHandle3.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_delegate_invokes_callback_after_handler_has_been_called()
+        {
+            var handlerCalled = new ManualResetEventSlim(false);
+            var callbackCalled = new ManualResetEventSlim(false);
+            var wasHandlerCalled = false;
+            ((PseudoEventHandler)((s, e) => handlerCalled.Set())).BeginRaise(
+                this,
+                EventArgs.Empty,
+                _ =>
+                {
+                    wasHandlerCalled = handlerCalled.IsSet;
+                    callbackCalled.Set();
+                },
+                null);
+
+            Assert.True(callbackCalled.Wait(TimeSpan.FromSeconds(1)));
+            Assert.True(wasHandlerCalled);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_passes_through_sender()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            object sender = null;
+            ((PseudoEventHandler)((s, e) =>
+            {
+                sender = s;
+                waitHandle.Set();
+            })).BeginRaise(
+                this,
+                EventArgs.Empty,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotNull(sender);
+            Assert.Same(this, sender);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_passes_through_event_args()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var eventArgs = new EventArgs();
+            object receivedEventArgs = null;
+            ((PseudoEventHandler)((s, e) =>
+            {
+                receivedEventArgs = e;
+                waitHandle.Set();
+            })).BeginRaise(
+                this,
+                eventArgs,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotNull(receivedEventArgs);
+            Assert.Same(eventArgs, receivedEventArgs);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_passes_through_async_state_to_callback()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var asyncState = new object();
+            object receivedAsyncState = null;
+            ((PseudoEventHandler)((s, e) => { })).BeginRaise(
+                this,
+                EventArgs.Empty,
+                ar =>
+                {
+                    ar.AsyncWaitHandle.WaitOne();
+                    ar.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1), false);
+
+                    receivedAsyncState = ar.AsyncState;
+                    waitHandle.Set();
+                },
+                asyncState);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotNull(receivedAsyncState);
+            Assert.Same(asyncState, receivedAsyncState);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_throws_if_delegate_does_not_take_correct_number_of_arguments()
+        {
+            var ex = Assert.Throws<InvalidOperationException>(() => ((ThreadStart)(() => { })).BeginRaise(this, EventArgs.Empty, null, null));
+            Assert.Equal("The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.", ex.Message);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_throws_if_delegate_does_not_take_correct_type_of_arguments()
+        {
+            var ex = Assert.Throws<InvalidOperationException>(() => ((Action<bool>)(b => { })).BeginRaise(this, EventArgs.Empty, null, null));
+            Assert.Equal("The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.", ex.Message);
+
+            ex = Assert.Throws<InvalidOperationException>(() => ((Action<object, bool>)((o, b) => { })).BeginRaise(this, EventArgs.Empty, null, null));
+            Assert.Equal("The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.", ex.Message);
+        }
+
+        [Fact]
+        public void begin_raise_delegate_works_with_any_event_args_type()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            ((Action<object, CancelEventArgs>)((s, e) => waitHandle.Set())).BeginRaise(this, new CancelEventArgs(), null, null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        public delegate void PseudoEventHandler(object sender, EventArgs e);
     }
 }

@@ -3,6 +3,7 @@ namespace Kent.Boogaart.HelperTrinity
     using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
 
     /// <summary>
     /// Provides helper methods for raising events.
@@ -78,6 +79,8 @@ namespace Kent.Boogaart.HelperTrinity
     /// </example>
     public static class EventHelper
     {
+        private static readonly ExceptionHelper exceptionHelper = new ExceptionHelper(typeof(EventHelper));
+
         /// <include file='EventHelper.doc.xml' path='doc/member[@name="Raise(EventHandler,object)"]/*' />
         [SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
         [DebuggerHidden]
@@ -133,7 +136,10 @@ namespace Kent.Boogaart.HelperTrinity
         {
             if (handler != null)
             {
-                ((Action<EventHandler, object>)Raise).BeginInvoke(handler, sender, callback, asyncState);
+                foreach (EventHandler invocation in handler.GetInvocationList())
+                {
+                    invocation.BeginInvoke(sender, EventArgs.Empty, callback, asyncState);
+                }
             }
         }
 
@@ -145,7 +151,10 @@ namespace Kent.Boogaart.HelperTrinity
         {
             if (handler != null)
             {
-                ((Action<EventHandler<T>, object, T>)Raise).BeginInvoke(handler, sender, e, callback, asyncState);
+                foreach (EventHandler<T> invocation in handler.GetInvocationList())
+                {
+                    invocation.BeginInvoke(sender, e, callback, asyncState);
+                }
             }
         }
 
@@ -159,7 +168,10 @@ namespace Kent.Boogaart.HelperTrinity
 
             if (handler != null)
             {
-                ((Action<EventHandler<T>, object, Func<T>>)Raise).BeginInvoke(handler, sender, createEventArguments, callback, asyncState);
+                foreach (EventHandler<T> invocation in handler.GetInvocationList())
+                {
+                    invocation.BeginInvoke(sender, createEventArguments(), callback, asyncState);
+                }
             }
         }
 
@@ -170,7 +182,69 @@ namespace Kent.Boogaart.HelperTrinity
         {
             if (handler != null)
             {
-                ((Action<Delegate, object, EventArgs>)Raise).BeginInvoke(handler, sender, e, callback, asyncState);
+                var parameters = handler.Method.GetParameters();
+                exceptionHelper.ResolveAndThrowIf(parameters.Length != 2 || parameters[0].ParameterType != typeof(object) || !typeof(EventArgs).IsAssignableFrom(parameters[1].ParameterType), "invalidDelegate");
+
+                // since all we know is Delegate, we need to queue invocations on the thread pool and manage the callback ourselves
+                var invocationList = handler.GetInvocationList();
+                var remainingInvocations = invocationList.Length;
+
+                foreach (var invocation in invocationList)
+                {
+                    var localInvocation = invocation;
+
+                    ThreadPool.QueueUserWorkItem(
+                        _ =>
+                        {
+                            localInvocation.DynamicInvoke(sender, e);
+
+                            if (callback != null && Interlocked.Decrement(ref remainingInvocations) == 0)
+                            {
+                                callback(new BeginRaiseAsyncResult(asyncState));
+                            }
+                        });
+                }
+            }
+        }
+
+        // only used when BeginInvoke is called against a Delegate, since we need to manage the callback ourselves
+        private sealed class BeginRaiseAsyncResult : IAsyncResult
+        {
+            private readonly object state;
+            private WaitHandle waitHandle;
+
+            public BeginRaiseAsyncResult(object state)
+            {
+                this.state = state;
+            }
+
+            public object AsyncState
+            {
+                get { return this.state; }
+            }
+
+            public WaitHandle AsyncWaitHandle
+            {
+                get
+                {
+                    if (this.waitHandle == null)
+                    {
+                        // note that event is already signalled because we represent an asynchronous operation that has already completed
+                        this.waitHandle = new ManualResetEvent(true);
+                    }
+
+                    return this.waitHandle;
+                }
+            }
+
+            public bool CompletedSynchronously
+            {
+                get { return false; }
+            }
+
+            public bool IsCompleted
+            {
+                get { return true; }
             }
         }
     }
