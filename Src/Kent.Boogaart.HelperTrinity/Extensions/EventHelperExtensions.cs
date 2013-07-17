@@ -10,6 +10,17 @@
     /// This class defines extensions methods for the <see cref="EventHelper"/>. All extension methods simply delegate to the
     /// appropriate member of the <see cref="EventHelper"/> class.
     /// </remarks>
+    /// <example>
+    /// The following example shows how a generic event can be raised:
+    /// <code>
+    /// public event EventHandler&lt;EventArgs&gt; Changed;
+    /// 
+    /// protected void OnChanged()
+    /// {
+    ///     Changed.Raise(this, EventArgs.Empty);
+    /// }
+    /// </code>
+    /// </example>
     public static class EventHelperExtensions
     {
         /// <include file='../EventHelper.doc.xml' path='doc/member[@name="Raise(EventHandler,object)"]/*' />

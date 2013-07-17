@@ -13,8 +13,12 @@ namespace Kent.Boogaart.HelperTrinity
     /// The <c>EventHelper</c> class provides methods that can be used to raise events. It avoids the need for explicitly checking event sinks for <see langword="null"/> before raising the event.
     /// </para>
     /// <para>
-    /// The <see cref="Raise"/> overloads raise an event synchronously. All handlers will be invoked one after the other on the calling thread. The <see cref="BeginRaise"/> overloads raise an event asynchronously.
-    /// All handlers will be invoked one after the other on a background thread.
+    /// The <see cref="Raise"/> overloads raise an event synchronously. All handlers will be invoked one after the other on the calling thread.
+    /// </para>
+    /// <para>
+    /// The <see cref="BeginRaise"/> overloads raise an event asynchronously. All handlers will be invoked via a thread pool thread. No guarantees are made about the order in which handlers will be invoked,
+    /// and multiple handlers may be invoked simultaneously. When calling a <see cref="BeginRaise"/> overload, two additional parameters may be provided: a callback and async state. If provided, the callback will
+    /// be invoked once all handlers have been executed, and any async state will be passed into that callback (via an <see cref="IAsyncResult"/>).
     /// </para>
     /// </remarks>
     /// <example>
@@ -24,7 +28,7 @@ namespace Kent.Boogaart.HelperTrinity
     /// 
     /// protected void OnChanged()
     /// {
-    ///        EventHelper.Raise(Changed, this);
+    ///     EventHelper.Raise(Changed, this);
     /// }
     /// </code>
     /// </example>
@@ -36,7 +40,7 @@ namespace Kent.Boogaart.HelperTrinity
     /// 
     /// protected void OnPropertyChanged(PropertyChangedEventArgs e)
     /// {
-    ///        EventHelper.Raise(PropertyChanged, this, e);
+    ///     EventHelper.Raise(PropertyChanged, this, e);
     /// }
     /// </code>
     /// </example>
@@ -47,7 +51,7 @@ namespace Kent.Boogaart.HelperTrinity
     /// 
     /// protected void OnChanged()
     /// {
-    ///        EventHelper.Raise(Changed, this, EventArgs.Empty);
+    ///     EventHelper.Raise(Changed, this, EventArgs.Empty);
     /// }
     /// </code>
     /// </example>
@@ -58,7 +62,7 @@ namespace Kent.Boogaart.HelperTrinity
     /// 
     /// protected void OnMyEvent(MyEventArgs e)
     /// {
-    ///        EventHelper.Raise(MyEventArgs, this, e);
+    ///     EventHelper.Raise(MyEventArgs, this, e);
     /// }
     /// </code>
     /// </example>
@@ -70,10 +74,21 @@ namespace Kent.Boogaart.HelperTrinity
     /// 
     /// protected void OnMyEvent(int someData)
     /// {
-    ///        EventHelper.Raise(MyEvent, this, delegate
-    ///        {
-    ///            return new MyEventArgs(someData);
-    ///        });
+    ///     EventHelper.Raise(MyEvent, this, delegate
+    ///     {
+    ///        return new MyEventArgs(someData);
+    ///     });
+    /// }
+    /// </code>
+    /// </example>
+    /// <example>
+    /// The following example raises an event asynchronously:
+    /// <code>
+    /// public event EventHandler&lt;MyEventArgs&gt; MyEvent;
+    /// 
+    /// protected void OnMyEvent(int someData)
+    /// {
+    ///     EventHelper.BeginRaise(MyEvent, this, new MyEventArgs(someData), null, null);
     /// }
     /// </code>
     /// </example>

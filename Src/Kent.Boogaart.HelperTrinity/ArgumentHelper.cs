@@ -27,9 +27,9 @@ namespace Kent.Boogaart.HelperTrinity
     /// <code>
     /// public void DisplayDetails(string name)
     /// {
-    ///        ArgumentHelper.AssertNotNull(name, "name");
-    ///        //now we know that name is not null
-    ///        ...
+    ///     ArgumentHelper.AssertNotNull(name, "name");
+    ///     //now we know that name is not null
+    ///     ...
     /// }
     /// </code>
     /// </example>
@@ -38,9 +38,9 @@ namespace Kent.Boogaart.HelperTrinity
     /// <code>
     /// public void DisplayDetails(string name)
     /// {
-    ///        ArgumentHelper.AssertNotNullOrEmpty(name, "name", true);
-    ///        //now we know that name is not null and is not an empty string (or blank)
-    ///        ...
+    ///     ArgumentHelper.AssertNotNullOrEmpty(name, "name", true);
+    ///     //now we know that name is not null and is not an empty string (or blank)
+    ///     ...
     /// }
     /// </code>
     /// </example>
@@ -49,9 +49,9 @@ namespace Kent.Boogaart.HelperTrinity
     /// <code>
     /// public void DisplayInformation(DayOfWeek day)
     /// {
-    ///        ArgumentHelper.AssertEnumMember(day);
-    ///        //now we know that day is a valid member of DayOfWeek
-    ///        ...
+    ///     ArgumentHelper.AssertEnumMember(day);
+    ///     //now we know that day is a valid member of DayOfWeek
+    ///     ...
     /// }
     /// </code>
     /// </example>
@@ -60,9 +60,9 @@ namespace Kent.Boogaart.HelperTrinity
     /// <code>
     /// public void DisplayInformation(DayOfWeek day)
     /// {
-    ///        ArgumentHelper.AssertEnumMember(day, DayOfWeek.Monday, DayOfWeek.Thursday);
-    ///        //now we know that day is either Monday or Thursday
-    ///        ...
+    ///     ArgumentHelper.AssertEnumMember(day, DayOfWeek.Monday, DayOfWeek.Thursday);
+    ///     //now we know that day is either Monday or Thursday
+    ///     ...
     /// }
     /// </code>
     /// </example>
@@ -72,9 +72,9 @@ namespace Kent.Boogaart.HelperTrinity
     /// <code>
     /// public void GetInformation(BindingFlags bindingFlags)
     /// {
-    ///        ArgumentHelper.AssertEnumMember(bindingFlags, BindingFlags.Public, BindingFlags.NonPublic);
-    ///        //now we know that bindingFlags is either Public, NonPublic or both
-    ///        ...
+    ///     ArgumentHelper.AssertEnumMember(bindingFlags, BindingFlags.Public, BindingFlags.NonPublic);
+    ///     //now we know that bindingFlags is either Public, NonPublic or both
+    ///     ...
     /// }
     /// </code>
     /// </example>
@@ -84,9 +84,9 @@ namespace Kent.Boogaart.HelperTrinity
     /// <code>
     /// public void GetInformation(BindingFlags bindingFlags)
     /// {
-    ///        ArgumentHelper.AssertEnumMember(bindingFlags, BindingFlags.Public, BindingFlags.NonPublic, BindingFlags.None);
-    ///        //now we know that bindingFlags is either Public, NonPublic, both or neither
-    ///        ...
+    ///     ArgumentHelper.AssertEnumMember(bindingFlags, BindingFlags.Public, BindingFlags.NonPublic, BindingFlags.None);
+    ///     //now we know that bindingFlags is either Public, NonPublic, both or neither
+    ///     ...
     /// }
     /// </code>
     /// </example>

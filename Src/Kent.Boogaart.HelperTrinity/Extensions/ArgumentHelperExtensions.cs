@@ -12,6 +12,17 @@
     /// This class defines extensions methods for the <see cref="ArgumentHelper"/>. All extension methods simply delegate to the
     /// appropriate member of the <see cref="ArgumentHelper"/> class.
     /// </remarks>
+    /// <example>
+    /// The following code ensures that the <c>name</c> argument is not <see langword="null"/>:
+    /// <code>
+    /// public void DisplayDetails(string name)
+    /// {
+    ///     name.AssertNotNull("name");
+    ///     //now we know that name is not null
+    ///     ...
+    /// }
+    /// </code>
+    /// </example>
     public static class ArgumentHelperExtensions
     {
         /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(T,string)"]/*' />
