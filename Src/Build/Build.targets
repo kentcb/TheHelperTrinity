@@ -61,7 +61,7 @@
          - Latest Sandcastle Help File Builder (http://shfb.codeplex.com/)
          - Any relevant updates to styles from Sandcastle Styles (http://sandcastlestyles.codeplex.com/)
         -->
-        <MSBuild Projects="$(DocDir)\HelperTrinity.shfbproj"/>
+        <MSBuild Projects="$(DocDir)\Documentation.shfbproj"/>
         <OnError ExecuteTargets="GenerateDocumentationFailed"/>
     </Target>
 
