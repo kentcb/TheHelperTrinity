@@ -174,7 +174,7 @@
             </para>
             <para>
                 This method is generic and quite slow as a result. You should prefer using the
-                <see cref="AssertEnumMember{TEnum}(TEnum, TEnum[])"/> overload where possible. That overload is both faster and
+                <see cref="AssertEnumMember{TEnum}(TEnum, string, TEnum[])"/> overload where possible. That overload is both faster and
                 safer. Faster because it does not incur reflection costs, and safer because you are able to specify the exact
                 values accepted by your method.
             </para>
@@ -206,13 +206,13 @@
                 must be one of the values specified by <paramref name="validValues"/>.
             </para>
             <para>
-                This method is much faster than the <see cref="AssertEnumMember{TEnum}(TEnum)"/> overload. This is because it does
+                This method is much faster than the <see cref="AssertEnumMember{TEnum}(TEnum,string)"/> overload. This is because it does
                 not use reflection to determine the values defined by the enumeration. For this reason you should prefer this method
                 when validating enumeration arguments.
             </para>
             <para>
                 Another reason why this method is preferred is because it allows you to explicitly specify the values that your code
-                handles. If you use the <see cref="AssertEnumMember{TEnum}(TEnum)"/> overload and a new value is later added to the
+                handles. If you use the <see cref="AssertEnumMember{TEnum}(TEnum,string)"/> overload and a new value is later added to the
                 enumeration, the assertion will not fail but your code probably will.
             </para>
         </remarks>

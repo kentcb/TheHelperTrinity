@@ -113,7 +113,7 @@
         <CreateItem Include="$(SrcDir)\Kent.Boogaart.HelperTrinity\bin\$(Configuration)\Kent.Boogaart.HelperTrinity.*">
             <Output ItemName="TheHelperTrinityFiles" TaskParameter="Include" />
         </CreateItem>
-        <Copy SourceFiles="@(TheHelperTrinityFiles)" DestinationFolder="$(GenDir)\NuGet\lib\portable-win+net403+sl40+wp+Xbox40" />
+        <Copy SourceFiles="@(TheHelperTrinityFiles)" DestinationFolder="$(GenDir)\NuGet\lib\portable-win+net403+sl40+wp+xbox40" />
 
         <CreateItem Include="$(SrcDir)\**\*.*" Exclude="$(SrcDir)\packages\**\*;$(SrcDir)\**\*.suo;$(SrcDir)\**\*.csproj.user;$(SrcDir)\**\*.gpState;$(SrcDir)\**\bin\**;$(SrcDir)\**\obj\**;$(SrcDir)\**\.svn\**">
             <Output ItemName="Source_Files" TaskParameter="Include" />

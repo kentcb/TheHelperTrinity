@@ -90,7 +90,7 @@
         <param name="e">
             The arguments for the event.
         </param>
-        <exception cref="TargetParameterCountException">
+        <exception cref="System.Reflection.TargetParameterCountException">
             If <paramref name="handler"/> does not contain the correct number of arguments or contains arguments of the wrong
             type or in the wrong order.
         </exception>
