@@ -121,7 +121,7 @@
         <Copy SourceFiles="@(Source_Files)" DestinationFolder="$(GenDir)\NuGet\src\%(RecursiveDir)"/>
 
         <!-- pack the nugets -->
-        <Exec Command='"$(SrcDir)\packages\NuGet.Bootstrapper.2.2.1\tools\NuGet.exe" pack -symbols "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.nuspec"' WorkingDirectory="$(GenDir)\NuGet"/>
+        <Exec Command='"$(SrcDir)\packages\NuGet.Bootstrapper.2.6.0\tools\NuGet.exe" pack -symbols "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.nuspec"' WorkingDirectory="$(GenDir)\NuGet"/>
 
         <Message Text="NuGet packages created but not published. Type 'msbuild Build.targets /t:PublishNuGetPackages' to publish." Importance="High"/>
     </Target>
@@ -131,7 +131,7 @@
     -->
     <Target Name="PublishNuGetPackages" DependsOnTargets="GetVersion">
         <!-- symbol packages are automatically pushed too -->
-        <Exec Command='"$(SrcDir)\packages\NuGet.Bootstrapper.2.2.1\tools\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.$(Version).nupkg"'/>
+        <Exec Command='"$(SrcDir)\packages\NuGet.Bootstrapper.2.6.0\tools\NuGet.exe" push "$(GenDir)\NuGet\Kent.Boogaart.HelperTrinity.$(Version).nupkg"'/>
     </Target>
 
     <!-- ensure the Version property is set appropriately -->
