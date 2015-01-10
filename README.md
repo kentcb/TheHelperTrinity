@@ -48,7 +48,7 @@ public event EventHandler<EventArgs> GettingContent;
 private static readonly ExceptionHelper _exceptionHelper = new ExceptionHelper(typeof(MyType));
 ```
 
-Please download the documentation for more examples.
+Please see [the documentation](Doc/overview.md) for more details.
 
 ## Who?
 
