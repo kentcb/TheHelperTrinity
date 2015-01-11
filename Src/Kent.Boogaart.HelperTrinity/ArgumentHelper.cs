@@ -133,7 +133,7 @@ namespace Kent.Boogaart.HelperTrinity
             // make sure the enumerable item itself isn't null
             AssertNotNull(arg, argName);
 
-            if (assertContentsNotNull && typeof(T).IsClass)
+            if (assertContentsNotNull && !typeof(T).IsValueType)
             {
                 // make sure each item in the enumeration isn't null
                 foreach (var item in arg)

@@ -4,6 +4,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using Xunit;
 
@@ -47,12 +48,20 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         [Fact]
         public void assert_not_null_throws_if_enumerable_contains_null_and_checking_for_null_items_is_enabled()
         {
-            var list = new List<string>
+            var listOfClassType = new List<string>
             {
                 string.Empty,
                 null
             };
-            var ex = Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNull(list, "test", true));
+            var ex = Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNull(listOfClassType, "test", true));
+            Assert.Equal("An item inside the enumeration was null." + Environment.NewLine + "Parameter name: test", ex.Message);
+
+            var listOfInterfaceType = new List<IDisposable>
+            {
+                new StringReader(""),
+                null
+            };
+            ex = Assert.Throws<ArgumentException>(() => ArgumentHelper.AssertNotNull(listOfInterfaceType, "test", true));
             Assert.Equal("An item inside the enumeration was null." + Environment.NewLine + "Parameter name: test", ex.Message);
         }
 
