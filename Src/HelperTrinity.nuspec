@@ -5,11 +5,11 @@
     <version>@build.number@</version>
     <authors>Kent Boogaart</authors>
     <owners>Kent Boogaart</owners>
-    <licenseUrl>http://thehelpertrinity.codeplex.com/license</licenseUrl>
-    <projectUrl>http://thehelpertrinity.codeplex.com/</projectUrl>
+    <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
+    <projectUrl>https://github.com/kentcb/TheHelperTrinity/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-        The Helper Trinity is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions. Online at http://thehelpertrinity.codeplex.com/.
+        The Helper Trinity is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions. Online at https://github.com/kentcb/TheHelperTrinity/.
     </description>
     <tags>.NET helper mono portable pcl Silverlight argument-checking event-raising exception-raising</tags>
   </metadata>
