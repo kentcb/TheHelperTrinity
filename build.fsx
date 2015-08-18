@@ -97,7 +97,7 @@ Target "CreateArchives" (fun _ ->
 Target "CreateNuGetPackages" (fun _ ->
     // copy binaries to lib
     !! (srcDir @@ "Kent.Boogaart.HelperTrinity/bin" @@ configuration @@ "Kent.Boogaart.HelperTrinity.*")
-        |> CopyFiles (nugetDir @@ "lib/portable-win+net403+sl40+wp+xbox40")
+        |> CopyFiles (nugetDir @@ "lib/portable-win+net403+sl40+wp+xbox40+MonoAndroid+Xamarin.iOS10+MonoTouch")
 
     // copy source to src
     [!! (srcDir @@ "**/*.*")
