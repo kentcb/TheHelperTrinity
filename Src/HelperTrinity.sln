@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Items", "Shared Items", "{CF9CCA85-B60D-4CCB-9804-614C1D9B8F13}"
-	ProjectSection(SolutionItems) = preProject
-		AssemblyInfoCommon.cs = AssemblyInfoCommon.cs
-		AssemblyInfoCommonSecurity.cs = AssemblyInfoCommonSecurity.cs
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A4AADFDB-4084-4C9C-B49C-96792644C8A0}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
@@ -16,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A4AADF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9BC3003D-6A25-4547-A9CE-0B0016399429}"
 	ProjectSection(SolutionItems) = preProject
-		Build.proj = Build.proj
-		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
-		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
+		..\build.bat = ..\build.bat
+		..\build.fsx = ..\build.fsx
+		HelperTrinity.nuspec = HelperTrinity.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kent.Boogaart.HelperTrinity", "Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj", "{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}"
