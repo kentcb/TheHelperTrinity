@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Items", "Shared Items", "{CF9CCA85-B60D-4CCB-9804-614C1D9B8F13}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9BC300
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Documentation", "..\Doc\Documentation.shfbproj", "{875651EB-17E7-40C8-87BF-1CA148CEC0F5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kent.Boogaart.HelperTrinity", "Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj", "{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kent.Boogaart.HelperTrinity.UnitTests", "Kent.Boogaart.HelperTrinity.UnitTests\Kent.Boogaart.HelperTrinity.UnitTests.csproj", "{0896198E-696F-4368-BA1F-429E932B037A}"
@@ -33,8 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{875651EB-17E7-40C8-87BF-1CA148CEC0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{875651EB-17E7-40C8-87BF-1CA148CEC0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
