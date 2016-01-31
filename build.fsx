@@ -1,17 +1,17 @@
-﻿#I "Src/packages/FAKE.3.13.3/tools"
-#r "FakeLib.dll"
+﻿#r "FakeLib.dll"
 
 open Fake
 open Fake.AssemblyInfoFile
 open Fake.EnvironmentHelper
 open Fake.MSBuildHelper
 open Fake.NuGetHelper
-open Fake.XUnitHelper
+open Fake.Testing
 
 // properties
 let semanticVersion = "2.0.3"
 let version = (>=>) @"(?<major>\d*)\.(?<minor>\d*)\.(?<build>\d*).*?" "${major}.${minor}.${build}.0" semanticVersion
 let configuration = getBuildParamOrDefault "configuration" "Release"
+// can be set by passing: -ev deployToNuGet true
 let deployToNuGet = getBuildParamOrDefault "deployToNuGet" "false"
 let genDir = "Gen/"
 let docDir = "Doc/"
@@ -29,6 +29,17 @@ Target "Clean" (fun _ ->
             Properties = ["Configuration", configuration]
         })
         (srcDir @@ "HelperTrinity.sln")
+)
+
+// would prefer to use the built-in RestorePackages function, but it restores packages in the root dir (not in Src), which causes build problems
+Target "RestorePackages" (fun _ -> 
+    !! "./**/packages.config"
+    |> Seq.iter (
+        RestorePackage (fun p ->
+            { p with
+                OutputPath = (srcDir @@ "packages")
+            })
+        )
 )
 
 Target "Build" (fun _ ->
@@ -64,14 +75,15 @@ Target "Build" (fun _ ->
 )
 
 Target "ExecuteUnitTests" (fun _ ->
-    xUnit (fun p ->
+    xUnit2 (fun p ->
         { p with
             ShadowCopy = false;
-            HtmlOutput = true;
-            XmlOutput = true;
-            OutputDir = testDir
+//            HtmlOutputPath = Some testDir;
+//            XmlOutputPath = Some testDir;
         })
-        [srcDir @@ "Kent.Boogaart.HelperTrinity.UnitTests/bin" @@ configuration @@ "Kent.Boogaart.HelperTrinity.UnitTests.dll"]
+        [
+            srcDir @@ "Kent.Boogaart.HelperTrinity.UnitTests/bin" @@ configuration @@ "Kent.Boogaart.HelperTrinity.UnitTests.dll"
+        ]
 )
 
 Target "CreateArchives" (fun _ ->
@@ -124,6 +136,7 @@ Target "CreateNuGetPackages" (fun _ ->
 
 // build order
 "Clean"
+    ==> "RestorePackages"
     ==> "Build"
     ==> "ExecuteUnitTests"
     ==> "CreateArchives"
