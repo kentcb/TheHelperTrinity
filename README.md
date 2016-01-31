@@ -1,19 +1,21 @@
+![Logo](Art/Logo150x150.png "Logo")
+
 # The Helper Trinity
 
 ## What?
 
-*The Helper Trinity* is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions.
+**The Helper Trinity** is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions.
 
 ## Why?
 
-Writing code to check arguments, raise events, and throw exceptions is mundane and error-prone. The Helper Trinity alleviates you of the need to write such code over and over again.
+Writing code to check arguments, raise events, and throw exceptions is mundane and error-prone. **The Helper Trinity** alleviates you of the need to write such code over and over again.
 
 ## Where?
 
-The easiest way to get *The Helper Trinity* is to install via NuGet:
+The easiest way to get **The Helper Trinity** is to install via NuGet:
 
 ```
-Install-Package Kent.Boogaart.HelperTrinity
+Install-Package HelperTrinity
 ```
 
 ## How?
@@ -52,7 +54,7 @@ Please see [the documentation](Doc/overview.md) for more details.
 
 ## Who?
 
-*The Helper Trinity* is currently developed solely by [Kent Boogaart](http://kent-boogaart.com/).
+**The Helper Trinity** is created and maintained by [Kent Boogaart](http://kent-boogaart.com). Issues and pull requests are welcome.
 
 ## Primary Features
 
@@ -63,4 +65,4 @@ Please see [the documentation](Doc/overview.md) for more details.
 * Support for checking generic arguments
 * Built with performance in mind
 * Extensively unit tested
-* Portable Class Library that targets all platforms
+* Portable Class Library that targets many platforms

@@ -78,10 +78,10 @@ Even if all these points hold true, you should measure performance to prove that
 
 ## Extension Methods
 
-The `Kent.Boogaart.HelperTrinity.Extensions` namespace can be imported to make event raising even simpler and more intuitive: 
+There are several extension methods defined to make raising events even simpler and more intuitive: 
 
 ```C#
-using Kent.Boogaart.HelperTrinity.Extensions;
+using Kent.Boogaart.HelperTrinity;
 
 public class MyClass
 {
@@ -94,4 +94,4 @@ public class MyClass
 }
 ```
 
-All the capabilities of the `EventHelper` class are exposed via the extension methods in the `Kent.Boogaart.HelperTrinity.Extensions` namespace.
+All the capabilities of the `EventHelper` class are exposed via extension methods.

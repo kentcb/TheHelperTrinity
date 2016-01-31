@@ -159,10 +159,10 @@ public class MyClass
 
 ## Extension Methods
 
-The `Kent.Boogaart.HelperTrinity.Extensions` namespace can be imported to make argument checking even simpler and more intuitive: 
+There are several extension methods defined to make argument checking even simpler and more intuitive: 
 
 ```C#
-using Kent.Boogaart.HelperTrinity.Extensions;
+using Kent.Boogaart.HelperTrinity;
 
 public class MyClass
 {
@@ -174,4 +174,4 @@ public class MyClass
 }
 ```
 
-All the capabilities of the `ArgumentHelper` class are exposed via the extension methods in the `Kent.Boogaart.HelperTrinity.Extensions` namespace.
+All the capabilities of the `ArgumentHelper` class are exposed via extension methods.
