@@ -8,8 +8,8 @@
     <ProjectGuid>{0896198E-696F-4368-BA1F-429E932B037A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kent.Boogaart.HelperTrinity.UnitTests</RootNamespace>
-    <AssemblyName>Kent.Boogaart.HelperTrinity.UnitTests</AssemblyName>
+    <RootNamespace>HelperTrinity.UnitTests</RootNamespace>
+    <AssemblyName>HelperTrinity.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -64,14 +64,14 @@
     <Compile Include="ArgumentHelperFixture.cs" />
     <Compile Include="EventHelperFixture.cs" />
     <Compile Include="ExceptionHelperFixture.cs" />
-    <Compile Include="Extensions\ArgumentHelperExtensionsFixture.cs" />
-    <Compile Include="Extensions\EventHelperExtensionsFixture.cs" />
+    <Compile Include="ArgumentHelperExtensionsFixture.cs" />
+    <Compile Include="EventHelperExtensionsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj">
+    <ProjectReference Include="..\HelperTrinity\HelperTrinity.csproj">
       <Project>{673733c4-cba3-43fb-b519-a6bfac83d9c3}</Project>
-      <Name>Kent.Boogaart.HelperTrinity</Name>
+      <Name>HelperTrinity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

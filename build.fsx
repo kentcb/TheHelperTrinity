@@ -82,7 +82,7 @@ Target "ExecuteUnitTests" (fun _ ->
 //            XmlOutputPath = Some testDir;
         })
         [
-            srcDir @@ "Kent.Boogaart.HelperTrinity.UnitTests/bin" @@ configuration @@ "Kent.Boogaart.HelperTrinity.UnitTests.dll"
+            srcDir @@ "HelperTrinity.UnitTests/bin" @@ configuration @@ "HelperTrinity.UnitTests.dll"
         ]
 )
 
@@ -100,15 +100,15 @@ Target "CreateArchives" (fun _ ->
         |> Zip "." (genDir @@ "TheHelperTrinity-" + semanticVersion + "-src.zip")
 
     // binary archive
-    let workingDir = srcDir @@ "Kent.Boogaart.HelperTrinity/bin" @@ configuration
+    let workingDir = srcDir @@ "HelperTrinity/bin" @@ configuration
 
-    !! (workingDir @@ "Kent.Boogaart.HelperTrinity.*")
+    !! (workingDir @@ "HelperTrinity.*")
         |> Zip workingDir (genDir @@ "TheHelperTrinity-" + semanticVersion + "-bin.zip")
 )
 
 Target "CreateNuGetPackages" (fun _ ->
     // copy binaries to lib
-    !! (srcDir @@ "Kent.Boogaart.HelperTrinity/bin" @@ configuration @@ "Kent.Boogaart.HelperTrinity.*")
+    !! (srcDir @@ "HelperTrinity/bin" @@ configuration @@ "HelperTrinity.*")
         |> CopyFiles (nugetDir @@ "lib/portable-win+net403+sl40+wp+xbox40+MonoAndroid+Xamarin.iOS10+MonoTouch")
 
     // copy source to src
@@ -124,7 +124,7 @@ Target "CreateNuGetPackages" (fun _ ->
     // create the NuGets
     NuGet (fun p ->
         {p with
-            Project = "Kent.Boogaart.HelperTrinity"
+            Project = "HelperTrinity"
             Version = semanticVersion
             OutputPath = nugetDir
             WorkingDir = nugetDir

@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9BC300
 		HelperTrinity.nuspec = HelperTrinity.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kent.Boogaart.HelperTrinity", "Kent.Boogaart.HelperTrinity\Kent.Boogaart.HelperTrinity.csproj", "{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelperTrinity", "HelperTrinity\HelperTrinity.csproj", "{673733C4-CBA3-43FB-B519-A6BFAC83D9C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kent.Boogaart.HelperTrinity.UnitTests", "Kent.Boogaart.HelperTrinity.UnitTests\Kent.Boogaart.HelperTrinity.UnitTests.csproj", "{0896198E-696F-4368-BA1F-429E932B037A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelperTrinity.UnitTests", "HelperTrinity.UnitTests\HelperTrinity.UnitTests.csproj", "{0896198E-696F-4368-BA1F-429E932B037A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

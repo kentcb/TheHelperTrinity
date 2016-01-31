@@ -1,4 +1,4 @@
-namespace Kent.Boogaart.HelperTrinity
+namespace HelperTrinity
 {
     using System;
     using System.Diagnostics;

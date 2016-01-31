@@ -1,4 +1,4 @@
-namespace Kent.Boogaart.HelperTrinity.UnitTests
+namespace HelperTrinity.UnitTests
 {
     using System;
     using Xunit;
@@ -28,7 +28,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         {
             var exceptionHelper = new ExceptionHelper(typeof(ExceptionHelperFixture));
             var ex = Assert.Throws<InvalidOperationException>(() => exceptionHelper.Resolve("invalidKey"));
-            Assert.Equal("The exception details for key 'invalidKey' could not be found at /exceptionHelper/exceptionGroup[@type'Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture']/exception[@key='invalidKey'].", ex.Message);
+            Assert.Equal("The exception details for key 'invalidKey' could not be found at /exceptionHelper/exceptionGroup[@type'HelperTrinity.UnitTests.ExceptionHelperFixture']/exception[@key='invalidKey'].", ex.Message);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         {
             var exceptionHelper = new ExceptionHelper(typeof(ExceptionHelperFixture));
             var ex = Assert.Throws<InvalidOperationException>(() => exceptionHelper.Resolve("noConstructorFound"));
-            Assert.Equal("An appropriate constructor could not be found for exception type 'Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, for exception with key 'noConstructorFound'", ex.Message);
+            Assert.Equal("An appropriate constructor could not be found for exception type 'HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, for exception with key 'noConstructorFound'", ex.Message);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Kent.Boogaart.HelperTrinity.UnitTests
         [Fact]
         public void exception_helper_resource_can_be_in_custom_location()
         {
-            var exceptionHelper = new ExceptionHelper(typeof(ExceptionHelperFixture), "Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelper.Subfolder.CustomExceptionHelperResource.xml");
+            var exceptionHelper = new ExceptionHelper(typeof(ExceptionHelperFixture), "HelperTrinity.UnitTests.ExceptionHelper.Subfolder.CustomExceptionHelperResource.xml");
             var ex = Assert.Throws<InvalidOperationException>(() => exceptionHelper.ResolveAndThrowIf(true, "anException"));
             Assert.Equal("Here is the message.", ex.Message);
         }

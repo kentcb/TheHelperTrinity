@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <exceptionHelper>
-	<exceptionGroup type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture">
+	<exceptionGroup type="HelperTrinity.UnitTests.ExceptionHelperFixture">
 		<exception key="noTypeAttribute"/>
 		
 		<exception key="typeCouldNotBeLoaded" type="Foo.Bar.Wont.Load, Anywhere"/>
 
 		<exception key="typeNotException" type="System.DateTime"/>
 
-		<exception key="noConstructorFound" type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, Kent.Boogaart.HelperTrinity.UnitTests"/>
+		<exception key="noConstructorFound" type="HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, HelperTrinity.UnitTests"/>
 
 		<exception key="valid" type="System.InvalidOperationException">
 			Here is the message.
@@ -18,11 +18,11 @@
 			Here is the message with argument ({0}) or two ({1}).
 		</exception>
 
-		<exception key="withConstructorArgs" type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, Kent.Boogaart.HelperTrinity.UnitTests">
+		<exception key="withConstructorArgs" type="HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, HelperTrinity.UnitTests">
 			A message.
 		</exception>
 
-		<exception key="withConstructorAndMessageArgs" type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, Kent.Boogaart.HelperTrinity.UnitTests">
+		<exception key="withConstructorAndMessageArgs" type="HelperTrinity.UnitTests.ExceptionHelperFixture+TestException, HelperTrinity.UnitTests">
 			My message with a parameter: '{0}'
 		</exception>
 	</exceptionGroup>

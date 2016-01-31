@@ -1,4 +1,4 @@
-﻿namespace Kent.Boogaart.HelperTrinity.Extensions
+﻿namespace HelperTrinity
 {
     using System;
     using System.Collections;
@@ -25,7 +25,7 @@
     /// </example>
     public static class ArgumentHelperExtensions
     {
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(T,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(T,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNull<T>(this T arg, string argName)
             where T : class
@@ -33,7 +33,7 @@
             ArgumentHelper.AssertNotNull(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(Nullable{T},string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(Nullable{T},string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNull<T>(this T? arg, string argName)
             where T : struct
@@ -41,49 +41,49 @@
             ArgumentHelper.AssertNotNull(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertGenericArgumentNotNull{T}(T,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertGenericArgumentNotNull{T}(T,string)"]/*' />
         [DebuggerHidden]
         public static void AssertGenericArgumentNotNull<T>(this T arg, string argName)
         {
             ArgumentHelper.AssertGenericArgumentNotNull(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(IEnumerable{T},string,bool)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNull{T}(IEnumerable{T},string,bool)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNull<T>(this IEnumerable<T> arg, string argName, bool assertContentsNotNull)
         {
             ArgumentHelper.AssertNotNull(arg, argName, assertContentsNotNull);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(string,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(string,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNullOrEmpty(this string arg, string argName)
         {
             ArgumentHelper.AssertNotNullOrEmpty(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(IEnumerable,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(IEnumerable,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNullOrEmpty(this IEnumerable arg, string argName)
         {
             ArgumentHelper.AssertNotNullOrEmpty(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(ICollection,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrEmpty(ICollection,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNullOrEmpty(this ICollection arg, string argName)
         {
             ArgumentHelper.AssertNotNullOrEmpty(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrWhiteSpace(string,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertNotNullOrWhiteSpace(string,string)"]/*' />
         [DebuggerHidden]
         public static void AssertNotNullOrWhiteSpace(this string arg, string argName)
         {
             ArgumentHelper.AssertNotNullOrWhiteSpace(arg, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string)"]/*' />
         [DebuggerHidden]
         [CLSCompliant(false)]
         public static void AssertEnumMember<TEnum>(this TEnum enumValue, string argName)
@@ -92,7 +92,7 @@
             ArgumentHelper.AssertEnumMember(enumValue, argName);
         }
 
-        /// <include file='../ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])"]/*' />
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])"]/*' />
         [DebuggerHidden]
         [CLSCompliant(false)]
         public static void AssertEnumMember<TEnum>(this TEnum enumValue, string argName, params TEnum[] validValues)

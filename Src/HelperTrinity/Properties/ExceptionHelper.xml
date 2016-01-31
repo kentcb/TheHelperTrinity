@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <exceptionHelper>
-    <exceptionGroup type="Kent.Boogaart.HelperTrinity.EventHelper">
+    <exceptionGroup type="HelperTrinity.EventHelper">
         <exception key="invalidDelegate" type="System.InvalidOperationException">
             The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.
         </exception>

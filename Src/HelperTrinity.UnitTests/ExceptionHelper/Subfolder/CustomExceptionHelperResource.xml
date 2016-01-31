@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <exceptionHelper>
-  <exceptionGroup type="Kent.Boogaart.HelperTrinity.UnitTests.ExceptionHelperFixture">
+  <exceptionGroup type="HelperTrinity.UnitTests.ExceptionHelperFixture">
     <exception key="anException" type="System.InvalidOperationException">
       Here is the message.
     </exception>

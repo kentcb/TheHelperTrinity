@@ -1,33 +1,29 @@
-﻿namespace Kent.Boogaart.HelperTrinity.UnitTests.Extensions
+namespace HelperTrinity.UnitTests
 {
-    using Kent.Boogaart.HelperTrinity.Extensions;
     using System;
     using System.ComponentModel;
     using System.Threading;
     using Xunit;
 
-    public sealed class EventHelperExtensionsFixture
+    public sealed class EventHelperFixture
     {
         [Fact]
         public void raise_does_not_throw_if_event_handler_is_null()
         {
-            EventHandler handler = null;
-            handler.Raise(this);
+            EventHelper.Raise(null, this);
         }
 
         [Fact]
         public void raise_does_not_throw_if_sender_is_null()
         {
-            EventHandler handler = (s, e) => { };
-            handler.Raise(null);
+            EventHelper.Raise((EventHandler)((s, e) => { }), null);
         }
 
         [Fact]
         public void raise_invokes_event_handler()
         {
             var raised = false;
-            EventHandler handler = (s, e) => raised = true;
-            handler.Raise(this);
+            EventHelper.Raise((EventHandler)((s, e) => raised = true), this);
 
             Assert.True(raised);
         }
@@ -36,11 +32,11 @@
         public void raise_invokes_all_event_handlers_in_multicast_delegate()
         {
             var invoked = 0;
-            EventHandler handler = (s, e) => Interlocked.Increment(ref invoked);
+            var handler = (EventHandler)((s, e) => Interlocked.Increment(ref invoked));
             handler += (s, e) => Interlocked.Increment(ref invoked);
             handler += (s, e) => Interlocked.Increment(ref invoked);
 
-            handler.Raise(this);
+            EventHelper.Raise(handler, this);
             Assert.Equal(3, invoked);
         }
 
@@ -48,8 +44,7 @@
         public void raise_passes_through_sender()
         {
             object sender = null;
-            EventHandler handler = (s, e) => sender = s;
-            handler.Raise(this);
+            EventHelper.Raise((EventHandler)((s, e) => sender = s), this);
 
             Assert.NotNull(sender);
             Assert.Same(this, sender);
@@ -59,8 +54,7 @@
         public void raise_passes_through_empty_event_args_by_default()
         {
             object eventArgs = null;
-            EventHandler handler = (s, e) => eventArgs = e;
-            handler.Raise(this);
+            EventHelper.Raise((EventHandler)((s, e) => eventArgs = e), this);
 
             Assert.NotNull(eventArgs);
             Assert.Same(EventArgs.Empty, eventArgs);
@@ -69,30 +63,26 @@
         [Fact]
         public void raise_generic_does_not_throw_if_event_handler_is_null()
         {
-            EventHandler<EventArgs> handler = null;
-            handler.Raise(this, EventArgs.Empty);
+            EventHelper.Raise(null, this, EventArgs.Empty);
         }
 
         [Fact]
         public void raise_generic_does_not_throw_if_sender_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.Raise(null, EventArgs.Empty);
+            EventHelper.Raise((s, e) => { }, null, EventArgs.Empty);
         }
 
         [Fact]
         public void raise_generic_does_not_throw_if_event_args_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.Raise(this, (EventArgs)null);
+            EventHelper.Raise((s, e) => { }, this, (EventArgs)null);
         }
 
         [Fact]
         public void raise_generic_invokes_event_handler()
         {
             var raised = false;
-            EventHandler<EventArgs> handler = (s, e) => raised = true;
-            handler.Raise(this, EventArgs.Empty);
+            EventHelper.Raise((s, e) => raised = true, this, EventArgs.Empty);
 
             Assert.True(raised);
         }
@@ -105,7 +95,7 @@
             handler += (s, e) => Interlocked.Increment(ref invoked);
             handler += (s, e) => Interlocked.Increment(ref invoked);
 
-            handler.Raise(this, EventArgs.Empty);
+            EventHelper.Raise(handler, this, EventArgs.Empty);
             Assert.Equal(3, invoked);
         }
 
@@ -113,8 +103,7 @@
         public void raise_generic_passes_through_sender()
         {
             object sender = null;
-            EventHandler<EventArgs> handler = (s, e) => sender = s;
-            handler.Raise(this, EventArgs.Empty);
+            EventHelper.Raise((s, e) => sender = s, this, EventArgs.Empty);
 
             Assert.NotNull(sender);
             Assert.Same(this, sender);
@@ -125,8 +114,7 @@
         {
             var eventArgs = new EventArgs();
             EventArgs receivedEventArgs = null;
-            EventHandler<EventArgs> handler = (s, e) => receivedEventArgs = e;
-            handler.Raise(this, eventArgs);
+            EventHelper.Raise((s, e) => receivedEventArgs = e, this, eventArgs);
 
             Assert.NotNull(receivedEventArgs);
             Assert.Same(eventArgs, receivedEventArgs);
@@ -135,30 +123,26 @@
         [Fact]
         public void raise_generic_with_lazy_event_args_creation_does_not_throw_if_event_handler_is_null()
         {
-            EventHandler<EventArgs> handler = null;
-            handler.Raise(this, () => EventArgs.Empty);
+            EventHelper.Raise(null, this, () => EventArgs.Empty);
         }
 
         [Fact]
         public void raise_generic_with_lazy_event_args_creation_does_not_throw_if_sender_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.Raise(null, () => EventArgs.Empty);
+            EventHelper.Raise((s, e) => { }, null, () => EventArgs.Empty);
         }
 
         [Fact]
         public void raise_generic_with_lazy_event_args_creation_throws_if_creation_delegate_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            Assert.Throws<ArgumentNullException>(() => handler.Raise<EventArgs>(this, (Func<EventArgs>)null));
+            Assert.Throws<ArgumentNullException>(() => EventHelper.Raise<EventArgs>((s, e) => { }, this, (Func<EventArgs>)null));
         }
 
         [Fact]
         public void raise_generic_with_lazy_event_args_creation_invokes_event_handler()
         {
             var raised = false;
-            EventHandler<EventArgs> handler = (s, e) => raised = true;
-            handler.Raise(this, () => EventArgs.Empty);
+            EventHelper.Raise((s, e) => raised = true, this, () => EventArgs.Empty);
 
             Assert.True(raised);
         }
@@ -167,11 +151,11 @@
         public void raise_generic_with_lazy_event_args_creation_invokes_all_event_handlers_in_multicast_delegate()
         {
             var invoked = 0;
-            EventHandler<EventArgs> handler = (s, e) => Interlocked.Increment(ref invoked);
+            var handler = (EventHandler<EventArgs>)((s, e) => Interlocked.Increment(ref invoked));
             handler += (s, e) => Interlocked.Increment(ref invoked);
             handler += (s, e) => Interlocked.Increment(ref invoked);
 
-            handler.Raise(this, () => EventArgs.Empty);
+            EventHelper.Raise(handler, this, () => EventArgs.Empty);
             Assert.Equal(3, invoked);
         }
 
@@ -179,8 +163,7 @@
         public void raise_generic_with_lazy_event_args_creation_passes_through_sender()
         {
             object sender = null;
-            EventHandler<EventArgs> handler = (s, e) => sender = s;
-            handler.Raise(this, () => EventArgs.Empty);
+            EventHelper.Raise((s, e) => sender = s, this, () => EventArgs.Empty);
 
             Assert.NotNull(sender);
             Assert.Same(this, sender);
@@ -191,8 +174,7 @@
         {
             var eventArgs = new EventArgs();
             EventArgs receivedEventArgs = null;
-            EventHandler<EventArgs> handler = (s, e) => receivedEventArgs = e;
-            handler.Raise(this, () => eventArgs);
+            EventHelper.Raise((s, e) => receivedEventArgs = e, this, () => eventArgs);
 
             Assert.NotNull(receivedEventArgs);
             Assert.Same(eventArgs, receivedEventArgs);
@@ -202,9 +184,9 @@
         public void raise_generic_with_lazy_event_args_does_not_invoke_creation_delegate_if_there_is_no_handler()
         {
             var called = false;
-            EventHandler<EventArgs> handler = null;
 
-            handler.Raise(
+            EventHelper.Raise(
+                null,
                 this,
                 () =>
                 {
@@ -218,37 +200,32 @@
         [Fact]
         public void begin_raise_does_not_throw_if_event_handler_is_null()
         {
-            EventHandler handler = null;
-            handler.BeginRaise(this, _ => { }, new object());
+            EventHelper.BeginRaise(null, this, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_does_not_throw_if_sender_is_null()
         {
-            EventHandler handler = (s, e) => { };
-            handler.BeginRaise(null, _ => { }, new object());
+            EventHelper.BeginRaise((EventHandler)((s, e) => { }), null, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_does_not_throw_if_callback_is_null()
         {
-            EventHandler handler = (s, e) => { };
-            handler.BeginRaise(null, null, new object());
+            EventHelper.BeginRaise((EventHandler)((s, e) => { }), null, null, new object());
         }
 
         [Fact]
         public void begin_raise_does_not_throw_if_async_state_is_null()
         {
-            EventHandler handler = (s, e) => { };
-            handler.BeginRaise(null, _ => { }, null);
+            EventHelper.BeginRaise((EventHandler)((s, e) => { }), null, _ => { }, null);
         }
 
         [Fact]
         public void begin_raise_invokes_event_handler()
         {
             var waitHandle = new ManualResetEventSlim(false);
-            EventHandler handler = (s, e) => waitHandle.Set();
-            handler.BeginRaise(this, null, null);
+            EventHelper.BeginRaise((EventHandler)((s, e) => waitHandle.Set()), this, null, null);
 
             Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
         }
@@ -260,11 +237,11 @@
             var waitHandle2 = new ManualResetEventSlim(false);
             var waitHandle3 = new ManualResetEventSlim(false);
 
-            EventHandler handler = ((s, e) => waitHandle1.Set());
+            var handler = (EventHandler)((s, e) => waitHandle1.Set());
             handler += (s, e) => waitHandle2.Set();
             handler += (s, e) => waitHandle3.Set();
 
-            handler.BeginRaise(this, null, null);
+            EventHelper.BeginRaise(handler, this, null, null);
 
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
@@ -277,8 +254,8 @@
             var handlerCalled = new ManualResetEventSlim(false);
             var callbackCalled = new ManualResetEventSlim(false);
             var wasHandlerCalled = false;
-            EventHandler handler = ((s, e) => handlerCalled.Set());
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (EventHandler)((s, e) => handlerCalled.Set()),
                 this,
                 _ =>
                 {
@@ -296,12 +273,12 @@
         {
             var waitHandle = new ManualResetEventSlim(false);
             object sender = null;
-            EventHandler handler = (s, e) =>
-                {
-                    sender = s;
-                    waitHandle.Set();
-                };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (EventHandler)((s, e) =>
+                    {
+                        sender = s;
+                        waitHandle.Set();
+                    }),
                 this,
                 null,
                 null);
@@ -316,12 +293,12 @@
         {
             var waitHandle = new ManualResetEventSlim(false);
             object eventArgs = null;
-            EventHandler handler = (s, e) =>
-            {
-                eventArgs = e;
-                waitHandle.Set();
-            };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (EventHandler)((s, e) =>
+                {
+                    eventArgs = e;
+                    waitHandle.Set();
+                }),
                 this,
                 null,
                 null);
@@ -337,8 +314,8 @@
             var waitHandle = new ManualResetEventSlim(false);
             var asyncState = new object();
             object receivedAsyncState = null;
-            EventHandler handler = (s, e) => { };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (EventHandler)((s, e) => { }),
                 this,
                 ar =>
                 {
@@ -355,46 +332,60 @@
         [Fact]
         public void begin_raise_generic_does_not_throw_if_event_handler_is_null()
         {
-            EventHandler<EventArgs> handler = null;
-            handler.BeginRaise(this, EventArgs.Empty, _ => { }, new object());
+            EventHelper.BeginRaise(null, this, EventArgs.Empty, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_generic_does_not_throw_if_sender_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(null, EventArgs.Empty, _ => { }, new object());
+            EventHelper.BeginRaise((s, e) => { }, null, EventArgs.Empty, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_generic_does_not_throw_if_event_args_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(null, (EventArgs)null, _ => { }, new object());
+            EventHelper.BeginRaise((s, e) => { }, null, (EventArgs)null, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_generic_does_not_throw_if_callback_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(null, EventArgs.Empty, null, new object());
+            EventHelper.BeginRaise((s, e) => { }, null, EventArgs.Empty, null, new object());
         }
 
         [Fact]
         public void begin_raise_generic_does_not_throw_if_async_state_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(null, EventArgs.Empty, _ => { }, null);
+            EventHelper.BeginRaise((s, e) => { }, null, EventArgs.Empty, _ => { }, null);
         }
 
         [Fact]
         public void begin_raise_generic_invokes_event_handler()
         {
             var waitHandle = new ManualResetEventSlim(false);
-            EventHandler<EventArgs> handler = (s, e) => waitHandle.Set();
-            handler.BeginRaise(this, EventArgs.Empty, null, null);
+            EventHelper.BeginRaise((s, e) => waitHandle.Set(), this, EventArgs.Empty, null, null);
 
             Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_generic_invokes_event_handler_on_different_thread()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var threadId = -1;
+            EventHelper.BeginRaise(
+                (s, e) =>
+                {
+                    threadId = Thread.CurrentThread.ManagedThreadId;
+                    waitHandle.Set();
+                },
+                this,
+                EventArgs.Empty,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId);
         }
 
         [Fact]
@@ -404,11 +395,11 @@
             var waitHandle2 = new ManualResetEventSlim(false);
             var waitHandle3 = new ManualResetEventSlim(false);
 
-            EventHandler<EventArgs> handler = (s, e) => waitHandle1.Set();
+            var handler = (EventHandler<EventArgs>)((s, e) => waitHandle1.Set());
             handler += (s, e) => waitHandle2.Set();
             handler += (s, e) => waitHandle3.Set();
 
-            handler.BeginRaise(this, EventArgs.Empty, null, null);
+            EventHelper.BeginRaise(handler, this, EventArgs.Empty, null, null);
 
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
@@ -421,8 +412,8 @@
             var handlerCalled = new ManualResetEventSlim(false);
             var callbackCalled = new ManualResetEventSlim(false);
             var wasHandlerCalled = false;
-            EventHandler<EventArgs> handler = (s, e) => handlerCalled.Set();
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (s, e) => handlerCalled.Set(),
                 this,
                 EventArgs.Empty,
                 _ =>
@@ -441,12 +432,12 @@
         {
             var waitHandle = new ManualResetEventSlim(false);
             object sender = null;
-            EventHandler<EventArgs> handler = (s, e) =>
+            EventHelper.BeginRaise(
+                (s, e) =>
                 {
                     sender = s;
                     waitHandle.Set();
-                };
-            handler.BeginRaise(
+                },
                 this,
                 EventArgs.Empty,
                 null,
@@ -463,12 +454,12 @@
             var waitHandle = new ManualResetEventSlim(false);
             var eventArgs = new EventArgs();
             EventArgs receivedEventArgs = null;
-            EventHandler<EventArgs> handler = (s, e) =>
-            {
-                receivedEventArgs = e;
-                waitHandle.Set();
-            };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (s, e) =>
+                {
+                    receivedEventArgs = e;
+                    waitHandle.Set();
+                },
                 this,
                 eventArgs,
                 null,
@@ -485,8 +476,8 @@
             var waitHandle = new ManualResetEventSlim(false);
             var asyncState = new object();
             object receivedAsyncState = null;
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (s, e) => { },
                 this,
                 EventArgs.Empty,
                 ar =>
@@ -504,46 +495,59 @@
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_does_not_throw_if_event_handler_is_null()
         {
-            EventHandler<EventArgs> handler = null;
-            handler.BeginRaise(this, () => EventArgs.Empty, _ => { }, new object());
+            EventHelper.BeginRaise(null, this, () => EventArgs.Empty, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_does_not_throw_if_sender_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(null, () => EventArgs.Empty, _ => { }, new object());
+            EventHelper.BeginRaise((s, e) => { }, null, () => EventArgs.Empty, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_throws_if_creation_delegate_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            Assert.Throws<ArgumentNullException>(() => handler.BeginRaise<EventArgs>(this, (Func<EventArgs>)null, _ => { }, new object()));
+            Assert.Throws<ArgumentNullException>(() => EventHelper.BeginRaise<EventArgs>((s, e) => { }, this, (Func<EventArgs>)null, _ => { }, new object()));
         }
 
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_does_not_throw_if_callback_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(this, () => EventArgs.Empty, null, new object());
+            EventHelper.BeginRaise((s, e) => { }, this, () => EventArgs.Empty, null, new object());
         }
 
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_does_not_throw_if_async_state_is_null()
         {
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(this, () => EventArgs.Empty, _ => { }, null);
+            EventHelper.BeginRaise((s, e) => { }, this, () => EventArgs.Empty, _ => { }, null);
         }
 
         [Fact]
         public void begin_raise_generic_with_lazy_event_args_creation_invokes_event_handler()
         {
             var waitHandle = new ManualResetEventSlim(false);
-            EventHandler<EventArgs> handler = (s, e) => waitHandle.Set();
-            handler.BeginRaise(this, () => EventArgs.Empty, null, null);
+            EventHelper.BeginRaise((s, e) => waitHandle.Set(), this, () => EventArgs.Empty, null, null);
 
             Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+        }
+
+        [Fact]
+        public void begin_raise_generic_with_lazy_event_args_creation_invokes_event_handler_on_different_thread()
+        {
+            var waitHandle = new ManualResetEventSlim(false);
+            var threadId = -1;
+            EventHelper.BeginRaise((s, e) =>
+                {
+                    threadId = Thread.CurrentThread.ManagedThreadId;
+                    waitHandle.Set();
+                },
+                this,
+                () => EventArgs.Empty,
+                null,
+                null);
+
+            Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
+            Assert.NotEqual(Thread.CurrentThread.ManagedThreadId, threadId);
         }
 
         [Fact]
@@ -553,11 +557,11 @@
             var waitHandle2 = new ManualResetEventSlim(false);
             var waitHandle3 = new ManualResetEventSlim(false);
 
-            EventHandler<EventArgs> handler = (s, e) => waitHandle1.Set();
+            var handler = (EventHandler<EventArgs>)((s, e) => waitHandle1.Set());
             handler += (s, e) => waitHandle2.Set();
             handler += (s, e) => waitHandle3.Set();
 
-            handler.BeginRaise(this, () => EventArgs.Empty, null, null);
+            EventHelper.BeginRaise(handler, this, () => EventArgs.Empty, null, null);
 
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
@@ -570,8 +574,8 @@
             var handlerCalled = new ManualResetEventSlim(false);
             var callbackCalled = new ManualResetEventSlim(false);
             var wasHandlerCalled = false;
-            EventHandler<EventArgs> handler = (s, e) => handlerCalled.Set();
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (s, e) => handlerCalled.Set(),
                 this,
                 () => EventArgs.Empty,
                 _ =>
@@ -590,12 +594,12 @@
         {
             var waitHandle = new ManualResetEventSlim(false);
             object sender = null;
-            EventHandler<EventArgs> handler = (s, e) =>
+            EventHelper.BeginRaise(
+                (s, e) =>
                 {
                     sender = s;
                     waitHandle.Set();
-                };
-            handler.BeginRaise(
+                },
                 this,
                 () => EventArgs.Empty,
                 null,
@@ -612,12 +616,12 @@
             var waitHandle = new ManualResetEventSlim(false);
             var eventArgs = new EventArgs();
             EventArgs receivedEventArgs = null;
-            EventHandler<EventArgs> handler = (s, e) =>
-            {
-                receivedEventArgs = e;
-                waitHandle.Set();
-            };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (s, e) =>
+                {
+                    receivedEventArgs = e;
+                    waitHandle.Set();
+                },
                 this,
                 () => eventArgs,
                 null,
@@ -632,9 +636,9 @@
         public void begin_raise_generic_with_lazy_event_args_does_not_invoke_creation_delegate_if_there_is_no_handler()
         {
             var called = false;
-            EventHandler<EventArgs> handler = null;
 
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                null,
                 this,
                 () =>
                 {
@@ -653,8 +657,8 @@
             var waitHandle = new ManualResetEventSlim(false);
             var asyncState = new object();
             object receivedAsyncState = null;
-            EventHandler<EventArgs> handler = (s, e) => { };
-            handler.BeginRaise(
+            EventHelper.BeginRaise(
+                (s, e) => { },
                 this,
                 () => EventArgs.Empty,
                 ar =>
@@ -672,32 +676,32 @@
         [Fact]
         public void begin_raise_delegate_does_not_throw_if_event_handler_is_null()
         {
-            ((PseudoEventHandler)null).BeginRaise(this, EventArgs.Empty, _ => { }, new object());
+            EventHelper.BeginRaise((PseudoEventHandler)null, this, EventArgs.Empty, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_delegate_does_not_throw_if_sender_is_null()
         {
-            ((PseudoEventHandler)((s, e) => { })).BeginRaise(null, EventArgs.Empty, _ => { }, new object());
+            EventHelper.BeginRaise((PseudoEventHandler)((s, e) => { }), null, EventArgs.Empty, _ => { }, new object());
         }
 
         [Fact]
         public void begin_raise_delegate_does_not_throw_if_callback_is_null()
         {
-            ((PseudoEventHandler)((s, e) => { })).BeginRaise(this, EventArgs.Empty, null, new object());
+            EventHelper.BeginRaise((PseudoEventHandler)((s, e) => { }), this, EventArgs.Empty, null, new object());
         }
 
         [Fact]
         public void begin_raise_delegate_does_not_throw_if_async_state_is_null()
         {
-            ((PseudoEventHandler)((s, e) => { })).BeginRaise(this, EventArgs.Empty, _ => { }, null);
+            EventHelper.BeginRaise((PseudoEventHandler)((s, e) => { }), this, EventArgs.Empty, _ => { }, null);
         }
 
         [Fact]
         public void begin_raise_delegate_invokes_event_handler()
         {
             var waitHandle = new ManualResetEventSlim(false);
-            ((PseudoEventHandler)((s, e) => waitHandle.Set())).BeginRaise(this, EventArgs.Empty, null, null);
+            EventHelper.BeginRaise((PseudoEventHandler)((s, e) => waitHandle.Set()), this, EventArgs.Empty, null, null);
 
             Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
         }
@@ -713,7 +717,7 @@
             handler += (s, e) => waitHandle2.Set();
             handler += (s, e) => waitHandle3.Set();
 
-            handler.BeginRaise(this, EventArgs.Empty, null, null);
+            EventHelper.BeginRaise(handler, this, EventArgs.Empty, null, null);
 
             Assert.True(waitHandle1.Wait(TimeSpan.FromSeconds(1)));
             Assert.True(waitHandle2.Wait(TimeSpan.FromSeconds(1)));
@@ -726,7 +730,8 @@
             var handlerCalled = new ManualResetEventSlim(false);
             var callbackCalled = new ManualResetEventSlim(false);
             var wasHandlerCalled = false;
-            ((PseudoEventHandler)((s, e) => handlerCalled.Set())).BeginRaise(
+            EventHelper.BeginRaise(
+                (PseudoEventHandler)((s, e) => handlerCalled.Set()),
                 this,
                 EventArgs.Empty,
                 _ =>
@@ -745,11 +750,12 @@
         {
             var waitHandle = new ManualResetEventSlim(false);
             object sender = null;
-            ((PseudoEventHandler)((s, e) =>
-            {
-                sender = s;
-                waitHandle.Set();
-            })).BeginRaise(
+            EventHelper.BeginRaise(
+                (PseudoEventHandler)((s, e) =>
+                {
+                    sender = s;
+                    waitHandle.Set();
+                }),
                 this,
                 EventArgs.Empty,
                 null,
@@ -766,11 +772,12 @@
             var waitHandle = new ManualResetEventSlim(false);
             var eventArgs = new EventArgs();
             object receivedEventArgs = null;
-            ((PseudoEventHandler)((s, e) =>
-            {
-                receivedEventArgs = e;
-                waitHandle.Set();
-            })).BeginRaise(
+            EventHelper.BeginRaise(
+                (PseudoEventHandler)((s, e) =>
+                {
+                    receivedEventArgs = e;
+                    waitHandle.Set();
+                }),
                 this,
                 eventArgs,
                 null,
@@ -787,7 +794,8 @@
             var waitHandle = new ManualResetEventSlim(false);
             var asyncState = new object();
             object receivedAsyncState = null;
-            ((PseudoEventHandler)((s, e) => { })).BeginRaise(
+            EventHelper.BeginRaise(
+                (PseudoEventHandler)((s, e) => { }),
                 this,
                 EventArgs.Empty,
                 ar =>
@@ -808,17 +816,17 @@
         [Fact]
         public void begin_raise_delegate_throws_if_delegate_does_not_take_correct_number_of_arguments()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => ((ThreadStart)(() => { })).BeginRaise(this, EventArgs.Empty, null, null));
+            var ex = Assert.Throws<InvalidOperationException>(() => EventHelper.BeginRaise((ThreadStart)(() => { }), this, EventArgs.Empty, null, null));
             Assert.Equal("The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.", ex.Message);
         }
 
         [Fact]
         public void begin_raise_delegate_throws_if_delegate_does_not_take_correct_type_of_arguments()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => ((Action<bool>)(b => { })).BeginRaise(this, EventArgs.Empty, null, null));
+            var ex = Assert.Throws<InvalidOperationException>(() => EventHelper.BeginRaise((Action<bool>)(b => { }), this, EventArgs.Empty, null, null));
             Assert.Equal("The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.", ex.Message);
 
-            ex = Assert.Throws<InvalidOperationException>(() => ((Action<object, bool>)((o, b) => { })).BeginRaise(this, EventArgs.Empty, null, null));
+            ex = Assert.Throws<InvalidOperationException>(() => EventHelper.BeginRaise((Action<object, bool>)((o, b) => { }), this, EventArgs.Empty, null, null));
             Assert.Equal("The supplied delegate does not have the correct signature. The delegate must take two parameters, the first an object and the second an EventArgs instance.", ex.Message);
         }
 
@@ -826,7 +834,7 @@
         public void begin_raise_delegate_works_with_any_event_args_type()
         {
             var waitHandle = new ManualResetEventSlim(false);
-            ((Action<object, CancelEventArgs>)((s, e) => waitHandle.Set())).BeginRaise(this, new CancelEventArgs(), null, null);
+            EventHelper.BeginRaise((Action<object, CancelEventArgs>)((s, e) => waitHandle.Set()), this, new CancelEventArgs(), null, null);
 
             Assert.True(waitHandle.Wait(TimeSpan.FromSeconds(1)));
         }

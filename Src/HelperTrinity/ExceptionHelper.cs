@@ -1,6 +1,5 @@
-namespace Kent.Boogaart.HelperTrinity
+namespace HelperTrinity
 {
-    using Kent.Boogaart.HelperTrinity.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
