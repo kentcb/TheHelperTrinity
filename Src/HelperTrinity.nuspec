@@ -8,6 +8,7 @@
     <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
     <projectUrl>https://github.com/kentcb/TheHelperTrinity/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://raw.githubusercontent.com/kentcb/TheHelperTrinity/master/Art/Logo64x64.png</iconUrl>
     <description>
         The Helper Trinity is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions. Online at https://github.com/kentcb/TheHelperTrinity/.
     </description>
