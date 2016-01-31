@@ -8,7 +8,7 @@ open Fake.NuGetHelper
 open Fake.Testing
 
 // properties
-let semanticVersion = "2.0.3"
+let semanticVersion = "3.0.0"
 let version = (>=>) @"(?<major>\d*)\.(?<minor>\d*)\.(?<build>\d*).*?" "${major}.${minor}.${build}.0" semanticVersion
 let configuration = getBuildParamOrDefault "configuration" "Release"
 // can be set by passing: -ev deployToNuGet true
