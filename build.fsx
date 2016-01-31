@@ -8,7 +8,7 @@ open Fake.NuGetHelper
 open Fake.Testing
 
 // properties
-let semanticVersion = "2.0.3"
+let semanticVersion = "2.0.4"
 let version = (>=>) @"(?<major>\d*)\.(?<minor>\d*)\.(?<build>\d*).*?" "${major}.${minor}.${build}.0" semanticVersion
 let configuration = getBuildParamOrDefault "configuration" "Release"
 // can be set by passing: -ev deployToNuGet true
@@ -111,15 +111,9 @@ Target "CreateNuGetPackages" (fun _ ->
     !! (srcDir @@ "Kent.Boogaart.HelperTrinity/bin" @@ configuration @@ "Kent.Boogaart.HelperTrinity.*")
         |> CopyFiles (nugetDir @@ "lib/portable-win+net403+sl40+wp+xbox40+MonoAndroid+Xamarin.iOS10+MonoTouch")
 
-    // copy source to src
-    [!! (srcDir @@ "**/*.*")
-        -- (srcDir @@ "packages/**/*")
-        -- (srcDir @@ "**/*.suo")
-        -- (srcDir @@ "**/*.csproj.user")
-        -- (srcDir @@ "**/*.gpState")
-        -- (srcDir @@ "**/bin/**")
-        -- (srcDir @@ "**/obj/**")]
-        |> CopyWithSubfoldersTo nugetDir
+    // copy readme
+    CreateDir "./Gen/NuGet/"
+    CopyFile "./Gen/NuGet/readme.txt" "./Src/readme.txt"
 
     // create the NuGets
     NuGet (fun p ->
@@ -134,12 +128,9 @@ Target "CreateNuGetPackages" (fun _ ->
         (srcDir @@ "HelperTrinity.nuspec")
 )
 
-// build order
+
 "Clean"
-    ==> "RestorePackages"
     ==> "Build"
-    ==> "ExecuteUnitTests"
-    ==> "CreateArchives"
     ==> "CreateNuGetPackages"
 
 RunTargetOrDefault "CreateNuGetPackages"

@@ -54,16 +54,9 @@
     <Compile Include="..\AssemblyInfoCommonSecurity.cs">
       <Link>Properties\AssemblyInfoCommonSecurity.cs</Link>
     </Compile>
-    <Compile Include="ArgumentHelper.cs" />
-    <Compile Include="EventHelper.cs" />
-    <Compile Include="ExceptionHelper.cs" />
-    <Compile Include="Extensions\ArgumentHelperExtensions.cs" />
-    <Compile Include="Extensions\EventHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ArgumentHelper.doc.xml" />
-    <Content Include="EventHelper.doc.xml" />
     <EmbeddedResource Include="Properties\ExceptionHelper.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
