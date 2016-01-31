@@ -113,6 +113,7 @@ Target "CreateNuGetPackages" (fun _ ->
 
     // copy source to src
     [!! (srcDir @@ "**/*.*")
+        -- (srcDir @@ "HelperTrinity.UnitTests/**/*")
         -- (srcDir @@ "packages/**/*")
         -- (srcDir @@ "**/*.suo")
         -- (srcDir @@ "**/*.csproj.user")
