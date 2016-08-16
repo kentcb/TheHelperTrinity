@@ -274,28 +274,28 @@
         public void assert_enum_member_throws_if_flag_value_is_not_a_valid_value()
         {
             var ex = Assert.Throws<ArgumentException>(() => FlagsEnum.Three.AssertEnumMember("test", FlagsEnum.One, FlagsEnum.Two, FlagsEnum.Four));
-            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value 'Three' is not allowed for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnum'.{0}Parameter name: test", Environment.NewLine), ex.Message);
+            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value 'Three' is not valid for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnum'.{0}Parameter name: test", Environment.NewLine), ex.Message);
         }
 
         [Fact]
         public void assert_enum_member_if_valid_flag_values_are_provided_but_the_enumeration_value_is_not_a_valid_flag_enumeration_value()
         {
             var ex = Assert.Throws<ArgumentException>(() => ((FlagsEnum)68).AssertEnumMember("test", FlagsEnum.One, FlagsEnum.Two, FlagsEnum.Four));
-            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value '68' is not allowed for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnum'.{0}Parameter name: test", Environment.NewLine), ex.Message);
+            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value '68' is not valid for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnum'.{0}Parameter name: test", Environment.NewLine), ex.Message);
         }
 
         [Fact]
         public void assert_enum_member_throws_if_invalid_zero_flag_enumeration_value_is_passed_in_but_it_is_not_a_valid_value()
         {
             var ex = Assert.Throws<ArgumentException>(() => ((FlagsEnumNoNone)0).AssertEnumMember("test", FlagsEnumNoNone.One));
-            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value '0' is not allowed for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnumNoNone'.{0}Parameter name: test", Environment.NewLine), ex.Message);
+            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value '0' is not valid for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnumNoNone'.{0}Parameter name: test", Environment.NewLine), ex.Message);
         }
 
         [Fact]
         public void assert_enum_member_throws_if_zero_flag_enumeration_value_is_passed_in_but_it_is_not_a_valid_value()
         {
             var ex = Assert.Throws<ArgumentException>(() => FlagsEnum.None.AssertEnumMember("test", FlagsEnum.One));
-            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value 'None' is not allowed for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnum'.{0}Parameter name: test", Environment.NewLine), ex.Message);
+            Assert.Equal(string.Format(CultureInfo.InvariantCulture, "Enum value 'None' is not valid for flags enumeration 'HelperTrinity.UnitTests.ArgumentHelperExtensionsFixture+FlagsEnum'.{0}Parameter name: test", Environment.NewLine), ex.Message);
         }
 
         [Fact]

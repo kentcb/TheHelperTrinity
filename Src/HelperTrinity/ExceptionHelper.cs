@@ -43,8 +43,8 @@ namespace HelperTrinity
     /// Assuming this code resides in a class called <c>Foo.Bar</c>, the XML configuration might look like this:
     /// <code>
     /// <![CDATA[
-    /// <?xml version="1.0" encoding="utf-8" ?> 
-    /// 
+    /// <?xml version="1.0" encoding="utf-8" ?>
+    ///
     /// <exceptionHelper>
     ///     <exceptionGroup type="Foo.Bar">
     ///         <exception key="myKey" type="System.NullReferenceException">
@@ -66,8 +66,8 @@ namespace HelperTrinity
     /// Assuming this code resides in a class called <c>Foo.Bar</c>, the XML configuration might look like this:
     /// <code>
     /// <![CDATA[
-    /// <?xml version="1.0" encoding="utf-8" ?> 
-    /// 
+    /// <?xml version="1.0" encoding="utf-8" ?>
+    ///
     /// <exceptionHelper>
     ///     <exceptionGroup type="Foo.Bar">
     ///         <exception key="myKey" type="System.NullReferenceException">
@@ -132,7 +132,7 @@ namespace HelperTrinity
             {
                 // here we determine the default name for the resource
                 // NOTE: PCL does not have Assembly.GetName()
-                this.resourceName = string.Concat(new AssemblyName(forType.Assembly.FullName).Name, ".Properties.ExceptionHelper.xml");
+                this.resourceName = string.Concat(new AssemblyName(forType.GetTypeInfo().Assembly.FullName).Name, ".Properties.ExceptionHelper.xml");
             }
         }
 
@@ -240,7 +240,7 @@ namespace HelperTrinity
         {
             exceptionKey.AssertNotNull("exceptionKey");
 
-            var exceptionInfo = GetExceptionInfo(this.forType.Assembly, this.resourceName);
+            var exceptionInfo = GetExceptionInfo(this.forType.GetTypeInfo().Assembly, this.resourceName);
             var exceptionNode = (from exceptionGroup in exceptionInfo.Element("exceptionHelper").Elements("exceptionGroup")
                                  from exception in exceptionGroup.Elements("exception")
                                  where string.Equals(exceptionGroup.Attribute("type").Value, this.forType.FullName, StringComparison.Ordinal) && string.Equals(exception.Attribute("key").Value, exceptionKey, StringComparison.Ordinal)
@@ -265,7 +265,7 @@ namespace HelperTrinity
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "Type '{0}' could not be loaded for exception with key '{1}'", typeAttribute.Value, exceptionKey));
             }
 
-            if (!typeof(Exception).IsAssignableFrom(type))
+            if (!typeof(Exception).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
             {
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "Type '{0}' for exception with key '{1}' does not inherit from '{2}'", type.FullName, exceptionKey, typeof(Exception).FullName));
             }
@@ -296,7 +296,8 @@ namespace HelperTrinity
 
             // find the most suitable constructor given the parameters and available constructors
             var constructorArgsArr = constructorArgsList.ToArray();
-            var constructor = (from candidateConstructor in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+            var constructor = (from candidateConstructor in type.GetTypeInfo().DeclaredConstructors
+                               where candidateConstructor.IsPublic && !candidateConstructor.IsStatic
                                let rank = RankArgumentsAgainstParameters(constructorArgsArr, candidateConstructor.GetParameters())
                                where rank > 0
                                orderby rank descending
@@ -496,7 +497,7 @@ namespace HelperTrinity
             if (argument == null)
             {
                 // limited what we can do when we have no type for the argument
-                if (parameter.ParameterType.IsValueType && Nullable.GetUnderlyingType(parameter.ParameterType) == null)
+                if (parameter.ParameterType.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(parameter.ParameterType) == null)
                 {
                     // parameter is not nullable, but argument is null
                     return 0;
@@ -506,7 +507,7 @@ namespace HelperTrinity
                 return 1;
             }
 
-            if (!parameter.ParameterType.IsAssignableFrom(argument.GetType()))
+            if (!parameter.ParameterType.GetTypeInfo().IsAssignableFrom(argument.GetType().GetTypeInfo()))
             {
                 // argument is not assignable to parameter type
                 return 0;

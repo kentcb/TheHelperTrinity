@@ -118,7 +118,7 @@ namespace HelperTrinity
         [DebuggerHidden]
         public static void AssertGenericArgumentNotNull<T>(T arg, string argName)
         {
-            Type type = typeof(T);
+            var type = typeof(T).GetTypeInfo();
 
             if (!type.IsValueType || (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(Nullable<>))))
             {
@@ -133,7 +133,7 @@ namespace HelperTrinity
             // make sure the enumerable item itself isn't null
             AssertNotNull(arg, argName);
 
-            if (assertContentsNotNull && !typeof(T).IsValueType)
+            if (assertContentsNotNull && !typeof(T).GetTypeInfo().IsValueType)
             {
                 // make sure each item in the enumeration isn't null
                 foreach (var item in arg)
@@ -200,26 +200,52 @@ namespace HelperTrinity
         [DebuggerHidden]
         [CLSCompliant(false)]
         public static void AssertEnumMember<TEnum>(TEnum enumValue, string argName)
-                where TEnum : struct, IConvertible
+                where TEnum : struct
         {
-            if (Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute), false))
+            var validValues = Enum
+                .GetValues(typeof(TEnum))
+                .Cast<TEnum>()
+                .ToArray();
+
+            AssertEnumMember(
+                enumValue,
+                argName,
+                validValues);
+        }
+
+        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])"]/*' />
+        [DebuggerHidden]
+        [CLSCompliant(false)]
+        public static void AssertEnumMember<TEnum>(TEnum enumValue, string argName, params TEnum[] validValues)
+            where TEnum : struct
+        {
+            AssertNotNull(validValues, nameof(validValues));
+
+            if (typeof(TEnum).GetTypeInfo().GetCustomAttribute<FlagsAttribute>(false) != null)
             {
-                // flag enumeration - we can only get here if TEnum is a valid enumeration type, since the FlagsAttribute can
-                // only be applied to enumerations
+                // flag enumeration
                 bool throwEx;
-                var longValue = enumValue.ToInt64(CultureInfo.InvariantCulture);
+                var longValue = Convert.ToInt64(enumValue, CultureInfo.InvariantCulture);
 
                 if (longValue == 0)
                 {
-                    // only throw if zero isn't defined in the enum - we have to convert zero to the underlying type of the enum
-                    //throwEx = !Enum.IsDefined(typeof(TEnum), ((IConvertible)0).ToType(Enum.GetUnderlyingType(typeof(TEnum)), CultureInfo.InvariantCulture));
-                    throwEx = !Enum.IsDefined(typeof(TEnum), default(TEnum));
+                    // only throw if zero isn't permitted by the valid values
+                    throwEx = true;
+
+                    foreach (TEnum value in validValues)
+                    {
+                        if (Convert.ToInt64(value, CultureInfo.InvariantCulture) == 0)
+                        {
+                            throwEx = false;
+                            break;
+                        }
+                    }
                 }
                 else
                 {
-                    foreach (TEnum value in GetEnumValues<TEnum>())
+                    foreach (var value in validValues)
                     {
-                        longValue &= ~value.ToInt64(CultureInfo.InvariantCulture);
+                        longValue &= ~Convert.ToInt64(value, CultureInfo.InvariantCulture);
                     }
 
                     // throw if there is a value left over after removing all valid values
@@ -232,72 +258,6 @@ namespace HelperTrinity
                         string.Format(
                             CultureInfo.InvariantCulture,
                             "Enum value '{0}' is not valid for flags enumeration '{1}'.",
-                            enumValue,
-                            typeof(TEnum).FullName),
-                        argName);
-                }
-            }
-            else
-            {
-                // not a flag enumeration
-                if (!Enum.IsDefined(typeof(TEnum), enumValue))
-                {
-                    throw new ArgumentException(
-                        string.Format(
-                            CultureInfo.InvariantCulture,
-                            "Enum value '{0}' is not defined for enumeration '{1}'.",
-                            enumValue,
-                            typeof(TEnum).FullName),
-                        argName);
-                }
-            }
-        }
-
-        /// <include file='ArgumentHelper.doc.xml' path='doc/member[@name="AssertEnumMember{TEnum}(TEnum,string,TEnum[])"]/*' />
-        [DebuggerHidden]
-        [CLSCompliant(false)]
-        public static void AssertEnumMember<TEnum>(TEnum enumValue, string argName, params TEnum[] validValues)
-            where TEnum : struct, IConvertible
-        {
-            AssertNotNull(validValues, "validValues");
-
-            if (Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute), false))
-            {
-                // flag enumeration
-                bool throwEx;
-                var longValue = enumValue.ToInt64(CultureInfo.InvariantCulture);
-
-                if (longValue == 0)
-                {
-                    // only throw if zero isn't permitted by the valid values
-                    throwEx = true;
-
-                    foreach (TEnum value in validValues)
-                    {
-                        if (value.ToInt64(CultureInfo.InvariantCulture) == 0)
-                        {
-                            throwEx = false;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var value in validValues)
-                    {
-                        longValue &= ~value.ToInt64(CultureInfo.InvariantCulture);
-                    }
-
-                    // throw if there is a value left over after removing all valid values
-                    throwEx = longValue != 0;
-                }
-
-                if (throwEx)
-                {
-                    throw new ArgumentException(
-                        string.Format(
-                            CultureInfo.InvariantCulture,
-                            "Enum value '{0}' is not allowed for flags enumeration '{1}'.",
                             enumValue,
                             typeof(TEnum).FullName),
                         argName);
@@ -352,20 +312,6 @@ namespace HelperTrinity
             }
 
             return true;
-        }
-
-        private static IEnumerable<T> GetEnumValues<T>()
-        {
-            var type = typeof(T);
-
-            if (!type.IsEnum)
-            {
-                throw new ArgumentException("Type '" + type.Name + "' is not an enum");
-            }
-
-            return from field in type.GetFields(BindingFlags.Public | BindingFlags.Static)
-                   where field.IsLiteral
-                   select (T)field.GetValue(null);
         }
     }
 }

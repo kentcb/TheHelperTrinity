@@ -14,7 +14,7 @@
     /// The following example shows how a generic event can be raised:
     /// <code>
     /// public event EventHandler&lt;EventArgs&gt; Changed;
-    /// 
+    ///
     /// protected void OnChanged()
     /// {
     ///     Changed.Raise(this, EventArgs.Empty);
@@ -74,13 +74,6 @@
             where T : EventArgs
         {
             EventHelper.BeginRaise(handler, sender, createEventArguments, callback, asyncState);
-        }
-
-        /// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise(Delegate,object,EventArgs,AsyncCallback,object)"]/*' />
-        [DebuggerHidden]
-        public static void BeginRaise(this Delegate handler, object sender, EventArgs e, AsyncCallback callback, object asyncState)
-        {
-            EventHelper.BeginRaise(handler, sender, e, callback, asyncState);
         }
     }
 }

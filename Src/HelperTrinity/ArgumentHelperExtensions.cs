@@ -87,7 +87,7 @@
         [DebuggerHidden]
         [CLSCompliant(false)]
         public static void AssertEnumMember<TEnum>(this TEnum enumValue, string argName)
-            where TEnum : struct, IConvertible
+            where TEnum : struct
         {
             ArgumentHelper.AssertEnumMember(enumValue, argName);
         }
@@ -96,7 +96,7 @@
         [DebuggerHidden]
         [CLSCompliant(false)]
         public static void AssertEnumMember<TEnum>(this TEnum enumValue, string argName, params TEnum[] validValues)
-            where TEnum : struct, IConvertible
+            where TEnum : struct
         {
             ArgumentHelper.AssertEnumMember(enumValue, argName, validValues);
         }

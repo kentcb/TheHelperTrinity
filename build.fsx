@@ -8,7 +8,7 @@ open Fake.NuGetHelper
 open Fake.Testing
 
 // properties
-let semanticVersion = "3.0.0"
+let semanticVersion = "4.0.0"
 let version = (>=>) @"(?<major>\d*)\.(?<minor>\d*)\.(?<build>\d*).*?" "${major}.${minor}.${build}.0" semanticVersion
 let configuration = getBuildParamOrDefault "configuration" "Release"
 // can be set by passing: -ev deployToNuGet true
@@ -32,7 +32,7 @@ Target "Clean" (fun _ ->
 )
 
 // would prefer to use the built-in RestorePackages function, but it restores packages in the root dir (not in Src), which causes build problems
-Target "RestorePackages" (fun _ -> 
+Target "RestorePackages" (fun _ ->
     !! "./**/packages.config"
     |> Seq.iter (
         RestorePackage (fun p ->
@@ -109,7 +109,7 @@ Target "CreateArchives" (fun _ ->
 Target "CreateNuGetPackages" (fun _ ->
     // copy binaries to lib
     !! (srcDir @@ "HelperTrinity/bin" @@ configuration @@ "HelperTrinity.*")
-        |> CopyFiles (nugetDir @@ "lib/portable-win+net403+sl40+wp+xbox40+MonoAndroid+Xamarin.iOS10+MonoTouch")
+        |> CopyFiles (nugetDir @@ "lib/netstandard1.0")
 
     // copy source to src
     [!! (srcDir @@ "**/*.*")

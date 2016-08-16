@@ -25,7 +25,7 @@ namespace HelperTrinity
     /// The following example shows how a non-generic event can be raised:
     /// <code>
     /// public event EventHandler Changed;
-    /// 
+    ///
     /// protected void OnChanged()
     /// {
     ///     EventHelper.Raise(Changed, this);
@@ -37,7 +37,7 @@ namespace HelperTrinity
     /// <c>EventArgs</c> subclass:
     /// <code>
     /// public event PropertyChangedEventHandler PropertyChanged;
-    /// 
+    ///
     /// protected void OnPropertyChanged(PropertyChangedEventArgs e)
     /// {
     ///     EventHelper.Raise(PropertyChanged, this, e);
@@ -48,7 +48,7 @@ namespace HelperTrinity
     /// The following example shows how a generic event can be raised:
     /// <code>
     /// public event EventHandler&lt;EventArgs&gt; Changed;
-    /// 
+    ///
     /// protected void OnChanged()
     /// {
     ///     EventHelper.Raise(Changed, this, EventArgs.Empty);
@@ -59,7 +59,7 @@ namespace HelperTrinity
     /// The following example shows how a generic event with custom event arguments can be raised:
     /// <code>
     /// public event EventHandler&lt;MyEventArgs&gt; MyEvent;
-    /// 
+    ///
     /// protected void OnMyEvent(MyEventArgs e)
     /// {
     ///     EventHelper.Raise(MyEventArgs, this, e);
@@ -71,7 +71,7 @@ namespace HelperTrinity
     /// handler for the event:
     /// <code>
     /// public event EventHandler&lt;MyEventArgs&gt; MyEvent;
-    /// 
+    ///
     /// protected void OnMyEvent(int someData)
     /// {
     ///     EventHelper.Raise(MyEvent, this, delegate
@@ -85,7 +85,7 @@ namespace HelperTrinity
     /// The following example raises an event asynchronously:
     /// <code>
     /// public event EventHandler&lt;MyEventArgs&gt; MyEvent;
-    /// 
+    ///
     /// protected void OnMyEvent(int someData)
     /// {
     ///     EventHelper.BeginRaise(MyEvent, this, new MyEventArgs(someData), null, null);
@@ -186,38 +186,6 @@ namespace HelperTrinity
                 foreach (EventHandler<T> invocation in handler.GetInvocationList())
                 {
                     invocation.BeginInvoke(sender, createEventArguments(), callback, asyncState);
-                }
-            }
-        }
-
-        /// <include file='EventHelper.doc.xml' path='doc/member[@name="BeginRaise(Delegate,object,EventArgs,AsyncCallback,object)"]/*' />
-        [SuppressMessage("Microsoft.Design", "CA1030", Justification = "False positive - the Raise method overloads are supposed to raise an event on behalf of a client, not on behalf of its declaring class.")]
-        [DebuggerHidden]
-        public static void BeginRaise(Delegate handler, object sender, EventArgs e, AsyncCallback callback, object asyncState)
-        {
-            if (handler != null)
-            {
-                var parameters = handler.Method.GetParameters();
-                exceptionHelper.ResolveAndThrowIf(parameters.Length != 2 || parameters[0].ParameterType != typeof(object) || !typeof(EventArgs).IsAssignableFrom(parameters[1].ParameterType), "invalidDelegate");
-
-                // since all we know is Delegate, we need to queue invocations on the thread pool and manage the callback ourselves
-                var invocationList = handler.GetInvocationList();
-                var remainingInvocations = invocationList.Length;
-
-                foreach (var invocation in invocationList)
-                {
-                    var localInvocation = invocation;
-
-                    ThreadPool.QueueUserWorkItem(
-                        _ =>
-                        {
-                            localInvocation.DynamicInvoke(sender, e);
-
-                            if (callback != null && Interlocked.Decrement(ref remainingInvocations) == 0)
-                            {
-                                callback(new BeginRaiseAsyncResult(asyncState));
-                            }
-                        });
                 }
             }
         }
