@@ -2,6 +2,8 @@
 
 # The Helper Trinity
 
+[![Build status](https://ci.appveyor.com/api/projects/status/6ybtaestpphx5fd0?svg=true)](https://ci.appveyor.com/project/kentcb/thehelpertrinity)
+
 ## What?
 
 **The Helper Trinity** is a set of helper classes applicable to most any .NET application. Using the classes in this library, you can much more easily validate arguments, raise events, and throw exceptions.
